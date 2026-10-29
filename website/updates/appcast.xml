@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- sparkle-sign-warning:
+IMPORTANT: This file was signed by Sparkle. Any modifications to this file requires re-signing this file with generate_appcast or sign_update! The signed signature will be embedded at the end of this file.
+-->
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Riffle</title>
+        <item>
+            <title>1.0.2</title>
+            <pubDate>Mon, 26 Oct 2026 00:36:05 +0100</pubDate>
+            <link>https://appriffle.com/</link>
+            <sparkle:version>202610260032</sparkle:version>
+            <sparkle:shortVersionString>1.0.2</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
+            <description sparkle:format="markdown"><![CDATA[- On macOS 27, a window's title and subtitle in the switcher could look dimmer than the rest after Riffle reused its tile. They're always as bright now.
+]]></description>
+            <enclosure url="https://appriffle.com/updates/Riffle-1.0.2-202610260032.dmg" length="5849722" type="application/octet-stream" sparkle:edSignature="AzBA5Sni1G5PWshrlDlwLRcEkmz9NO0+G97WbF1NmCYGabk56siBS2JOtHve0n4nC7K4lZ+G+VjmRc0mYv+DCQ=="/>
+        </item>
+    </channel>
+</rss>
+<!-- sparkle-signatures:
+edSignature: QjosFcflHCBJeDlBl5+YnL7xa2IU5M52mRp5s4Dwvis9PbUdb+IYv8Gkm1FyHjbLVgs3hOSvAcaLheWrm2i6Bg==
+length: 1300
+-->

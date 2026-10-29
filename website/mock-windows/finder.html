@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en" data-variants="downloads projects">
+<head>
+<meta charset="utf-8">
+<meta name="window-title" data-v="downloads" content="Downloads">
+<meta name="window-title" data-v="projects" content="Projects">
+<title>Finder</title>
+<link rel="stylesheet" href="shared.css">
+<script src="mock.js" defer></script>
+<style>
+  body { --w: 700px; --h: 500px; --sbw: 152px; background: #FFFFFF; }
+  .dotc { width: 11px; height: 11px; border-radius: 50%; flex: none; margin: 0 3px 0 2px; box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12); }
+  html[data-v="downloads"] .sb-item.downloads,
+  html[data-v="projects"] .sb-item.projects { background: rgba(0, 0, 0, 0.075); font-weight: 500; }
+
+  .toolbar { position: absolute; left: 168px; right: 0; top: 0; height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 12px 0 10px; }
+  .toolbar .cap { gap: 12px; }
+  .toolbar .nav .g:last-child { color: #BDBDC2; }
+  .toolbar h1 { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; margin-left: 2px; }
+  .toolbar .sp { flex: 1; }
+  .toolbar .cap.view { gap: 4px; padding: 0 8px; }
+  .toolbar .cap.view .g:nth-child(2) { width: 10px; height: 10px; color: #8A8A90; }
+  .toolbar .cap.view + .cap.view { margin-left: -4px; }
+
+  /* Icon view */
+  .grid {
+    position: absolute; left: 168px; right: 0; top: 52px; bottom: 26px; padding: 6px 10px 0 12px;
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: 138px;
+  }
+  .file { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+  .file .ic { width: 84px; height: 84px; display: grid; place-items: center; border-radius: 10px; }
+  .file .ic svg { width: 72px; height: 72px; overflow: visible; }
+  .file .name {
+    margin-top: 5px; max-width: 102px; padding: 1px 4px; border-radius: 5px; text-align: center;
+    font-size: 11px; line-height: 14px; color: #1D1D1F; overflow-wrap: break-word;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .file.sel .ic { background: rgba(0, 0, 0, 0.075); }
+  .file.sel .name { background: #0A6CF0; color: #fff; }
+
+  /* List view */
+  .lv { position: absolute; left: 168px; right: 0; top: 52px; bottom: 26px; overflow: hidden; }
+  .cols, .row { display: grid; grid-template-columns: minmax(0, 1fr) 160px 54px 128px; align-items: center; }
+  .cols { height: 25px; margin: 0 8px; padding: 0 8px; font-size: 11px; font-weight: 500; color: #6E6E73; border-bottom: 0.5px solid #E5E5EA; }
+  .cols span + span { padding-left: 8px; box-shadow: inset 0.5px 0 0 #E5E5EA; height: 13px; line-height: 13px; }
+  .cols .sorted { color: #1D1D1F; display: flex; align-items: center; gap: 4px; }
+  .cols .sorted .g { width: 9px; height: 9px; stroke-width: 2; color: #8A8A90; }
+  .rows { padding-top: 2px; }
+  .row { height: 24px; margin: 0 8px; padding: 0 8px; border-radius: 6px; font-size: 12px; color: #1D1D1F; white-space: nowrap; }
+  .row:nth-child(even) { background: #F4F4F6; }
+  .row > span { overflow: hidden; text-overflow: ellipsis; }
+  .row > span + span { padding-left: 8px; color: #6E6E73; }
+  .row .nm { display: flex; align-items: center; gap: 5px; padding-left: calc(var(--d, 0) * 18px); }
+  .row .tw { width: 10px; flex: none; display: grid; place-items: center; color: #8A8A90; }
+  .row .tw svg { width: 7px; height: 7px; }
+  .row .ico { width: 17px; height: 17px; flex: none; }
+  .row .nm .t { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .row .tag { width: 8px; height: 8px; border-radius: 50%; flex: none; margin-left: 2px; box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.15); }
+  .row.sel { background: #0A6CF0; color: #fff; }
+  .row.sel > span + span, .row.sel .tw { color: rgba(255, 255, 255, 0.85); }
+  .row.sel .tag { box-shadow: 0 0 0 1.2px #fff; }
+  .row.blank { background: transparent; }
+  .row.blank:nth-child(even) { background: #F4F4F6; }
+
+  .status {
+    position: absolute; left: 168px; right: 0; bottom: 0; height: 26px; display: grid; place-items: center;
+    font-size: 11px; color: #86868B; border-top: 0.5px solid #E8E8ED; background: #FBFBFC;
+  }
+</style>
+</head>
+<body>
+
+<!-- Shared shapes for the file icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="fold-front" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FCBFB"/><stop offset="1" stop-color="#5EAAF3"/></linearGradient>
+    <linearGradient id="fold-back" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5DA6EE"/><stop offset="1" stop-color="#4A94E4"/></linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#F4F4F6"/></linearGradient>
+    <filter id="drop" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.1" flood-color="#000" flood-opacity=".22"/>
+    </filter>
+    <symbol id="folder" viewBox="0 0 64 64">
+      <path d="M5 15.5A3.5 3.5 0 0 1 8.5 12h14.2c1 0 1.9.4 2.6 1.1l3.1 3.1c.7.7 1.6 1.1 2.6 1.1h24.5A3.5 3.5 0 0 1 59 20.8V50a3.5 3.5 0 0 1-3.5 3.5h-47A3.5 3.5 0 0 1 5 50z" fill="url(#fold-back)"/>
+      <rect x="5" y="22" width="54" height="31.5" rx="3.5" fill="url(#fold-front)"/>
+      <path d="M8.5 22.6H55.5" stroke="#B9E0FE" stroke-width="1" opacity=".9"/>
+    </symbol>
+    <symbol id="page" viewBox="0 0 64 64">
+      <path d="M14 5h26l13 13v39.5a1.5 1.5 0 0 1-1.5 1.5h-37A1.5 1.5 0 0 1 13 57.5v-51A1.5 1.5 0 0 1 14 5z" fill="url(#paper)" filter="url(#drop)"/>
+      <path d="M40 5v11.5a1.5 1.5 0 0 0 1.5 1.5H53z" fill="#E4E4E9"/>
+    </symbol>
+    <!-- small icons for the list view -->
+    <symbol id="s-folder" viewBox="0 0 17 17">
+      <path d="M1.5 4.2c0-.6.5-1.1 1.1-1.1h3.6c.3 0 .6.1.8.3l.9.9c.2.2.5.3.8.3h5.7c.6 0 1.1.5 1.1 1.1v7.7c0 .6-.5 1.1-1.1 1.1H2.6c-.6 0-1.1-.5-1.1-1.1z" fill="#58A3EE"/>
+      <rect x="1.5" y="5.9" width="14" height="8.7" rx="1.1" fill="#86C3FA"/>
+    </symbol>
+    <symbol id="s-doc" viewBox="0 0 17 17">
+      <path d="M4 1.5h6.2l3.3 3.3v10a.7.7 0 0 1-.7.7H4a.7.7 0 0 1-.7-.7V2.2A.7.7 0 0 1 4 1.5z" fill="#FFFFFF" stroke="#C9C9CF" stroke-width=".6"/>
+      <path d="M10.2 1.5v3.3h3.3" fill="#ECECF0" stroke="#C9C9CF" stroke-width=".6"/>
+    </symbol>
+  </defs>
+</svg>
+
+<aside class="sidebar">
+  <div class="lights"><i></i><i></i><i></i></div>
+  <div class="sb-head">Favorites</div>
+  <div class="sb-item"><svg class="g"><use href="#g-airdrop"/></svg>AirDrop</div>
+  <div class="sb-item"><svg class="g"><use href="#g-clock"/></svg>Recents</div>
+  <div class="sb-item"><svg class="g"><use href="#g-apps"/></svg>Applications</div>
+  <div class="sb-item"><svg class="g"><use href="#g-desktop"/></svg>Desktop</div>
+  <div class="sb-item"><svg class="g"><use href="#g-doc"/></svg>Documents</div>
+  <div class="sb-item downloads"><svg class="g"><use href="#g-download"/></svg>Downloads</div>
+  <div class="sb-item projects"><svg class="g"><use href="#g-folder"/></svg>Projects</div>
+  <div class="sb-head">iCloud</div>
+  <div class="sb-item"><svg class="g"><use href="#g-cloud"/></svg>iCloud Drive</div>
+  <div class="sb-item"><svg class="g"><use href="#g-shared"/></svg>Shared</div>
+  <div class="sb-head">Tags</div>
+  <div class="sb-item"><span class="dotc" style="background:#FF5F57"></span>Red</div>
+  <div class="sb-item"><span class="dotc" style="background:#FF9F0A"></span>Orange</div>
+  <div class="sb-item"><span class="dotc" style="background:#32D74B"></span>Green</div>
+  <div class="sb-item"><span class="dotc" style="background:#0A84FF"></span>Blue</div>
+</aside>
+
+<header class="toolbar">
+  <div class="cap nav"><svg class="g"><use href="#g-chev-l"/></svg><svg class="g"><use href="#g-chev-r"/></svg></div>
+  <h1><span data-v="downloads">Downloads</span><span data-v="projects">Projects</span></h1>
+  <span class="sp"></span>
+  <div class="cap view"><svg class="g" data-v="downloads"><use href="#g-grid4"/></svg><svg class="g" data-v="projects"><use href="#g-list"/></svg><svg class="g"><use href="#g-chev-d"/></svg></div>
+  <div class="cap view"><svg class="g"><use href="#g-group"/></svg><svg class="g"><use href="#g-chev-d"/></svg></div>
+  <div class="cap"><svg class="g"><use href="#g-share"/></svg><svg class="g"><use href="#g-tag"/></svg><svg class="g"><use href="#g-more-c"/></svg></div>
+  <div class="cap"><svg class="g"><use href="#g-search"/></svg></div>
+</header>
+
+<!-- ============ Downloads, as icons ============ -->
+<main class="grid" data-v="downloads">
+
+  <!-- disk image of a stargazing app -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <defs>
+        <linearGradient id="dmg-top" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E6E6EB"/></linearGradient>
+        <linearGradient id="night" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2B3C8F"/><stop offset=".6" stop-color="#5A3AA8"/><stop offset="1" stop-color="#8D4FC4"/></linearGradient>
+      </defs>
+      <g filter="url(#drop)">
+        <rect x="7" y="13" width="50" height="40" rx="7" fill="url(#dmg-top)"/>
+      </g>
+      <path d="M7 44h50v2a7 7 0 0 1-7 7H14a7 7 0 0 1-7-7z" fill="#D2D2D9"/>
+      <rect x="7.5" y="13.5" width="49" height="39" rx="6.5" fill="none" stroke="#C9C9D0" stroke-width=".8"/>
+      <rect x="21" y="17" width="22" height="22" rx="5.5" fill="url(#night)"/>
+      <path d="M35.6 22.4a5.6 5.6 0 1 0 3.2 9.6 4.6 4.6 0 1 1-3.2-9.6z" fill="#FFE7A3"/>
+      <g fill="#FFFFFF"><circle cx="25.4" cy="22" r=".8"/><circle cx="28.6" cy="33.6" r=".6"/><circle cx="24.6" cy="29" r=".5"/><circle cx="31" cy="20.6" r=".5"/></g>
+      <path d="M27.6 25.2 28.3 26.8 30 27.4 28.3 28 27.6 29.6 26.9 28 25.2 27.4 26.9 26.8Z" fill="#FFFFFF"/>
+      <circle cx="51" cy="48.5" r="1.3" fill="#7FD48C"/>
+    </svg></div>
+    <div class="name">Stargazer-2.4.dmg</div>
+  </div>
+
+  <!-- invoice PDF, first page as preview -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <use href="#page"/>
+      <rect x="18" y="11" width="6" height="6" rx="1.5" fill="#1E3A5F"/>
+      <rect x="26" y="12" width="12" height="1.8" rx=".9" fill="#2C2C2E"/>
+      <rect x="26" y="15" width="8" height="1.2" rx=".6" fill="#A1A1A6"/>
+      <rect x="18" y="19.6" width="30" height="1" fill="#3CC6A7"/>
+      <rect x="18" y="23" width="15" height="2.6" rx="1" fill="#1E3A5F"/>
+      <rect x="18" y="28" width="10" height="1.2" rx=".6" fill="#A1A1A6"/>
+      <rect x="18" y="30.4" width="13" height="1.2" rx=".6" fill="#A1A1A6"/>
+      <rect x="18" y="34" width="30" height="2.2" fill="#EAF1F6"/>
+      <g fill="#C7C7CC"><rect x="18" y="38" width="16" height="1"/><rect x="41" y="38" width="7" height="1"/><rect x="18" y="41" width="14" height="1"/><rect x="41" y="41" width="7" height="1"/><rect x="18" y="44" width="17" height="1"/><rect x="41" y="44" width="7" height="1"/></g>
+      <rect x="34" y="48.5" width="14" height="3" rx=".8" fill="#1E3A5F"/>
+    </svg></div>
+    <div class="name">Invoice October.pdf</div>
+  </div>
+
+  <!-- a photo of the tram (selected) -->
+  <div class="file sel">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <defs>
+        <linearGradient id="tram-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6FB1E4"/><stop offset="1" stop-color="#BFE0F4"/></linearGradient>
+        <clipPath id="tram-clip"><rect x="5" y="13" width="54" height="38"/></clipPath>
+      </defs>
+      <rect x="3.5" y="11.5" width="57" height="41" fill="#fff" filter="url(#drop)"/>
+      <g clip-path="url(#tram-clip)">
+        <rect x="5" y="13" width="54" height="38" fill="url(#tram-sky)"/>
+        <rect x="5" y="20" width="12" height="24" fill="#F2D48C"/><rect x="5" y="18.4" width="12" height="2" fill="#C8653F"/>
+        <rect x="17" y="23" width="13" height="21" fill="#EDB5A8"/><path d="M16.6 23.2 23.5 18.6 30.4 23.2Z" fill="#C25E3B"/>
+        <rect x="30" y="17" width="12" height="27" fill="#F7F2EA"/><rect x="30" y="15.6" width="12" height="2" fill="#B95B38"/>
+        <rect x="42" y="21" width="17" height="23" fill="#C7DAE6"/><rect x="42" y="19.6" width="17" height="2" fill="#CF6B43"/>
+        <g fill="#6F5647" opacity=".55">
+          <rect x="7.5" y="23" width="2" height="3"/><rect x="12" y="23" width="2" height="3"/><rect x="20" y="26" width="2" height="3"/><rect x="25" y="26" width="2" height="3"/>
+          <rect x="32.5" y="20" width="2" height="3"/><rect x="37" y="20" width="2" height="3"/><rect x="32.5" y="26" width="2" height="3"/><rect x="37" y="26" width="2" height="3"/>
+          <rect x="45" y="24" width="2" height="3"/><rect x="50" y="24" width="2" height="3"/><rect x="55" y="24" width="2" height="3"/>
+        </g>
+        <rect x="5" y="44" width="54" height="7" fill="#D9CFC1"/>
+        <path d="M5 49.4H59" stroke="#8E8173" stroke-width=".6"/>
+        <path d="M24 29 17.6 22.6" stroke="#3B3531" stroke-width=".6"/>
+        <rect x="14" y="29" width="34" height="5.6" rx="1" fill="#F8F1E0"/>
+        <g fill="#4A5A70"><rect x="16" y="30" width="4" height="3.6" rx=".5"/><rect x="21.5" y="30" width="4" height="3.6" rx=".5"/><rect x="27" y="30" width="4" height="3.6" rx=".5"/><rect x="32.5" y="30" width="4" height="3.6" rx=".5"/><rect x="38" y="30" width="4" height="3.6" rx=".5"/><rect x="43.5" y="30" width="3" height="3.6" rx=".5"/></g>
+        <rect x="14" y="34.6" width="34" height="1" fill="#E2A91C"/>
+        <rect x="14" y="35.6" width="34" height="9" rx="1" fill="#F6C42C"/>
+        <rect x="13.6" y="44.2" width="34.8" height="1.6" rx=".6" fill="#3A3633"/>
+        <g fill="#2B2826"><circle cx="20" cy="47" r="1.4"/><circle cx="24" cy="47" r="1.4"/><circle cx="38" cy="47" r="1.4"/><circle cx="42" cy="47" r="1.4"/></g>
+      </g>
+    </svg></div>
+    <div class="name">tram-28.jpg</div>
+  </div>
+
+  <!-- slide deck: first slide -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <defs>
+        <linearGradient id="slide" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#132A4A"/><stop offset="1" stop-color="#1F5C6E"/></linearGradient>
+      </defs>
+      <g filter="url(#drop)"><rect x="4" y="14" width="56" height="36" rx="2" fill="url(#slide)"/></g>
+      <text x="9" y="27" font-family="-apple-system, system-ui" font-size="6.4" font-weight="800" fill="#fff" letter-spacing="-.2">Q4 Review</text>
+      <rect x="9" y="30.6" width="20" height="1.5" rx=".75" fill="#fff" opacity=".55"/>
+      <rect x="9" y="33.8" width="15" height="1.5" rx=".75" fill="#fff" opacity=".35"/>
+      <g fill="#3CC6A7"><rect x="40" y="34" width="3.4" height="9" rx=".6"/><rect x="45" y="29" width="3.4" height="14" rx=".6"/><rect x="50" y="24" width="3.4" height="19" rx=".6"/></g>
+      <path d="M39 43.6h16" stroke="#fff" stroke-width=".5" opacity=".5"/>
+      <rect x="9" y="42" width="8" height="1.4" rx=".7" fill="#FFC66B"/>
+    </svg></div>
+    <div class="name">slides-thursday.key</div>
+  </div>
+
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64"><use href="#folder"/></svg></div>
+    <div class="name">Design</div>
+  </div>
+
+  <!-- a screenshot of the desktop: wallpaper and two windows -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <defs>
+        <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3A26B"/><stop offset=".5" stop-color="#D96A86"/><stop offset="1" stop-color="#6E5BD0"/></linearGradient>
+      </defs>
+      <g filter="url(#drop)"><rect x="4" y="15" width="56" height="35" fill="url(#wall)"/></g>
+      <rect x="4" y="15" width="56" height="2.2" fill="#fff" opacity=".55"/>
+      <g filter="url(#drop)"><rect x="9" y="20" width="27" height="19" rx="2" fill="#F7F7F9"/></g>
+      <rect x="9" y="20" width="8" height="19" rx="2" fill="#E6E7EC"/>
+      <g fill="#C7C7CC"><rect x="19" y="24" width="13" height="1.2" rx=".6"/><rect x="19" y="27" width="10" height="1.2" rx=".6"/><rect x="19" y="30" width="12" height="1.2" rx=".6"/></g>
+      <g filter="url(#drop)"><rect x="27" y="26" width="28" height="19" rx="2" fill="#FFFFFF"/></g>
+      <g><circle cx="29.6" cy="28.4" r=".8" fill="#FF5F57"/><circle cx="32" cy="28.4" r=".8" fill="#FEBC2E"/><circle cx="34.4" cy="28.4" r=".8" fill="#28C840"/></g>
+      <rect x="30" y="32" width="22" height="9" rx="1" fill="#BFE0F4"/>
+      <path d="M30 41 36 35.6 40 39 43 36.6 52 41Z" fill="#5E9A4E" opacity=".8"/>
+      <rect x="24" y="47.2" width="16" height="1.8" rx=".9" fill="#fff" opacity=".7"/>
+    </svg></div>
+    <div class="name">Screenshot 2026-10-11 at 18.42.png</div>
+  </div>
+
+  <!-- plain text, content as preview -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <use href="#page"/>
+      <rect x="18" y="12" width="17" height="2" rx="1" fill="#3A3A3C"/>
+      <g fill="#8E8E93">
+        <rect x="18" y="17.5" width="26" height="1.2" rx=".6"/><rect x="18" y="20.5" width="30" height="1.2" rx=".6"/><rect x="18" y="23.5" width="22" height="1.2" rx=".6"/>
+        <rect x="18" y="28.5" width="3" height="1.2" rx=".6"/><rect x="22.5" y="28.5" width="21" height="1.2" rx=".6"/>
+        <rect x="18" y="31.5" width="3" height="1.2" rx=".6"/><rect x="22.5" y="31.5" width="24" height="1.2" rx=".6"/>
+        <rect x="18" y="34.5" width="3" height="1.2" rx=".6"/><rect x="22.5" y="34.5" width="17" height="1.2" rx=".6"/>
+        <rect x="18" y="39.5" width="28" height="1.2" rx=".6"/><rect x="18" y="42.5" width="25" height="1.2" rx=".6"/><rect x="18" y="45.5" width="29" height="1.2" rx=".6"/><rect x="18" y="48.5" width="12" height="1.2" rx=".6"/>
+      </g>
+    </svg></div>
+    <div class="name">meeting-notes.txt</div>
+  </div>
+
+  <!-- a lighthouse on the cliffs, portrait -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <defs>
+        <linearGradient id="lh-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5FA6E6"/><stop offset="1" stop-color="#CFE6F6"/></linearGradient>
+        <linearGradient id="lh-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B8FC2"/><stop offset="1" stop-color="#22618F"/></linearGradient>
+        <clipPath id="lh-clip"><rect x="15" y="6" width="34" height="52"/></clipPath>
+      </defs>
+      <rect x="13.5" y="4.5" width="37" height="55" fill="#fff" filter="url(#drop)"/>
+      <g clip-path="url(#lh-clip)">
+        <rect x="15" y="6" width="34" height="52" fill="url(#lh-sky)"/>
+        <rect x="18" y="13" width="14" height="1.8" rx=".9" fill="#fff" opacity=".7"/><rect x="36" y="18" width="10" height="1.4" rx=".7" fill="#fff" opacity=".6"/>
+        <rect x="15" y="42" width="34" height="16" fill="url(#lh-sea)"/>
+        <path d="M17 46h6M28 49h8M38 45h7M20 53h9" stroke="#CFE9F7" stroke-width=".6" stroke-linecap="round" opacity=".8"/>
+        <path d="M30 58V40C34 37 40 36 49 38V58Z" fill="#6C8F4A"/>
+        <path d="M30 58V43C33 41 38 41 41 42L43 58Z" fill="#A98E6B"/>
+        <path d="M37.2 38.4 38.2 22.4H42.8L43.8 38.4Z" fill="#FFFFFF"/>
+        <path d="M37.5 33.6H43.5L43.8 37.2H37.2ZM38 25.8H43L43.2 29.2H37.8Z" fill="#E0463A"/>
+        <rect x="37.6" y="20.6" width="5.8" height="2" fill="#3B3B45"/>
+        <rect x="38.2" y="17.4" width="4.6" height="3.4" fill="#FFE9A6"/>
+        <path d="M37.8 17.6 40.5 14.6 43.2 17.6Z" fill="#E0463A"/>
+        <path d="M38.2 19 22 15.6V22.4Z" fill="#FFF6D2" opacity=".55"/>
+      </g>
+    </svg></div>
+    <div class="name">lighthouse.jpg</div>
+  </div>
+
+  <!-- ZIP archive -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <use href="#page"/>
+      <g fill="#8E8E93">
+        <rect x="30" y="5.5" width="4" height="2.6"/><rect x="34" y="8.1" width="4" height="2.6"/><rect x="30" y="10.7" width="4" height="2.6"/><rect x="34" y="13.3" width="4" height="2.6"/>
+        <rect x="30" y="15.9" width="4" height="2.6"/><rect x="34" y="18.5" width="4" height="2.6"/><rect x="30" y="21.1" width="4" height="2.6"/><rect x="34" y="23.7" width="4" height="2.6"/>
+      </g>
+      <rect x="29.5" y="26.5" width="9" height="11" rx="2" fill="#AEAEB2"/>
+      <rect x="32" y="29" width="4" height="5.5" rx="1" fill="#F4F4F6"/>
+      <text x="33" y="51" text-anchor="middle" font-family="-apple-system, system-ui" font-size="7" font-weight="800" fill="#8E8E93">ZIP</text>
+    </svg></div>
+    <div class="name">backup-2025.zip</div>
+  </div>
+
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64"><use href="#folder"/></svg></div>
+    <div class="name">Photos</div>
+  </div>
+
+  <!-- concert ticket PDF -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <defs><linearGradient id="tix" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6B4DF0"/><stop offset="1" stop-color="#E0479E"/></linearGradient></defs>
+      <use href="#page"/>
+      <path d="M13 18h40v12H13z" fill="url(#tix)"/>
+      <circle cx="44" cy="24" r="4" fill="#FFD36B" opacity=".9"/>
+      <rect x="17" y="21" width="16" height="2.2" rx="1.1" fill="#fff"/>
+      <rect x="17" y="25" width="10" height="1.4" rx=".7" fill="#fff" opacity=".7"/>
+      <g fill="#A1A1A6"><rect x="17" y="34" width="14" height="1.2" rx=".6"/><rect x="17" y="37" width="10" height="1.2" rx=".6"/><rect x="17" y="40" width="12" height="1.2" rx=".6"/></g>
+      <g fill="#2C2C2E">
+        <rect x="38" y="40" width="10" height="10" rx="1" fill="none" stroke="#2C2C2E" stroke-width="1"/>
+        <rect x="40" y="42" width="2" height="2"/><rect x="44" y="42" width="2" height="2"/><rect x="40" y="46" width="2" height="2"/><rect x="43" y="45" width="2" height="1.5"/><rect x="45" y="47" width="1.5" height="1.5"/>
+      </g>
+      <path d="M17 50h15" stroke="#D1D1D6" stroke-width="1" stroke-dasharray="1.6 1.2"/>
+    </svg></div>
+    <div class="name">concert-ticket.pdf</div>
+  </div>
+
+  <!-- sunset sail photo -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <defs>
+        <linearGradient id="sun-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9796A"/><stop offset=".55" stop-color="#F7A35C"/><stop offset="1" stop-color="#FBD08A"/></linearGradient>
+        <linearGradient id="sun-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E7956A"/><stop offset="1" stop-color="#5D4D7D"/></linearGradient>
+        <clipPath id="sun-clip"><rect x="5" y="13" width="54" height="38"/></clipPath>
+      </defs>
+      <rect x="3.5" y="11.5" width="57" height="41" fill="#fff" filter="url(#drop)"/>
+      <g clip-path="url(#sun-clip)">
+        <rect x="5" y="13" width="54" height="38" fill="url(#sun-sky)"/>
+        <circle cx="35" cy="34" r="6" fill="#FFF0C9"/>
+        <path d="M5 33.5 12 32 20 33 27 32.6V35H5Z" fill="#B66A6E" opacity=".7"/>
+        <rect x="5" y="34.5" width="54" height="16.5" fill="url(#sun-sea)"/>
+        <g stroke="#FFE6B8" stroke-linecap="round"><path d="M30 37h10" stroke-width="1"/><path d="M32 39.5h6" stroke-width=".9" opacity=".8"/><path d="M31 42h8" stroke-width=".8" opacity=".6"/><path d="M33.5 45h3" stroke-width=".8" opacity=".5"/></g>
+        <path d="M46 34.6V27l4.6 6.8z" fill="#3D3150"/><path d="M45.8 27v7.6l-3 .2z" fill="#3D3150" opacity=".8"/><path d="M42 35h9.5l-1 1.5h-7.5z" fill="#3D3150"/>
+        <path d="M5 51V42c4-1 8-.6 11 1.5 2 1.4 3 4 3 7.5z" fill="#3B2C44"/>
+        <path d="M14 21q1-1.2 2 0q1-1.2 2 0M21 18q.8-1 1.6 0q.8-1 1.6 0" stroke="#5A3A50" stroke-width=".6" fill="none"/>
+      </g>
+    </svg></div>
+    <div class="name">sunset-sail.heic</div>
+  </div>
+
+  <!-- spreadsheet -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <g filter="url(#drop)"><rect x="5" y="13" width="54" height="38" rx="1.5" fill="#fff"/></g>
+      <rect x="9" y="16" width="20" height="2.4" rx=".8" fill="#2C2C2E"/>
+      <rect x="9" y="21" width="28" height="3" fill="#2FB15A"/>
+      <g stroke="#E0E0E5" stroke-width=".7"><path d="M9 27.5h28M9 31h28M9 34.5h28M9 38h28M9 41.5h28M9 45h28M18 24v21.5M27 24v21.5"/></g>
+      <g fill="#8E8E93"><rect x="10.5" y="28.6" width="5" height=".9"/><rect x="10.5" y="32.1" width="6" height=".9"/><rect x="10.5" y="35.6" width="4" height=".9"/><rect x="10.5" y="39.1" width="6" height=".9"/><rect x="10.5" y="42.6" width="5" height=".9"/>
+      <rect x="21" y="28.6" width="4" height=".9"/><rect x="21" y="32.1" width="4" height=".9"/><rect x="21" y="35.6" width="4" height=".9"/><rect x="21" y="39.1" width="4" height=".9"/><rect x="21" y="42.6" width="4" height=".9"/>
+      <rect x="30" y="28.6" width="4" height=".9"/><rect x="30" y="32.1" width="4" height=".9"/><rect x="30" y="35.6" width="4" height=".9"/><rect x="30" y="39.1" width="4" height=".9"/><rect x="30" y="42.6" width="4" height=".9"/></g>
+      <g><rect x="41" y="36" width="3.5" height="10" fill="#2FB15A"/><rect x="45.5" y="30" width="3.5" height="16" fill="#34A0F5"/><rect x="50" y="33" width="3.5" height="13" fill="#F5A623"/></g>
+      <path d="M40 46.5h15" stroke="#C7C7CC" stroke-width=".7"/>
+      <rect x="41" y="22" width="12" height="1.6" rx=".8" fill="#A1A1A6"/>
+    </svg></div>
+    <div class="name">budget-2026.numbers</div>
+  </div>
+
+  <!-- audio -->
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64">
+      <defs><linearGradient id="note" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5E7E"/><stop offset="1" stop-color="#B44CE6"/></linearGradient></defs>
+      <use href="#page"/>
+      <path d="M28 41.5V22.5l14-3.2v17.7" fill="none" stroke="url(#note)" stroke-width="3" stroke-linejoin="round"/>
+      <ellipse cx="24.8" cy="41.6" rx="4.6" ry="3.6" fill="url(#note)"/>
+      <ellipse cx="38.8" cy="37.2" rx="4.6" ry="3.6" fill="url(#note)"/>
+      <text x="33" y="53" text-anchor="middle" font-family="-apple-system, system-ui" font-size="6.4" font-weight="800" fill="#8E8E93">MP3</text>
+    </svg></div>
+    <div class="name">podcast-episode-12.mp3</div>
+  </div>
+
+  <div class="file">
+    <div class="ic"><svg viewBox="0 0 64 64"><use href="#folder"/></svg></div>
+    <div class="name">Invoices</div>
+  </div>
+</main>
+
+<!-- ============ Projects, as a list ============ -->
+<main class="lv" data-v="projects">
+  <div class="cols">
+    <span class="sorted">Name<svg class="g"><use href="#g-chev-d"/></svg></span><span>Date Modified</span><span>Size</span><span>Kind</span>
+  </div>
+  <div class="rows">
+    <div class="row"><span class="nm"><span class="tw"><svg viewBox="0 0 7 7"><path d="M1.5.6 5.6 3.5 1.5 6.4Z" fill="currentColor"/></svg></span><svg class="ico"><use href="#s-folder"/></svg><span class="t">Brand refresh</span><span class="tag" style="background:#FF9F0A"></span></span><span>Today at 9:40 AM</span><span>--</span><span>Folder</span></div>
+    <div class="row sel"><span class="nm"><span class="tw"><svg viewBox="0 0 7 7"><path d="M.6 1.5 3.5 5.6 6.4 1.5Z" fill="currentColor"/></svg></span><svg class="ico"><use href="#s-folder"/></svg><span class="t">Sketchpad</span><span class="tag" style="background:#0A84FF"></span></span><span>Today at 11:42 AM</span><span>--</span><span>Folder</span></div>
+    <div class="row" style="--d:1"><span class="nm"><span class="tw"><svg viewBox="0 0 7 7"><path d="M1.5.6 5.6 3.5 1.5 6.4Z" fill="currentColor"/></svg></span><svg class="ico"><use href="#s-folder"/></svg><span class="t">Sources</span></span><span>Today at 11:42 AM</span><span>--</span><span>Folder</span></div>
+    <div class="row" style="--d:1"><span class="nm"><span class="tw"><svg viewBox="0 0 7 7"><path d="M1.5.6 5.6 3.5 1.5 6.4Z" fill="currentColor"/></svg></span><svg class="ico"><use href="#s-folder"/></svg><span class="t">Tests</span></span><span>Yesterday at 5:05 PM</span><span>--</span><span>Folder</span></div>
+    <div class="row" style="--d:1"><span class="nm"><span class="tw"></span><svg class="ico" viewBox="0 0 17 17"><use href="#s-doc"/><rect x="5.6" y="7" width="6" height="6" rx="1.4" fill="#F2733A"/><path d="M10.4 11.6c.4-.8.1-1.9-.8-2.7.4.7.5 1.4.2 1.9-.7-.5-1.7-1.3-2.4-2.1.5.7 1 1.3 1.6 1.8-.6-.3-1.4-1-1.9-1.4.6.9 1.6 1.9 2.3 2.3-.7.4-1.7.3-2.4-.2.6.8 1.8 1.2 2.7.9.4-.1.6-.1.9.2 0-.3 0-.5-.2-.7z" fill="#fff"/></svg><span class="t">Package.swift</span></span><span>Oct 8, 2026 at 2:20 PM</span><span>1 KB</span><span>Swift Source</span></div>
+    <div class="row" style="--d:1"><span class="nm"><span class="tw"></span><svg class="ico" viewBox="0 0 17 17"><use href="#s-doc"/><path d="M5.6 12.4V8.2l1.6 2 1.6-2v4.2M10.6 8.2v4M9.4 10.8l1.2 1.4 1.2-1.4" stroke="#55555A" stroke-width=".9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="t">README.md</span></span><span>Oct 8, 2026 at 2:31 PM</span><span>2 KB</span><span>Markdown Document</span></div>
+    <div class="row"><span class="nm"><span class="tw"><svg viewBox="0 0 7 7"><path d="M1.5.6 5.6 3.5 1.5 6.4Z" fill="currentColor"/></svg></span><svg class="ico"><use href="#s-folder"/></svg><span class="t">Kyoto trip</span><span class="tag" style="background:#32D74B"></span></span><span>Yesterday at 9:16 PM</span><span>--</span><span>Folder</span></div>
+    <div class="row"><span class="nm"><span class="tw"><svg viewBox="0 0 7 7"><path d="M1.5.6 5.6 3.5 1.5 6.4Z" fill="currentColor"/></svg></span><svg class="ico"><use href="#s-folder"/></svg><span class="t">Photo book 2026</span><span class="tag" style="background:#FF5F57"></span></span><span>Oct 3, 2026 at 6:02 PM</span><span>--</span><span>Folder</span></div>
+    <div class="row"><span class="nm"><span class="tw"><svg viewBox="0 0 7 7"><path d="M1.5.6 5.6 3.5 1.5 6.4Z" fill="currentColor"/></svg></span><svg class="ico"><use href="#s-folder"/></svg><span class="t">Podcast</span></span><span>Sep 28, 2026 at 8:45 PM</span><span>--</span><span>Folder</span></div>
+    <div class="row"><span class="nm"><span class="tw"></span><svg class="ico" viewBox="0 0 17 17"><use href="#s-doc"/><rect x="5" y="7" width="7.4" height="6" rx=".8" fill="#BFE0F4"/><path d="M5 13 7.4 10.4 9 11.8 10.4 10.6 12.4 13Z" fill="#5E9A4E"/><circle cx="10.6" cy="8.6" r=".9" fill="#FFC24D"/></svg><span class="t">Moodboard.png</span></span><span>Sep 26, 2026 at 10:12 AM</span><span>4.2 MB</span><span>PNG image</span></div>
+    <div class="row"><span class="nm"><span class="tw"></span><svg class="ico" viewBox="0 0 17 17"><use href="#s-doc"/><rect x="4.6" y="9.4" width="8.2" height="3.8" rx=".9" fill="#E5483B"/><text x="8.7" y="12.25" text-anchor="middle" font-family="-apple-system, system-ui" font-size="2.9" font-weight="800" fill="#fff">PDF</text></svg><span class="t">Studio quote.pdf</span></span><span>Sep 21, 2026 at 3:30 PM</span><span>186 KB</span><span>PDF document</span></div>
+    <div class="row"><span class="nm"><span class="tw"></span><svg class="ico" viewBox="0 0 17 17"><use href="#s-doc"/><path d="M5.4 6.6h5M5.4 8.4h6M5.4 10.2h4.4M5.4 12h5.4" stroke="#A1A1A6" stroke-width=".8" stroke-linecap="round"/></svg><span class="t">Ideas.txt</span></span><span>Sep 14, 2026 at 11:05 PM</span><span>3 KB</span><span>Plain Text Document</span></div>
+    <div class="row"><span class="nm"><span class="tw"><svg viewBox="0 0 7 7"><path d="M1.5.6 5.6 3.5 1.5 6.4Z" fill="currentColor"/></svg></span><svg class="ico"><use href="#s-folder"/></svg><span class="t">Website 2025</span></span><span>Dec 12, 2025 at 4:48 PM</span><span>--</span><span>Folder</span></div>
+    <div class="row blank"></div>
+    <div class="row blank"></div>
+    <div class="row blank"></div>
+    <div class="row blank"></div>
+  </div>
+</main>
+
+<footer class="status"><span data-v="downloads">15 items, 214.3 GB available</span><span data-v="projects">9 items, 214.3 GB available</span></footer>
+
+</body>
+</html>

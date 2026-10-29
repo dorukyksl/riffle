@@ -1,0 +1,71 @@
+/* Shared look for the mock windows: macOS 26 chrome and system fonts.
+   Each page sets --w/--h (its exact CSS size) and its own background; mock.js picks the variant. */
+
+:root {
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --label: #1D1D1F;
+  --label-2: #6E6E73;
+  --label-3: #8E8E93;
+  --hair: #E5E5EA;
+  --accent: #0A7AFF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { overflow: hidden; }
+
+body {
+  position: relative;
+  width: var(--w);
+  height: var(--h);
+  font-family: var(--font);
+  color: var(--label);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Window buttons */
+.lights { position: absolute; left: 20px; top: 20px; display: flex; gap: 8px; z-index: 20; }
+.lights i { width: 12px; height: 12px; border-radius: 50%; background: #FF5F57; box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.14); }
+.lights i:nth-child(2) { background: #FEBC2E; }
+.lights i:nth-child(3) { background: #28C840; }
+
+/* Glyphs drawn from the sprite in mock.js: <svg class="g"><use href="#g-search"/></svg> */
+.g { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.g.fill { fill: currentColor; stroke: none; }
+
+/* Liquid Glass toolbar capsules */
+.cap {
+  display: inline-flex; align-items: center; justify-content: center; gap: 15px;
+  height: 30px; min-width: 30px; padding: 0 8px; border-radius: 15px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.09), 0 1px 3px rgba(0, 0, 0, 0.07), inset 0 0.5px 0 rgba(255, 255, 255, 0.9);
+  color: #45454A;
+  font-size: 13px; font-weight: 500;
+}
+.dark .cap {
+  background: rgba(255, 255, 255, 0.075);
+  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.11), 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 0.5px 0 rgba(255, 255, 255, 0.08);
+  color: #C9C9CE;
+}
+
+/* Floating, translucent sidebar (Finder, Mail, Notes, Music) */
+.sidebar {
+  position: absolute; left: 8px; top: 8px; bottom: 8px; width: var(--sbw, 160px);
+  border-radius: 16px; padding: 46px 8px 8px;
+  background: linear-gradient(170deg, rgba(240, 241, 246, 0.97) 0%, rgba(234, 235, 241, 0.97) 55%, rgba(238, 236, 240, 0.97) 100%);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 6px 18px rgba(0, 0, 0, 0.07), inset 0 0.5px 0 rgba(255, 255, 255, 0.85);
+  overflow: hidden; z-index: 5;
+}
+.sb-head { font-size: 11px; font-weight: 600; color: #8C8C92; padding: 12px 8px 5px; letter-spacing: 0.1px; }
+.sb-head:first-child { padding-top: 6px; }
+.sb-item {
+  display: flex; align-items: center; gap: 7px; height: 26px; padding: 0 8px;
+  border-radius: 8px; font-size: 13px; color: #262628; white-space: nowrap;
+}
+.sb-item .g { width: 16px; height: 16px; color: var(--accent); }
+.sb-item .count { margin-left: auto; font-size: 12px; color: #8C8C92; font-variant-numeric: tabular-nums; }
+.sb-item.sel { background: rgba(0, 0, 0, 0.075); font-weight: 500; }
+
+.hairline { height: 0.5px; background: var(--hair); }

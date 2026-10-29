@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" data-variants="build">
+<head>
+<meta charset="utf-8">
+<meta name="window-title" data-v="build" content="Build log">
+<title>Terminal</title>
+<link rel="stylesheet" href="shared.css">
+<script src="mock.js" defer></script>
+<style>
+  body { --w: 700px; --h: 483px; background: #1E1E1E; color: #D4D4D6; }
+  .titlebar {
+    position: absolute; left: 0; right: 0; top: 0; height: 38px;
+    background: linear-gradient(#323234, #2B2B2D);
+    border-bottom: 0.5px solid #121213;
+    box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.07);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-size: 12.5px; font-weight: 600; color: #C9C9CD; letter-spacing: -0.05px;
+  }
+  .titlebar .lights { top: 13px; }
+  .titlebar svg { width: 14px; height: 12px; }
+  pre {
+    position: absolute; left: 0; right: 0; top: 38px; bottom: 0; padding: 10px 12px 0;
+    font-family: var(--mono); font-size: 12px; line-height: 16px; white-space: pre; overflow: hidden;
+    color: #D4D4D6;
+  }
+  .u { color: #5FD47A; font-weight: 600; }   /* user@host */
+  .d { color: #5CC8F0; font-weight: 600; }   /* directory */
+  .c { color: #F5F5F7; font-weight: 600; }   /* typed command */
+  .n { color: #8B8B91; }                     /* [n/m] */
+  .yb { color: #E8C468; font-weight: 700; }  /* warnings */
+  .g { color: #5FD47A; }
+  .gb { color: #5FD47A; font-weight: 700; }
+  .b { font-weight: 700; color: #F0F0F2; }
+  .dim { color: #9A9AA0; }
+  .cursor { display: inline-block; width: 7.2px; height: 15px; vertical-align: -3px; background: #D9D9DC; }
+</style>
+</head>
+<body>
+
+<header class="titlebar">
+  <div class="lights"><i></i><i></i><i></i></div>
+  <svg viewBox="0 0 14 12"><path d="M1 2.2C1 1.5 1.5 1 2.2 1h3l1.3 1.4h5.3c.7 0 1.2.5 1.2 1.2v6.2c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="#6CB2F0"/><path d="M1 4h12v5.8c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="#8AC6F7"/></svg>
+  <span>Build log</span>
+</header>
+
+<pre><span class="dim">Last login: Mon Oct 12 09:58:14 on ttys002</span>
+<span class="u">maya@studio</span> <span class="d">~</span> % <span class="c">cd Projects/sketchpad</span>
+<span class="u">maya@studio</span> <span class="d">sketchpad</span> % <span class="c">swift build -c release</span>
+Building for production...
+<span class="n">[1/9]</span> Write sources
+<span class="n">[2/9]</span> Compiling Sketchpad SketchpadApp.swift
+<span class="n">[3/9]</span> Compiling Sketchpad Sketchpad.swift
+<span class="n">[4/9]</span> Compiling Sketchpad Stroke.swift
+<span class="n">[5/9]</span> Compiling Sketchpad Palette.swift
+<span class="b">Sources/Sketchpad/Palette.swift:18:13:</span> <span class="yb">warning:</span> variable 'swatch' was never mutated
+<span class="n">[6/9]</span> Compiling Sketchpad CanvasStore.swift
+<span class="n">[7/9]</span> Emitting module Sketchpad
+<span class="n">[8/9]</span> Linking Sketchpad
+<span class="n">[9/9]</span> Applying Sketchpad
+<span class="gb">Build complete!</span> <span class="dim">(12.48s)</span>
+<span class="u">maya@studio</span> <span class="d">sketchpad</span> % <span class="c">swift test</span>
+Building for debugging...
+<span class="n">[22/22]</span> Linking SketchpadPackageTests
+<span class="gb">Build complete!</span> <span class="dim">(6.31s)</span>
+<span class="dim">◇</span> Test run started.
+<span class="g">✔</span> Suite "Strokes" passed after 0.021 seconds.
+<span class="g">✔</span> Suite "Palette" passed after 0.008 seconds.
+<span class="g">✔</span> Suite "Undo history" passed after 0.034 seconds.
+<span class="g">✔</span> Test run with 24 tests in 6 suites <span class="gb">passed</span> after 0.392 seconds.
+<span class="u">maya@studio</span> <span class="d">sketchpad</span> % <span class="cursor"></span></pre>
+
+</body>
+</html>

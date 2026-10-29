@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Riffle: a window switcher for macOS</title>
+<meta name="description" content="Riffle is a free window switcher for macOS. Hold Option and press Tab to see every window on every desktop, with live previews, then let go to switch.">
+<meta name="theme-color" content="#24103f">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Riffle: a window switcher for macOS">
+<meta property="og:description" content="A free window switcher for macOS. Hold Option and press Tab to see every window on every desktop, then let go to switch.">
+<link rel="canonical" href="https://appriffle.com/">
+<meta property="og:url" content="https://appriffle.com/">
+<meta property="og:image" content="https://appriffle.com/img/social.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/icon-64.png" type="image/png">
+<link rel="apple-touch-icon" href="img/icon-256.png">
+<link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="img/logo/card-front.webp" as="image" type="image/webp">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Phosphor Icons (MIT), bold weight: icons/LICENSE-phosphor.txt -->
+    <symbol id="i-download" viewBox="0 0 256 256" fill="currentColor"><path d="M228,144v64a12,12,0,0,1-12,12H40a12,12,0,0,1-12-12V144a12,12,0,0,1,24,0v52H204V144a12,12,0,0,1,24,0Zm-108.49,8.49a12,12,0,0,0,17,0l40-40a12,12,0,0,0-17-17L140,115V32a12,12,0,0,0-24,0v83L96.49,95.51a12,12,0,0,0-17,17Z"/></symbol>
+    <symbol id="i-cards" viewBox="0 0 256 256" fill="currentColor"><path d="M180,72H36A20,20,0,0,0,16,92V204a20,20,0,0,0,20,20H180a20,20,0,0,0,20-20V92A20,20,0,0,0,180,72Zm-4,128H40V96H176ZM240,52V176a12,12,0,0,1-24,0V56H64a12,12,0,0,1,0-24H220A20,20,0,0,1,240,52Z"/></symbol>
+    <symbol id="i-min" viewBox="0 0 256 256" fill="currentColor"><path d="M208,28H48A20,20,0,0,0,28,48V208a20,20,0,0,0,20,20H208a20,20,0,0,0,20-20V48A20,20,0,0,0,208,28Zm-4,176H52V52H204ZM87.51,144.49a12,12,0,1,1,17-17L116,139V88a12,12,0,0,1,24,0v51l11.51-11.52a12,12,0,1,1,17,17l-32,32a12,12,0,0,1-17,0Z"/></symbol>
+    <symbol id="i-hidden" viewBox="0 0 256 256" fill="currentColor"><path d="M56.88,31.93A12,12,0,1,0,39.12,48.07l16,17.65C20.67,88.66,5.72,121.58,5,123.13a12.08,12.08,0,0,0,0,9.75c.37.82,9.13,20.26,28.49,39.61C59.37,198.34,92,212,128,212a131.34,131.34,0,0,0,51-10l20.09,22.1a12,12,0,0,0,17.76-16.14ZM128,188c-29.59,0-55.47-10.73-76.91-31.88A130.69,130.69,0,0,1,29.52,128c5.27-9.31,18.79-29.9,42-44.29l90.09,99.11A109.33,109.33,0,0,1,128,188Zm123-55.12c-.36.81-9,20-28,39.16a12,12,0,1,1-17-16.9A130.48,130.48,0,0,0,226.48,128a130.36,130.36,0,0,0-21.57-28.12C183.46,78.73,157.59,68,128,68c-3.35,0-6.7.14-10,.42a12,12,0,1,1-2-23.91c3.93-.34,8-.51,12-.51,36,0,68.63,13.67,94.49,39.52,19.35,19.35,28.11,38.8,28.48,39.61A12.08,12.08,0,0,1,251,132.88Z"/></symbol>
+    <symbol id="i-full" viewBox="0 0 256 256" fill="currentColor"><path d="M220,48V96a12,12,0,0,1-24,0V77l-39.51,39.52a12,12,0,0,1-17-17L179,60H160a12,12,0,0,1,0-24h48A12,12,0,0,1,220,48ZM99.51,139.51,60,179V160a12,12,0,0,0-24,0v48a12,12,0,0,0,12,12H96a12,12,0,0,0,0-24H77l39.52-39.51a12,12,0,0,0-17-17Z"/></symbol>
+    <symbol id="i-space" viewBox="0 0 256 256" fill="currentColor"><path d="M180,64H40A12,12,0,0,0,28,76V216a12,12,0,0,0,12,12H180a12,12,0,0,0,12-12V76A12,12,0,0,0,180,64ZM168,204H52V88H168ZM228,40V180a12,12,0,0,1-24,0V52H76a12,12,0,0,1,0-24H216A12,12,0,0,1,228,40Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 256 256" fill="currentColor"><path d="M232.49,215.51,185,168a92.12,92.12,0,1,0-17,17l47.53,47.54a12,12,0,0,0,17-17ZM44,112a68,68,0,1,1,68,68A68.07,68.07,0,0,1,44,112Z"/></symbol>
+    <symbol id="i-lightning" viewBox="0 0 256 256" fill="currentColor"><path d="M219.71,117.38a12,12,0,0,0-7.25-8.52L161.28,88.39l10.59-70.61a12,12,0,0,0-20.64-10l-112,120a12,12,0,0,0,4.31,19.33l51.18,20.47L84.13,238.22a12,12,0,0,0,20.64,10l112-120A12,12,0,0,0,219.71,117.38ZM113.6,203.55l6.27-41.77a12,12,0,0,0-7.41-12.92L68.74,131.37,142.4,52.45l-6.27,41.77a12,12,0,0,0,7.41,12.92l43.72,17.49Z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 256 256" fill="currentColor"><path d="M208,76H180V56A52,52,0,0,0,76,56V76H48A20,20,0,0,0,28,96V208a20,20,0,0,0,20,20H208a20,20,0,0,0,20-20V96A20,20,0,0,0,208,76ZM100,56a28,28,0,0,1,56,0V76H100ZM204,204H52V100H204Z"/></symbol>
+    <symbol id="i-translate" viewBox="0 0 256 256" fill="currentColor"><path d="M250.73,210.63l-56-112a12,12,0,0,0-21.46,0l-20.52,41A84.2,84.2,0,0,1,114,126.22,107.48,107.48,0,0,0,139.33,68H160a12,12,0,0,0,0-24H108V32a12,12,0,0,0-24,0V44H32a12,12,0,0,0,0,24h83.13A83.69,83.69,0,0,1,96,110.35,84,84,0,0,1,83.6,91a12,12,0,1,0-21.81,10A107.55,107.55,0,0,0,78,126.24,83.54,83.54,0,0,1,32,140a12,12,0,0,0,0,24,107.47,107.47,0,0,0,64-21.07,108.4,108.4,0,0,0,45.39,19.44l-24.13,48.26a12,12,0,1,0,21.46,10.73L151.41,196h65.17l12.68,25.36a12,12,0,1,0,21.47-10.73ZM163.41,172,184,130.83,204.58,172Z"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#top" aria-label="Riffle, back to the top">
+      <img src="img/icon-256.png" alt="" width="42" height="42">
+      <span>Riffle</span>
+    </a>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#try">Try it</a>
+      <a href="#layouts">Layouts</a>
+      <a href="help.html">Help</a>
+    </nav>
+    <a class="btn btn--primary btn--small" href="download/Riffle.dmg" download>Download</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section id="top" class="hero">
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <div class="hero__mark">
+          <div class="logo is-stacked" data-logo role="img" aria-label="The Riffle app icon: a hand of windows fanned out like cards, the front one named Riffle">
+            <img class="logo__part" src="img/logo/plate.webp" alt="" width="512" height="512">
+            <img class="logo__part logo__card logo__card--back" src="img/logo/card-back.webp" alt="" width="512" height="512">
+            <img class="logo__part logo__card logo__card--middle" src="img/logo/card-middle.webp" alt="" width="512" height="512">
+            <img class="logo__part logo__card logo__card--front" src="img/logo/card-front.webp" alt="" width="512" height="512">
+            <img class="logo__part logo__arrow" src="img/logo/arrow.webp" alt="" width="512" height="512">
+          </div>
+          <h1 class="hero__title">Riffle through<br> every window.</h1>
+        </div>
+        <p class="hero__lede">A free window switcher for macOS. Hold <kbd>⌥</kbd> and press <kbd>Tab</kbd> to see every window on every desktop, with a live preview, then let go to switch.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="download/Riffle.dmg" download><svg aria-hidden="true"><use href="#i-download"/></svg>Download Riffle</a>
+          <a class="btn btn--glass" href="#try">Try it here</a>
+        </div>
+      </div>
+      <div class="hero__show" data-hero-show aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="try" aria-labelledby="try-title" data-try>
+    <span id="try" class="try__anchor" aria-hidden="true"></span>
+    <span class="try__opened" data-opened aria-hidden="true"></span>
+    <div class="try__stage">
+      <div class="section-head try__head">
+        <h2 class="title" id="try-title">Try it right here.</h2>
+        <p>This MacBook has windows on three desktops, one in full screen and one in the Dock. Riffle reaches every one.</p>
+      </div>
+      <div class="laptop" data-laptop>
+        <div class="laptop__shadow" aria-hidden="true"></div>
+        <div class="laptop__body">
+          <div class="laptop__base" aria-hidden="true">
+            <div class="laptop__keyboard" data-keyboard></div>
+            <span class="laptop__speaker laptop__speaker--left"></span>
+            <span class="laptop__speaker laptop__speaker--right"></span>
+            <span class="laptop__pad"></span>
+            <span class="laptop__lip"></span>
+            <span class="laptop__turn laptop__turn--front-left"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="laptop__turn laptop__turn--front-right"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+          <span class="laptop__hinge" aria-hidden="true"></span>
+          <div class="laptop__lid">
+            <div class="laptop__back" aria-hidden="true"><span class="laptop__sheen"></span></div>
+            <span class="laptop__rim" aria-hidden="true"></span>
+            <span class="laptop__turn laptop__turn--top-left" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="laptop__turn laptop__turn--top-right" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <div class="laptop__face">
+              <div class="mac" data-mac>
+                <div class="mac__screen" data-screen>
+                  <div class="mac__bar" data-menubar>
+                    <span class="mac__app" data-front-app>Safari</span>
+                    <span class="mac__menus" aria-hidden="true"><span>File</span><span>Edit</span><span>View</span><span>Window</span><span>Help</span></span>
+                    <button type="button" class="mac__extra" data-open-switcher aria-label="Riffle: show windows"><svg aria-hidden="true"><use href="#i-cards"/></svg></button>
+                  </div>
+                  <div class="mac__spaces" data-spaces>
+                    <div class="mac__space" data-space="1"></div>
+                    <div class="mac__space" data-space="2"></div>
+                    <div class="mac__space" data-space="3"></div>
+                  </div>
+                  <div class="mac__dock" data-dock aria-hidden="true"></div>
+                </div>
+                <div class="mac__overlay" data-overlay hidden></div>
+                <span class="laptop__dark" aria-hidden="true"></span>
+              </div>
+              <span class="laptop__notch" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="keys" data-keys>
+        <p class="keys__say" data-say aria-live="polite">Hold <kbd>⌥</kbd> on your keyboard and click <kbd>tab</kbd> below.</p>
+        <div class="keys__row">
+          <button type="button" class="key key--mod" data-key="mod" aria-label="Option key" aria-pressed="false"><small>⌥</small>option</button>
+          <button type="button" class="key key--tab" data-key="tab" aria-label="Tab key: open Riffle, then move the selection"><small>⇥</small>tab</button>
+          <button type="button" class="keys__reset" data-reset>Start over</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="layouts" class="layouts" aria-labelledby="layouts-title">
+    <div class="section-head">
+      <h2 class="title" id="layouts-title">Five ways to see them.</h2>
+      <p>Pick a layout and try it: point, click or use the arrow keys. The MacBook above follows your pick.</p>
+    </div>
+    <div class="seg" role="tablist" aria-label="Layouts" data-tabs>
+      <button type="button" role="tab" aria-selected="true" data-layout="deck">Deck</button>
+      <button type="button" role="tab" aria-selected="false" data-layout="stage" tabindex="-1">Stage</button>
+      <button type="button" role="tab" aria-selected="false" data-layout="icons" tabindex="-1">Icons</button>
+      <button type="button" role="tab" aria-selected="false" data-layout="titles" tabindex="-1">Titles</button>
+      <button type="button" role="tab" aria-selected="false" data-layout="list" tabindex="-1">List</button>
+    </div>
+    <div class="stage-demo" role="tabpanel" aria-label="The switcher in the chosen layout">
+      <div class="stage-demo__wall" data-layout-demo></div>
+      <p class="stage-demo__caption" data-layout-caption aria-live="polite">Big cards with a live preview of every window. The default.</p>
+    </div>
+  </section>
+
+
+
+
+  <section id="search" class="find" aria-labelledby="find-title">
+    <div class="section-head">
+      <h2 class="title" id="find-title">Type to find it.</h2>
+      <p>Press S in Riffle and type a few letters. A typo, a missing accent or just the initials still find the window.</p>
+    </div>
+    <div class="find__stage">
+      <div class="find__chips" data-find-chips>
+        <button type="button" data-q="lisbn" aria-pressed="false"><b>lisbn</b> a typo</button>
+        <button type="button" data-q="resume" aria-pressed="false"><b>resume</b> no accent</button>
+        <button type="button" data-q="io" aria-pressed="false"><b>io</b> initials</button>
+      </div>
+      <div class="find__panel" data-find></div>
+    </div>
+    <p class="find__say" data-find-say aria-live="polite"></p>
+  </section>
+
+  <section class="yours" aria-labelledby="yours-title">
+    <div class="yours__text">
+      <h2 class="title" id="yours-title">Make it your ⌘&nbsp;Tab.</h2>
+      <p>Riffle starts on ⌥&nbsp;Tab, beside the app switcher you know. Choose ⌘&nbsp;Tab in Settings and Riffle takes its place, then gives it back when it quits.</p>
+      <div class="seg yours__pick" role="radiogroup" aria-label="Riffle's shortcut" data-yours>
+        <button type="button" role="radio" aria-checked="true" data-mod="option">⌥ Tab</button>
+        <button type="button" role="radio" aria-checked="false" data-mod="command" tabindex="-1">⌘ Tab</button>
+      </div>
+    </div>
+    <div class="yours__deck" aria-hidden="true">
+      <span class="bigkey bigkey--mod" data-bigkey><small data-bigkey-symbol>⌥</small><span data-bigkey-name>option</span></span>
+      <span class="bigkey bigkey--tab"><small>⇥</small><span>tab</span></span>
+    </div>
+  </section>
+</main>
+
+<div class="end">
+  <section class="closing" aria-labelledby="closing-title">
+    <img src="img/icon-512.webp" alt="" width="512" height="512" loading="lazy">
+    <h2 class="title" id="closing-title">Ready when you are.</h2>
+    <a class="btn btn--primary" href="download/Riffle.dmg" download><svg aria-hidden="true"><use href="#i-download"/></svg>Download Riffle</a>
+    <p class="closing__fine">Free and <a href="https://github.com/dorukyksl/riffle">open source</a>. macOS 26 or later, tested on macOS 27. Apple silicon and Intel. <a href="help.html">How to install it</a></p>
+    <ul class="facts" aria-label="Also">
+      <li><svg aria-hidden="true"><use href="#i-search"/></svg>Type to find any window</li>
+      <li><svg aria-hidden="true"><use href="#i-lightning"/></svg>Close or minimize from the switcher</li>
+      <li><svg aria-hidden="true"><use href="#i-lock"/></svg>What Riffle sees stays on your Mac</li>
+      <li><svg aria-hidden="true"><use href="#i-translate"/></svg>21 languages and VoiceOver</li>
+    </ul>
+  </section>
+<footer class="footer">
+  <div class="footer__inner">
+    <span>© 2026 Riffle</span>
+    <nav aria-label="Footer"><a href="#try">Try it</a><a href="#layouts">Layouts</a><a href="#search">Search</a><a href="help.html">Help</a><a href="mailto:help@appriffle.com">Contact</a></nav>
+  </div>
+</footer>
+</div>
+
+<script src="site.js"></script>
+</body>
+</html>

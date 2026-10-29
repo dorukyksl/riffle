@@ -1,0 +1,43 @@
+name: Translations
+
+# Separate from CI: it's Python only, so it runs on Linux, and a missing translation doesn't hide whether the code
+# builds and passes its tests.
+on:
+  pull_request:
+    paths:
+      - "Localization/**"
+      - "Sources/**"
+      - "Scripts/l10n.py"
+      - "Tests/L10n/**"
+      - "Scripts/test.sh"
+      - ".github/workflows/l10n.yml"
+  push:
+    branches: [main]
+    paths:
+      - "Localization/**"
+      - "Sources/**"
+      - "Scripts/l10n.py"
+      - "Tests/L10n/**"
+      - "Scripts/test.sh"
+      - ".github/workflows/l10n.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Every string translated
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Check the translations
+        run: ./Scripts/test.sh l10n

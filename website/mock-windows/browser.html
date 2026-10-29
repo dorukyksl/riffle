@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="en" data-variants="lisbon sourdough kyoto">
+<head>
+<meta charset="utf-8">
+<meta name="window-title" data-v="lisbon" content="Lisbon: three days on foot">
+<meta name="window-title" data-v="sourdough" content="Sourdough starter, day 4">
+<meta name="window-title" data-v="kyoto" content="Flights to Kyoto">
+<title>Browser</title>
+<link rel="stylesheet" href="shared.css">
+<script src="mock.js" defer></script>
+<style>
+  body { --w: 700px; --h: 438px; background: #FFFFFF; }
+  html[data-v="kyoto"] body { --h: 528px; }
+
+  /* Safari toolbar */
+  .toolbar {
+    position: absolute; left: 0; right: 0; top: 0; height: 52px;
+    background: linear-gradient(#FAFAFB, #F3F3F5);
+    border-bottom: 0.5px solid #DCDCE1;
+  }
+  .toolbar .cap { position: absolute; top: 11px; }
+  .t-side { left: 86px; gap: 6px; padding: 0 7px 0 8px; }
+  .t-side .g:last-child { width: 11px; height: 11px; color: #8A8A90; }
+  .t-nav { left: 138px; gap: 12px; }
+  .t-nav .g:last-child { color: #B6B6BB; }
+  .t-right { right: 14px; gap: 16px; padding: 0 10px; }
+  .address {
+    position: absolute; top: 11px; left: 226px; width: 248px; height: 30px; border-radius: 15px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.09), 0 1px 3px rgba(0, 0, 0, 0.06);
+    font-size: 13px; color: #1D1D1F; letter-spacing: -0.1px;
+  }
+  .address .g { width: 13px; height: 13px; color: #8A8A90; }
+  .address .g.l { position: absolute; left: 11px; }
+  .address .g.r { position: absolute; right: 11px; }
+
+  /* A magazine-style page (Safari variants) */
+  .page { position: absolute; left: 0; right: 0; top: 52px; bottom: 0; overflow: hidden; }
+  .site {
+    height: 42px; display: flex; align-items: center; gap: 9px; padding: 0 24px;
+    border-bottom: 0.5px solid #EDEDF0;
+  }
+  .logo { width: 24px; height: 24px; border-radius: 7px; flex: none; }
+  .brand { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+  .nav { margin-left: auto; display: flex; align-items: center; gap: 20px; font-size: 13px; color: #48484D; font-weight: 500; }
+  .nav .sub {
+    margin-left: 4px; height: 26px; padding: 0 12px; border-radius: 13px; background: #1D1D1F; color: #fff;
+    display: flex; align-items: center; font-size: 12px; font-weight: 600;
+  }
+  .nav .g { width: 15px; height: 15px; color: #48484D; }
+  .article { padding: 13px 24px 0; }
+  h1 { font-size: 31px; line-height: 1.08; font-weight: 800; letter-spacing: -0.9px; color: #141416; }
+  .dek { margin-top: 6px; font-size: 15px; line-height: 1.3; color: #57575C; letter-spacing: -0.1px; }
+  .byline { margin-top: 9px; display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: #86868B; }
+  .byline b { color: #2C2C2E; font-weight: 600; }
+  .avatar {
+    width: 20px; height: 20px; border-radius: 50%; flex: none; display: grid; place-items: center;
+    color: #fff; font-size: 8.5px; font-weight: 700; letter-spacing: 0.2px;
+  }
+
+  /* Lisbon */
+  .ls .nav .on { color: #1F6FB2; }
+  .ls .avatar { background: linear-gradient(135deg, #6CB8E6, #3A6FC4); }
+  .hero { display: block; margin-top: 11px; width: 652px; height: 146px; border-radius: 12px; }
+  .cards { margin-top: 11px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .card {
+    display: flex; gap: 10px; align-items: center; padding: 8px 10px 8px 8px; border-radius: 12px;
+    background: #F2F5F8;
+  }
+  .card svg { width: 48px; height: 48px; flex: none; border-radius: 10px; }
+  .card b { display: block; font-size: 13.5px; letter-spacing: -0.2px; }
+  .card b i { font-style: normal; color: #1F6FB2; margin-right: 1px; }
+  .card span { display: block; margin-top: 2px; font-size: 11.5px; line-height: 1.3; color: #6E6E73; }
+
+  /* Sourdough */
+  .sd .nav .on { color: #B4602A; }
+  .sd .avatar { background: linear-gradient(135deg, #F2B66B, #C46A3A); }
+  .recipe { margin-top: 12px; display: flex; gap: 20px; }
+  .recipe .photo { width: 300px; height: 222px; flex: none; border-radius: 12px; }
+  .steps { flex: 1; min-width: 0; }
+  .days { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: #8E8E93; letter-spacing: 0.2px; }
+  .days i {
+    width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-style: normal;
+    font-size: 10.5px; font-weight: 700; color: #A1A1A6; box-shadow: inset 0 0 0 1px #DEDEE3;
+  }
+  .days i.done { background: #F6E3D2; color: #B4602A; box-shadow: none; }
+  .days i.now { background: #C9692F; color: #fff; box-shadow: 0 0 0 3px #F6E3D2; }
+  .days .lbl { margin-right: 2px; }
+  .steps h3 { margin-top: 10px; display: flex; align-items: baseline; font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+  .steps h3 span { margin-left: auto; font-size: 11.5px; font-weight: 500; color: #8E8E93; letter-spacing: 0; }
+  .ingr { margin-top: 3px; list-style: none; }
+  .ingr li { display: flex; height: 20px; align-items: center; font-size: 12.5px; color: #2C2C2E; border-bottom: 0.5px dashed #DCD3CA; }
+  .ingr li b { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .method { margin-top: 4px; list-style: none; counter-reset: step; }
+  .method li { display: flex; gap: 8px; align-items: center; height: 19px; font-size: 12.5px; color: #2C2C2E; white-space: nowrap; }
+  .method li::before {
+    counter-increment: step; content: counter(step); width: 16px; height: 16px; border-radius: 50%; flex: none;
+    display: grid; place-items: center; background: #F6E3D2; color: #B4602A; font-size: 10px; font-weight: 700;
+  }
+
+  /* Chrome-like browser: tab strip with the window buttons, then the toolbar with the address field */
+  .strip { position: absolute; left: 0; right: 0; top: 0; height: 40px; background: #DEE3EA; }
+  .strip .lights { top: 14px; left: 14px; }
+  .tabs { position: absolute; left: 82px; top: 6px; bottom: 0; display: flex; align-items: stretch; }
+  .tab {
+    position: relative; width: 182px; padding: 0 8px 0 12px; display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: #474A50; white-space: nowrap;
+  }
+  .tab .t { flex: 1; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); }
+  .tab .fav { width: 16px; height: 16px; flex: none; border-radius: 4px; }
+  .tab .x { width: 16px; height: 16px; flex: none; display: grid; place-items: center; color: #5F6368; }
+  .tab .x .g { width: 11px; height: 11px; stroke-width: 1.7; }
+  .tab.on { background: #FFFFFF; border-radius: 10px 10px 0 0; color: #1F1F1F; }
+  .tab.on::before, .tab.on::after { content: ""; position: absolute; bottom: 0; width: 10px; height: 10px; }
+  .tab.on::before { left: -10px; background: radial-gradient(circle at 0 0, transparent 9.6px, #FFFFFF 10.2px); }
+  .tab.on::after { right: -10px; background: radial-gradient(circle at 100% 0, transparent 9.6px, #FFFFFF 10.2px); }
+  .tab + .tab:not(.on)::before { content: ""; position: absolute; left: 0; top: 9px; bottom: 9px; width: 1px; background: #A9B0B9; }
+  .tab.on + .tab::before { display: none; }
+  .newtab { width: 28px; display: grid; place-items: center; color: #474A50; margin-left: 4px; }
+  .newtab .g { width: 14px; height: 14px; stroke-width: 1.7; }
+  .bar {
+    position: absolute; left: 0; right: 0; top: 40px; height: 40px; background: #FFFFFF;
+    display: flex; align-items: center; gap: 2px; padding: 0 8px; border-bottom: 0.5px solid #E1E3E6;
+  }
+  .btn { width: 30px; height: 30px; display: grid; place-items: center; color: #474A50; flex: none; }
+  .btn .g { width: 16px; height: 16px; stroke-width: 1.6; }
+  .btn.off { color: #B8BBC0; }
+  .omni {
+    flex: 1; height: 32px; margin: 0 6px; border-radius: 16px; background: #EDF0F4;
+    display: flex; align-items: center; gap: 8px; padding: 0 10px 0 5px; font-size: 13px; color: #1F1F1F;
+  }
+  .omni .chip { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: #FFFFFF; color: #474A50; }
+  .omni .chip .g { width: 14px; height: 14px; }
+  .omni .url { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); }
+  .omni .path { color: #6B6F75; }
+  .omni .star { flex: none; width: 15px; height: 15px; color: #474A50; }
+  .me {
+    width: 24px; height: 24px; border-radius: 50%; margin: 0 4px; flex: none; display: grid; place-items: center;
+    background: linear-gradient(135deg, #8FB8F9, #5E8FE8); color: #fff; font-size: 11px; font-weight: 700;
+  }
+
+  /* The flight search page */
+  .ky { top: 80.5px; }
+  .ky-nav { height: 40px; display: flex; align-items: center; gap: 9px; padding: 0 24px; border-bottom: 0.5px solid #ECECF0; }
+  .ky-links { display: flex; align-self: stretch; gap: 20px; margin-left: 24px; font-size: 13px; font-weight: 500; color: #55555A; }
+  .ky-links span { position: relative; display: flex; align-items: center; gap: 6px; }
+  .ky-links .g { width: 14px; height: 14px; }
+  .ky-links .on { color: #1F5BD8; }
+  .ky-links .on::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 1px; background: #1F5BD8; }
+  .ky-right { margin-left: auto; display: flex; align-items: center; gap: 14px; font-size: 12.5px; font-weight: 500; color: #55555A; }
+  .ky-signin { height: 27px; padding: 0 13px; border-radius: 14px; box-shadow: inset 0 0 0 1px #D5D5DA; color: #1D1D1F; font-weight: 600; display: flex; align-items: center; }
+  .ky-hero { position: relative; height: 112px; overflow: hidden; }
+  .ky-hero svg { position: absolute; left: 0; top: 0; width: 700px; height: 112px; }
+  .ky-hero h1 { position: absolute; left: 24px; top: 17px; font-size: 26px; color: #FFFFFF; letter-spacing: -0.7px; text-shadow: 0 1px 10px rgba(40, 18, 60, 0.3); }
+  .ky-hero p { position: absolute; left: 24px; top: 51px; font-size: 12.5px; color: rgba(255, 255, 255, 0.94); text-shadow: 0 1px 6px rgba(40, 18, 60, 0.35); }
+  .ky-search {
+    position: relative; z-index: 2; margin: -28px 24px 0; height: 54px; border-radius: 14px; background: #FFFFFF;
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 6px 18px rgba(36, 22, 70, 0.16);
+    display: flex; align-items: center; padding: 0 7px 0 4px;
+  }
+  .fld { display: flex; align-items: center; gap: 8px; padding: 0 11px; height: 34px; }
+  .fld + .fld { border-left: 0.5px solid #E1E1E6; }
+  .fld > .g { width: 15px; height: 15px; color: #8A8A90; }
+  .fld small { display: block; font-size: 10px; color: #8A8A8F; line-height: 1.2; }
+  .fld b { display: block; font-size: 12.5px; font-weight: 600; white-space: nowrap; line-height: 1.3; }
+  .swap { width: 24px; height: 24px; flex: none; border-radius: 50%; display: grid; place-items: center; box-shadow: inset 0 0 0 1px #DCDCE2; color: #55555A; background: #fff; margin-left: 2px; }
+  .swap .g { width: 12px; height: 12px; }
+  .fld.swapped { border-left: 0; padding-left: 10px; }
+  .go { margin-left: auto; height: 40px; padding: 0 16px; border-radius: 10px; background: #1F5BD8; color: #FFFFFF; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 7px; }
+  .go .g { width: 14px; height: 14px; stroke-width: 1.8; }
+  .sort { margin: 14px 24px 0; display: grid; grid-template-columns: repeat(3, 1fr); border-radius: 11px; box-shadow: inset 0 0 0 1px #E2E2E7; overflow: hidden; }
+  .sort div { padding: 7px 14px 8px; }
+  .sort div + div { box-shadow: inset 1px 0 0 #E2E2E7; }
+  .sort b { display: block; font-size: 12.5px; font-weight: 700; }
+  .sort span { display: block; margin-top: 1px; font-size: 11.5px; color: #6E6E73; font-variant-numeric: tabular-nums; }
+  .sort .on { background: #EEF3FE; box-shadow: inset 0 -2px 0 #1F5BD8; }
+  .sort .on b { color: #1F5BD8; }
+  .results { margin: 10px 24px 0; display: grid; gap: 8px; }
+  .flight {
+    height: 58px; border-radius: 12px; box-shadow: inset 0 0 0 1px #E4E4E9; padding: 0 12px 0 14px;
+    display: grid; grid-template-columns: 30px 172px 92px 1fr auto auto; align-items: center; column-gap: 14px;
+  }
+  .flight > svg { width: 30px; height: 30px; border-radius: 8px; }
+  .flight b { display: block; font-size: 14px; font-weight: 650; letter-spacing: -0.2px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .flight b sup { font-size: 9.5px; font-weight: 600; color: #C2410C; margin-left: 2px; vertical-align: 5px; }
+  .flight span { display: block; margin-top: 1px; font-size: 11.5px; color: #77777C; white-space: nowrap; }
+  .flight .stop b { font-size: 12.5px; color: #B45309; }
+  .flight .stop.direct b { color: #15803D; }
+  .flight .price { text-align: right; }
+  .flight .price b { font-size: 17px; font-weight: 750; }
+  .flight .sel { height: 30px; padding: 0 14px; border-radius: 15px; background: #EEF3FE; color: #1F5BD8; font-size: 12.5px; font-weight: 650; display: flex; align-items: center; }
+</style>
+</head>
+<body>
+
+<!-- Safari -->
+<header class="toolbar" data-v="lisbon sourdough">
+  <div class="lights"><i></i><i></i><i></i></div>
+  <div class="cap t-side"><svg class="g"><use href="#g-sidebar"/></svg><svg class="g"><use href="#g-chev-d"/></svg></div>
+  <div class="cap t-nav"><svg class="g"><use href="#g-chev-l"/></svg><svg class="g"><use href="#g-chev-r"/></svg></div>
+  <div class="address">
+    <svg class="g l"><use href="#g-page"/></svg>
+    <span data-v="lisbon">slowatlas.com</span><span data-v="sourdough">crumbjournal.com</span>
+    <svg class="g r"><use href="#g-reload"/></svg>
+  </div>
+  <div class="cap t-right"><svg class="g"><use href="#g-share"/></svg><svg class="g"><use href="#g-plus"/></svg><svg class="g"><use href="#g-grid4"/></svg></div>
+</header>
+
+<!-- ============ Lisbon: a travel article ============ -->
+<main class="page ls" data-v="lisbon">
+  <div class="site">
+    <svg class="logo" viewBox="0 0 24 24">
+      <defs><linearGradient id="ls-logo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FB3DA"/><stop offset="1" stop-color="#2459A8"/></linearGradient></defs>
+      <rect width="24" height="24" rx="7" fill="url(#ls-logo)"/>
+      <circle cx="12" cy="12" r="6.6" fill="none" stroke="#fff" stroke-width="1.3" opacity=".55"/>
+      <path d="M12 4.2 13.7 10.3 12 12 10.3 10.3Z" fill="#fff"/>
+      <path d="M12 19.8 10.3 13.7 12 12 13.7 13.7Z" fill="#fff" opacity=".6"/>
+      <circle cx="12" cy="12" r="1.2" fill="#2459A8"/>
+    </svg>
+    <span class="brand">Slow Atlas</span>
+    <nav class="nav">
+      <span class="on">Destinations</span>
+      <span>Food</span>
+      <span>Guides</span>
+      <svg class="g"><use href="#g-search"/></svg>
+      <span class="sub">Subscribe</span>
+    </nav>
+  </div>
+
+  <article class="article">
+    <h1>Lisbon: three days on foot</h1>
+    <p class="dek">Trams, tiles and viewpoints: an unhurried walk through Alfama, Baixa and Belém</p>
+    <div class="byline">
+      <span class="avatar">CM</span>
+      <span><b>Clara Mendes</b></span>
+      <span>· October 9, 2026 · 8 min read</span>
+    </div>
+
+    <!-- Hero: Alfama climbing to the castle, the river and its red bridge, a yellow tram in front -->
+    <svg class="hero" viewBox="0 0 652 146" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="ls-sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#78B3E0"/>
+          <stop offset=".45" stop-color="#ABD2ED"/>
+          <stop offset=".72" stop-color="#E2E6DE"/>
+          <stop offset="1" stop-color="#F6E3C4"/>
+        </linearGradient>
+        <radialGradient id="ls-sun" cx="610" cy="6" r="230" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#FFF7DF" stop-opacity=".95"/>
+          <stop offset=".35" stop-color="#FFF1D2" stop-opacity=".4"/>
+          <stop offset="1" stop-color="#FFF1D2" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="ls-river" x1="0" y1="86" x2="0" y2="124" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#A6CDDF"/>
+          <stop offset=".5" stop-color="#86B4CF"/>
+          <stop offset="1" stop-color="#6596B8"/>
+        </linearGradient>
+        <linearGradient id="ls-hill" x1="0" y1="30" x2="0" y2="124" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#E4CDAA"/>
+          <stop offset="1" stop-color="#CFB28B"/>
+        </linearGradient>
+        <linearGradient id="ls-street" x1="0" y1="121" x2="0" y2="146" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#E2D8CA"/>
+          <stop offset="1" stop-color="#CDBFAC"/>
+        </linearGradient>
+        <linearGradient id="ls-cloud" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+          <stop offset=".3" stop-color="#FFFFFF" stop-opacity=".85"/>
+          <stop offset=".7" stop-color="#FFFFFF" stop-opacity=".85"/>
+          <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="ls-glass" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#5E7088"/>
+          <stop offset="1" stop-color="#3C4B60"/>
+        </linearGradient>
+        <g id="ls-gull"><path d="M-5 0Q-2.5-3.2 0 0Q2.5-3.2 5 0" fill="none" stroke="#4B5566" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+        <g id="ls-pine"><rect x="-.7" y="-1" width="1.4" height="7" fill="#6B5240"/><path d="M-9 0C-9-3.2-4-5.2 0-5.2S9-3.2 9 0C6 1.2-6 1.2-9 0Z" fill="#587443"/><path d="M-7.5-1.6C-5-3.8-1-4.4 2-4" stroke="#7A955F" stroke-width="1" fill="none" stroke-linecap="round"/></g>
+      </defs>
+
+      <rect width="652" height="146" fill="url(#ls-sky)"/>
+      <rect width="652" height="146" fill="url(#ls-sun)"/>
+      <g fill="url(#ls-cloud)" opacity=".75">
+        <rect x="250" y="14" width="140" height="3.5" rx="1.75"/>
+        <rect x="290" y="21" width="84" height="2.5" rx="1.25"/>
+        <rect x="470" y="30" width="110" height="3" rx="1.5"/>
+        <rect x="24" y="12" width="70" height="2.5" rx="1.25"/>
+      </g>
+
+      <!-- the river, and the far bank with the statue on its pedestal -->
+      <rect y="86" width="652" height="40" fill="url(#ls-river)"/>
+      <path d="M330 90C380 87 420 86 470 87S560 83 600 84 640 83 652 82V92H330Z" fill="#AAB8CC"/>
+      <path d="M330 92C390 90 450 91 520 90S610 89 652 88V93H330Z" fill="#9AAAC0"/>
+      <g fill="#94A4BB">
+        <rect x="556.6" y="69" width="5.8" height="17"/>
+        <rect x="554.6" y="67.6" width="9.8" height="1.8"/>
+        <rect x="558.7" y="59.5" width="1.6" height="8.4"/>
+        <rect x="555.5" y="61.2" width="8" height="1.2" rx=".5"/>
+        <circle cx="559.5" cy="58.8" r="1.1"/>
+      </g>
+
+      <!-- the red suspension bridge -->
+      <g id="ls-bridge">
+        <g stroke="#C4452F" stroke-width="1.15" fill="none">
+          <path d="M392 90C418 80 440 68 456 61.5"/>
+          <path d="M456 61.5C494 87 562 87 600 61.5"/>
+          <path d="M600 61.5C620 68 640 76 652 80.5"/>
+        </g>
+        <g id="ls-hangers" stroke="#C4452F" stroke-width=".55" opacity=".75"></g>
+        <g fill="#C4452F">
+          <rect x="452.4" y="60" width="2" height="36"/><rect x="457.6" y="60" width="2" height="36"/>
+          <rect x="452.4" y="60" width="7.2" height="1.6"/><rect x="452.4" y="70" width="7.2" height="1.3"/><rect x="452.4" y="80" width="7.2" height="1.3"/>
+          <rect x="596.4" y="60" width="2" height="36"/><rect x="601.6" y="60" width="2" height="36"/>
+          <rect x="596.4" y="60" width="7.2" height="1.6"/><rect x="596.4" y="70" width="7.2" height="1.3"/><rect x="596.4" y="80" width="7.2" height="1.3"/>
+        </g>
+        <rect x="388" y="89.2" width="264" height="2.6" fill="#B53F2B"/>
+        <rect x="388" y="91.8" width="264" height="1.4" fill="#8C3426" opacity=".85"/>
+        <g fill="#B53F2B" opacity=".9"><rect x="404" y="93" width="2.4" height="5"/><rect x="430" y="93" width="2.4" height="5"/></g>
+      </g>
+
+      <!-- sails and a ferry on the water -->
+      <g>
+        <path d="M498 106h16l-2.4 2.6h-11.6z" fill="#F7F4EE"/>
+        <path d="M506.2 105.4V94.5l6.2 10.9z" fill="#FFFFFF"/><path d="M505.4 105.4V96.5l-4.6 8.9z" fill="#EEF2F6"/>
+        <path d="M612 101h11l-1.6 1.8h-8z" fill="#F7F4EE"/><path d="M617.6 100.6V93.8l3.8 6.8z" fill="#FFFFFF"/>
+        <path d="M528 118h-6l1.8 1.8h3z" fill="#EEF2F6" opacity=".7"/>
+        <g stroke="#E8F3F9" stroke-linecap="round" fill="none" opacity=".8">
+          <path d="M470 99H486M540 103H552M592 109H606M418 113H432M630 104H642M560 116H574M480 119H490" stroke-width="1"/>
+        </g>
+        <path d="M398 113h34l-2 3h-29z" fill="#F6F2EA"/><rect x="404" y="109.6" width="20" height="3.6" rx=".8" fill="#FFFFFF"/>
+        <rect x="406" y="110.6" width="16" height="1.3" fill="#61748C"/><rect x="420" y="107" width="2.4" height="3" fill="#E0A43A"/>
+        <path d="M432 115.5C446 116 456 116.2 470 116" stroke="#F4FAFD" stroke-width=".9" fill="none" opacity=".75"/>
+      </g>
+
+      <!-- the hill: Alfama up to the castle -->
+      <path d="M0 50C40 44 70 37 110 33L212 31C250 36 282 51 312 70S352 92 388 97V146H0Z" fill="url(#ls-hill)"/>
+
+      <g id="ls-town">
+        <use href="#ls-pine" x="104" y="34"/>
+        <use href="#ls-pine" x="221" y="35"/>
+        <use href="#ls-pine" x="236" y="40"/>
+        <!-- the castle on the hilltop -->
+        <g>
+          <path d="M116 36V27.5H210V36Z" fill="#CDB797"/>
+          <g fill="#CDB797">
+            <rect x="117" y="25.2" width="3" height="2.6"/><rect x="123" y="25.2" width="3" height="2.6"/><rect x="141" y="25.2" width="3" height="2.6"/>
+            <rect x="147" y="25.2" width="3" height="2.6"/><rect x="171" y="25.2" width="3" height="2.6"/><rect x="177" y="25.2" width="3" height="2.6"/>
+            <rect x="197" y="25.2" width="3" height="2.6"/><rect x="203" y="25.2" width="3" height="2.6"/><rect x="207" y="25.2" width="3" height="2.6"/>
+          </g>
+          <rect x="128" y="17" width="11" height="19" fill="#D3BE9F"/><rect x="135.6" y="17" width="3.4" height="19" fill="#B9A282"/>
+          <g fill="#D3BE9F"><rect x="128" y="14.6" width="2.6" height="2.6"/><rect x="132.2" y="14.6" width="2.6" height="2.6"/><rect x="136.4" y="14.6" width="2.6" height="2.6"/></g>
+          <rect x="152" y="12.5" width="13" height="23.5" fill="#D8C3A4"/><rect x="161" y="12.5" width="4" height="23.5" fill="#BCA585"/>
+          <g fill="#D8C3A4"><rect x="152" y="10" width="2.8" height="2.7"/><rect x="157.1" y="10" width="2.8" height="2.7"/><rect x="162.2" y="10" width="2.8" height="2.7"/></g>
+          <rect x="185" y="19" width="11" height="17" fill="#D3BE9F"/><rect x="192.6" y="19" width="3.4" height="17" fill="#B9A282"/>
+          <g fill="#D3BE9F"><rect x="185" y="16.6" width="2.6" height="2.6"/><rect x="189.2" y="16.6" width="2.6" height="2.6"/><rect x="193.4" y="16.6" width="2.6" height="2.6"/></g>
+          <g fill="#8E7A63" opacity=".7"><rect x="132.6" y="21" width="1.4" height="3.4" rx=".7"/><rect x="157.2" y="17" width="1.5" height="3.8" rx=".75"/><rect x="189.4" y="23" width="1.4" height="3.4" rx=".7"/></g>
+          <rect x="158.1" y="2.6" width=".8" height="8" fill="#6B5A4A"/>
+          <path d="M158.9 3h2.6v4.2h-2.6z" fill="#2F7D46"/><path d="M161.5 3h4v4.2h-4z" fill="#D63A30"/>
+        </g>
+        <!-- the white dome above the old quarter -->
+        <g>
+          <rect x="34" y="41" width="22" height="11" fill="#EFE8DC"/><rect x="50" y="41" width="6" height="11" fill="#DCD2C2"/>
+          <path d="M32.5 41.4A12.5 10.5 0 0 1 57.5 41.4Z" fill="#F4EFE6"/>
+          <path d="M45 30.9A12.5 10.5 0 0 1 57.5 41.4H51C50.5 36 48.5 32.6 45 30.9Z" fill="#E1D8C9"/>
+          <rect x="43.5" y="26.6" width="3" height="4.6" fill="#EFE8DC"/><path d="M43 26.8A2 1.8 0 0 1 47 26.8Z" fill="#E1D8C9"/>
+          <g fill="#B8A88F" opacity=".7"><rect x="37" y="44" width="1.6" height="3.4" rx=".8"/><rect x="41.5" y="44" width="1.6" height="3.4" rx=".8"/><rect x="46" y="44" width="1.6" height="3.4" rx=".8"/></g>
+        </g>
+        <g data-row="47 62 252 .78"></g>
+        <g data-row="58 6 278 .84"></g>
+        <g data-row="69 0 298 .9"></g>
+        <!-- the cathedral, two square towers and a rose window -->
+        <g>
+          <rect x="263" y="54" width="13" height="28" fill="#EDE3D1"/><rect x="272" y="54" width="4" height="28" fill="#D9CBB3"/>
+          <rect x="289" y="54" width="13" height="28" fill="#EDE3D1"/><rect x="298" y="54" width="4" height="28" fill="#D9CBB3"/>
+          <g fill="#EDE3D1"><rect x="263" y="51.6" width="2.8" height="2.6"/><rect x="268.1" y="51.6" width="2.8" height="2.6"/><rect x="273.2" y="51.6" width="2.8" height="2.6"/>
+            <rect x="289" y="51.6" width="2.8" height="2.6"/><rect x="294.1" y="51.6" width="2.8" height="2.6"/><rect x="299.2" y="51.6" width="2.8" height="2.6"/></g>
+          <rect x="276" y="60" width="13" height="22" fill="#E6DAC5"/>
+          <circle cx="282.5" cy="66" r="3.4" fill="#CDBB9E"/><circle cx="282.5" cy="66" r="1.6" fill="#B7A385"/>
+          <path d="M279.5 82V75.5a3 3 0 0 1 6 0V82Z" fill="#9C8669"/>
+          <g fill="#A99476" opacity=".75"><rect x="267.6" y="59" width="1.6" height="4" rx=".8"/><rect x="293.6" y="59" width="1.6" height="4" rx=".8"/></g>
+        </g>
+        <g data-row="81 0 320 .96 258 304"></g>
+        <g data-row="93 0 342 1.02"></g>
+        <g data-row="105 0 364 1.08"></g>
+        <g data-row="117 0 384 1.16"></g>
+      </g>
+
+      <!-- the street in front, with the tram line -->
+      <rect y="120" width="652" height="2.2" fill="#B9AB97"/>
+      <rect y="122" width="652" height="24" fill="url(#ls-street)"/>
+      <g stroke="#C2B4A1" stroke-width=".6" opacity=".9">
+        <path d="M0 126.5H652M0 131H652M0 141.5H652" stroke-dasharray="3 2.2"/>
+      </g>
+      <g stroke="#8E8173" stroke-width=".9"><path d="M0 137.6H652M0 140.4H652"/></g>
+      <path d="M0 83.6H652" stroke="#3B3531" stroke-width=".6" opacity=".5"/>
+
+      <!-- a lamp post -->
+      <g>
+        <rect x="621.3" y="88" width="2.4" height="50" fill="#2F4033"/>
+        <rect x="619.6" y="134.5" width="5.8" height="4" rx="1" fill="#2F4033"/>
+        <path d="M617.4 80.5h10.2l-1.6 7.5h-7z" fill="#2F4033"/>
+        <path d="M619.2 82h6.6l-1.1 4.6h-4.4z" fill="#F7E7B6"/>
+        <path d="M618 80.6 622.5 76.8 627 80.6Z" fill="#2F4033"/><circle cx="622.5" cy="76" r="1" fill="#2F4033"/>
+      </g>
+
+      <!-- two people walking -->
+      <g>
+        <circle cx="548" cy="122.2" r="2" fill="#5A4A42"/><path d="M545.6 125.2h4.8l.6 8.6h-6z" fill="#3E6BA3"/>
+        <rect x="546" y="133.6" width="1.4" height="5" fill="#3B3A3F"/><rect x="548.6" y="133.6" width="1.4" height="5" fill="#3B3A3F"/>
+        <circle cx="558.5" cy="121.6" r="2" fill="#7A4E3A"/><path d="M556.1 124.6h4.8l1.4 9.6h-7.6z" fill="#D9774E"/>
+        <rect x="556.9" y="134" width="1.3" height="4.6" fill="#3B3A3F"/><rect x="559.2" y="134" width="1.3" height="4.6" fill="#3B3A3F"/>
+      </g>
+
+      <!-- the yellow tram -->
+      <g transform="translate(300 96)">
+        <ellipse cx="50" cy="43.2" rx="54" ry="2.6" fill="#5E5246" opacity=".28"/>
+        <path d="M27 1.6 8.6-12.4" stroke="#3B3531" stroke-width="1"/>
+        <rect x="7.6" y="-13.2" width="3" height="1.6" rx=".6" fill="#3B3531"/>
+        <rect x="16" y="-2.6" width="68" height="3.4" rx="1.4" fill="#C9CDD2"/>
+        <rect x="3" y=".4" width="94" height="5.4" rx="2.4" fill="#DADDE1"/>
+        <rect x="2" y="5" width="96" height="15" rx="2" fill="#F8F1E0"/>
+        <g fill="url(#ls-glass)">
+          <rect x="7" y="7.4" width="9" height="9.6" rx="1.2"/><rect x="19" y="7.4" width="10" height="9.6" rx="1.2"/>
+          <rect x="31.5" y="7.4" width="10" height="9.6" rx="1.2"/><rect x="44" y="7.4" width="10" height="9.6" rx="1.2"/>
+          <rect x="56.5" y="7.4" width="10" height="9.6" rx="1.2"/><rect x="69" y="7.4" width="10" height="9.6" rx="1.2"/>
+          <rect x="81.5" y="7.4" width="10" height="9.6" rx="1.2"/>
+        </g>
+        <g stroke="#FFFFFF" stroke-width="1" opacity=".35"><path d="M22 16.5 27 8M34.5 16.5 39.5 8M47 16.5 52 8M59.5 16.5 64.5 8M72 16.5 77 8M84.5 16.5 89.5 8"/></g>
+        <rect x="2" y="19.6" width="96" height="2.2" fill="#E2A91C"/>
+        <rect x="2" y="21.6" width="96" height="14" rx="1.5" fill="#F6C42C"/>
+        <rect x="2" y="22.4" width="96" height="1.2" fill="#FBDD72" opacity=".9"/>
+        <rect x="8" y="22.4" width="10" height="13" rx="1" fill="#EDB821"/><rect x="8" y="5.6" width="10" height="17" fill="none" stroke="#E8DCC0" stroke-width=".7"/>
+        <rect x="88" y="1.2" width="9" height="3.6" rx=".7" fill="#2E2B28"/>
+        <text x="92.5" y="4.15" text-anchor="middle" font-family="-apple-system, system-ui" font-size="3.2" font-weight="800" fill="#FFE07A">28E</text>
+        <circle cx="96.4" cy="29" r="1.4" fill="#FFF3C2"/>
+        <rect x="1" y="35.4" width="98" height="3" rx="1.2" fill="#3A3633"/>
+        <g fill="#2B2826"><circle cx="22" cy="40" r="3.2"/><circle cx="31" cy="40" r="3.2"/><circle cx="69" cy="40" r="3.2"/><circle cx="78" cy="40" r="3.2"/></g>
+        <g fill="#6E6862"><circle cx="22" cy="40" r="1"/><circle cx="31" cy="40" r="1"/><circle cx="69" cy="40" r="1"/><circle cx="78" cy="40" r="1"/></g>
+      </g>
+
+      <!-- gulls -->
+      <use href="#ls-gull" transform="translate(318 34)"/>
+      <use href="#ls-gull" transform="translate(336 26) scale(.75)"/>
+      <use href="#ls-gull" transform="translate(352 39) scale(.6)"/>
+      <use href="#ls-gull" transform="translate(520 52) scale(.7)"/>
+      <use href="#ls-gull" transform="translate(40 18) scale(1.1)"/>
+    </svg>
+
+    <div class="cards">
+      <div class="card">
+        <!-- a blue-and-white wall tile -->
+        <svg viewBox="0 0 48 48">
+          <defs>
+            <pattern id="ls-tile" width="24" height="24" patternUnits="userSpaceOnUse">
+              <rect width="24" height="24" fill="#F6F8FB"/>
+              <g fill="#2D5DA6">
+                <path d="M0 0H7A7 7 0 0 1 0 7Z"/><path d="M24 0V7A7 7 0 0 1 17 0Z"/>
+                <path d="M0 24V17A7 7 0 0 1 7 24Z"/><path d="M24 24H17A7 7 0 0 1 24 17Z"/>
+              </g>
+              <g fill="#F6F8FB">
+                <path d="M0 0H4A4 4 0 0 1 0 4Z"/><path d="M24 0V4A4 4 0 0 1 20 0Z"/>
+                <path d="M0 24V20A4 4 0 0 1 4 24Z"/><path d="M24 24H20A4 4 0 0 1 24 20Z"/>
+              </g>
+              <g fill="#2D5DA6">
+                <path d="M0 0H2A2 2 0 0 1 0 2Z"/><path d="M24 0V2A2 2 0 0 1 22 0Z"/>
+                <path d="M0 24V22A2 2 0 0 1 2 24Z"/><path d="M24 24H22A2 2 0 0 1 24 22Z"/>
+              </g>
+              <g fill="#6E96D0">
+                <ellipse cx="12" cy="12" rx="1.6" ry="4.6" transform="rotate(45 12 12)"/>
+                <ellipse cx="12" cy="12" rx="1.6" ry="4.6" transform="rotate(-45 12 12)"/>
+              </g>
+              <g fill="#2D5DA6">
+                <ellipse cx="12" cy="7.4" rx="2.3" ry="3.5"/><ellipse cx="12" cy="16.6" rx="2.3" ry="3.5"/>
+                <ellipse cx="7.4" cy="12" rx="3.5" ry="2.3"/><ellipse cx="16.6" cy="12" rx="3.5" ry="2.3"/>
+              </g>
+              <circle cx="12" cy="12" r="2.4" fill="#F6F8FB"/><circle cx="12" cy="12" r="1.1" fill="#E3A63B"/>
+            </pattern>
+            <linearGradient id="ls-glaze" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          </defs>
+          <rect width="48" height="48" fill="url(#ls-tile)"/>
+          <path d="M24 0V48M0 24H48" stroke="#D7DEE8" stroke-width="1"/>
+          <rect width="48" height="48" fill="url(#ls-glaze)"/>
+        </svg>
+        <div><b><i>Day 1</i> · Alfama</b><span>Tiled lanes, fado and the castle walls</span></div>
+      </div>
+      <div class="card">
+        <!-- the tram, head on -->
+        <svg viewBox="0 0 48 48">
+          <defs>
+            <linearGradient id="ls-c2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#DDF0FA"/><stop offset="1" stop-color="#B5DBF0"/></linearGradient>
+          </defs>
+          <rect width="48" height="48" fill="url(#ls-c2)"/>
+          <path d="M0 6.5H48" stroke="#3B3531" stroke-width=".7" opacity=".55"/>
+          <path d="M24 11.5 26.5 6.6" stroke="#3B3531" stroke-width=".9"/>
+          <ellipse cx="24" cy="42.6" rx="16" ry="2.2" fill="#3F6E8A" opacity=".25"/>
+          <path d="M12 16a4.5 4.5 0 0 1 4.5-4.5h15A4.5 4.5 0 0 1 36 16v11H12z" fill="#F8F1E0"/>
+          <rect x="13" y="11" width="22" height="2.4" rx="1.2" fill="#D3D6DA"/>
+          <rect x="17.5" y="13.8" width="13" height="3.4" rx=".7" fill="#2E2B28"/>
+          <text x="24" y="16.55" text-anchor="middle" font-family="-apple-system, system-ui" font-size="2.9" font-weight="800" fill="#FFE07A">28E</text>
+          <rect x="14.6" y="18.4" width="18.8" height="8" rx="1.4" fill="#4A5A70"/>
+          <path d="M17 26 22 18.6M21 26 26 18.6" stroke="#fff" stroke-width="1" opacity=".3"/>
+          <rect x="12" y="26.4" width="24" height="1.6" fill="#E2A91C"/>
+          <path d="M12 28h24v8.6a1.4 1.4 0 0 1-1.4 1.4H13.4a1.4 1.4 0 0 1-1.4-1.4z" fill="#F6C42C"/>
+          <circle cx="24" cy="32.6" r="2.3" fill="#FFF4C8"/><circle cx="24" cy="32.6" r="2.3" fill="none" stroke="#C9971A" stroke-width=".7"/>
+          <rect x="11" y="37.6" width="26" height="2.4" rx="1" fill="#3A3633"/>
+          <path d="M14 42.6h20" stroke="#8E8173" stroke-width=".8"/>
+        </svg>
+        <div><b><i>Day 2</i> · Baixa</b><span>Tram 28, old bookshops and the river front</span></div>
+      </div>
+      <div class="card">
+        <!-- a custard tart, warm from the oven -->
+        <svg viewBox="0 0 48 48">
+          <defs>
+            <linearGradient id="ls-c3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1CF"/><stop offset="1" stop-color="#F6D592"/></linearGradient>
+            <radialGradient id="ls-custard" cx="22" cy="21" r="12" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FBD66A"/><stop offset=".8" stop-color="#F1B843"/><stop offset="1" stop-color="#D9952E"/></radialGradient>
+          </defs>
+          <rect width="48" height="48" fill="url(#ls-c3)"/>
+          <ellipse cx="25" cy="27" rx="19" ry="17.5" fill="#C9963E" opacity=".25"/>
+          <circle cx="24" cy="24" r="18" fill="#FFFFFF"/>
+          <circle cx="24" cy="24" r="15.5" fill="none" stroke="#E9E3D8" stroke-width=".8"/>
+          <circle cx="24" cy="24" r="13" fill="#D79A52"/>
+          <circle cx="24" cy="24" r="13" fill="none" stroke="#B9762F" stroke-width=".9"/>
+          <g fill="none" stroke="#EBC07E" stroke-width=".7" opacity=".9"><circle cx="24" cy="24" r="11.9"/><circle cx="24" cy="24" r="12.6" stroke-dasharray="2 1.5"/></g>
+          <circle cx="24" cy="24" r="10.8" fill="url(#ls-custard)"/>
+          <g fill="#7A3E16">
+            <path d="M19.5 18.6c1.6-1 3.6-.6 3.8.9.2 1.4-1.6 2-3 1.7s-2.1-1.8-.8-2.6z"/>
+            <path d="M26.6 22.4c1.3-.6 2.9 0 2.9 1.2s-1.4 1.7-2.6 1.4-1.4-2-.3-2.6z" opacity=".85"/>
+            <path d="M21.2 27.6c.9-.5 2.1.1 2 1s-1.1 1.3-1.9 1-1-1.5-.1-2z" opacity=".75"/>
+            <path d="M28.4 28.8c.7-.3 1.6.2 1.4.9s-1 1-1.6.7-.5-1.3.2-1.6z" opacity=".7"/>
+            <path d="M24.6 16.6c.6-.2 1.3.2 1.1.8s-.9.7-1.3.4-.3-1 .2-1.2z" opacity=".65"/>
+          </g>
+          <g fill="#A55A22" opacity=".55"><circle cx="17.4" cy="24" r=".7"/><circle cx="30.6" cy="19" r=".6"/><circle cx="25.4" cy="31.4" r=".6"/><circle cx="16.8" cy="28.6" r=".5"/></g>
+        </svg>
+        <div><b><i>Day 3</i> · Belém</b><span>Custard tarts warm from the oven</span></div>
+      </div>
+    </div>
+  </article>
+</main>
+
+<!-- ============ Sourdough: a recipe page ============ -->
+<main class="page sd" data-v="sourdough">
+  <div class="site">
+    <svg class="logo" viewBox="0 0 24 24">
+      <defs><linearGradient id="sd-logo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0AD62"/><stop offset="1" stop-color="#B85E2B"/></linearGradient></defs>
+      <rect width="24" height="24" rx="7" fill="url(#sd-logo)"/>
+      <path d="M12 20V7.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+      <g fill="#fff">
+        <ellipse cx="12" cy="5.6" rx="1.3" ry="2.1"/>
+        <ellipse cx="10.1" cy="9" rx="1.2" ry="2" transform="rotate(-35 10.1 9)"/><ellipse cx="13.9" cy="9" rx="1.2" ry="2" transform="rotate(35 13.9 9)"/>
+        <ellipse cx="10.1" cy="12.4" rx="1.2" ry="2" transform="rotate(-35 10.1 12.4)"/><ellipse cx="13.9" cy="12.4" rx="1.2" ry="2" transform="rotate(35 13.9 12.4)"/>
+        <ellipse cx="10.2" cy="15.8" rx="1.1" ry="1.8" transform="rotate(-35 10.2 15.8)" opacity=".8"/><ellipse cx="13.8" cy="15.8" rx="1.1" ry="1.8" transform="rotate(35 13.8 15.8)" opacity=".8"/>
+      </g>
+    </svg>
+    <span class="brand">Crumb Journal</span>
+    <nav class="nav">
+      <span class="on">Recipes</span>
+      <span>Bread</span>
+      <span>Basics</span>
+      <svg class="g"><use href="#g-search"/></svg>
+      <span class="sub">Subscribe</span>
+    </nav>
+  </div>
+
+  <article class="article">
+    <h1>Sourdough starter, day 4</h1>
+    <p class="dek">Bubbles, a tangy smell and the first real rise. Here is how to feed it today.</p>
+    <div class="byline">
+      <span class="avatar">ER</span>
+      <span><b>Elena Rossi</b></span>
+      <span>· October 11, 2026 · 5 min read</span>
+    </div>
+
+    <div class="recipe">
+      <!-- The starter in its jar on the kitchen counter, a bowl of flour, a loaf from last week -->
+      <svg class="photo" viewBox="0 0 300 222" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="sd-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7ECDD"/><stop offset="1" stop-color="#EEDDC6"/></linearGradient>
+          <linearGradient id="sd-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CF9A65"/><stop offset="1" stop-color="#B57D4B"/></linearGradient>
+          <linearGradient id="sd-light" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset=".6" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+          <linearGradient id="sd-starter" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3E8D2"/><stop offset="1" stop-color="#E2CFAC"/></linearGradient>
+          <linearGradient id="sd-glass" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset=".18" stop-color="#FFFFFF" stop-opacity=".12"/>
+            <stop offset=".8" stop-color="#FFFFFF" stop-opacity=".05"/><stop offset="1" stop-color="#FFFFFF" stop-opacity=".35"/>
+          </linearGradient>
+          <radialGradient id="sd-crust" cx="236" cy="96" r="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#D99A55"/><stop offset=".7" stop-color="#B26A30"/><stop offset="1" stop-color="#8C4C1F"/></radialGradient>
+          <linearGradient id="sd-lid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4E7EA"/><stop offset="1" stop-color="#B7BDC3"/></linearGradient>
+          <filter id="sd-sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="2" stdDeviation="2.2" flood-color="#6B4320" flood-opacity=".28"/></filter>
+          <clipPath id="sd-jar"><path d="M76 66C76 60 80 57 86 57H134C140 57 144 60 144 66V178C144 185 140 189 133 189H87C80 189 76 185 76 178Z"/></clipPath>
+        </defs>
+
+        <rect width="300" height="222" fill="url(#sd-wall)"/>
+        <g stroke="#E5D3BA" stroke-width=".8">
+          <path d="M0 16H300M0 32H300M0 48H300M0 64H300M0 80H300M0 96H300M0 112H300M0 128H300M0 144H300"/>
+          <path d="M20 0V16M60 0V16M100 0V16M140 0V16M180 0V16M220 0V16M260 0V16M40 16V32M80 16V32M120 16V32M160 16V32M200 16V32M240 16V32M280 16V32
+                   M20 32V48M60 32V48M100 32V48M140 32V48M180 32V48M220 32V48M260 32V48M40 48V64M80 48V64M120 48V64M160 48V64M200 48V64M240 48V64M280 48V64
+                   M20 64V80M60 64V80M100 64V80M140 64V80M180 64V80M220 64V80M260 64V80M40 80V96M80 80V96M120 80V96M160 80V96M200 80V96M240 80V96M280 80V96
+                   M20 96V112M60 96V112M100 96V112M140 96V112M180 96V112M220 96V112M260 96V112M40 112V128M80 112V128M120 112V128M160 112V128M200 112V128M240 112V128M280 112V128
+                   M20 128V144M60 128V144M100 128V144M140 128V144M180 128V144M220 128V144M260 128V144"/>
+        </g>
+        <rect width="300" height="222" fill="url(#sd-light)"/>
+
+        <!-- counter -->
+        <rect y="150" width="300" height="72" fill="url(#sd-wood)"/>
+        <rect y="150" width="300" height="2.4" fill="#E2B582"/>
+        <g stroke="#A86F3F" stroke-width=".8" fill="none" opacity=".5">
+          <path d="M0 166C60 163 120 168 180 165S260 162 300 166M0 186C50 183 110 189 170 186S250 183 300 187M0 206C70 203 140 209 210 206S280 204 300 207"/>
+        </g>
+
+        <!-- last week's loaf on a board -->
+        <g filter="url(#sd-sh)">
+          <rect x="184" y="142" width="104" height="11" rx="5" fill="#8F5A33"/>
+        </g>
+        <rect x="186" y="142" width="100" height="3" rx="1.5" fill="#B07648"/>
+        <path d="M196 143C194 120 212 100 236 100S278 120 276 143Z" fill="url(#sd-crust)"/>
+        <path d="M212 112C224 104 248 104 262 114" stroke="#F3D7A8" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M212 112C224 104 248 104 262 114" stroke="#FCEBCB" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".9"/>
+        <g fill="#F6E7CC" opacity=".7"><circle cx="206" cy="128" r="1.1"/><circle cx="222" cy="120" r=".9"/><circle cx="250" cy="122" r="1"/><circle cx="266" cy="132" r=".9"/><circle cx="236" cy="132" r="1.1"/></g>
+
+        <!-- flour in a bowl, with a scoop -->
+        <g filter="url(#sd-sh)">
+          <path d="M160 166H228C226 186 212 198 194 198S162 186 160 166Z" fill="#F4F1EC"/>
+        </g>
+        <path d="M160 166H228C226 186 212 198 194 198S162 186 160 166Z" fill="none" stroke="#D9D3C9" stroke-width=".8"/>
+        <ellipse cx="194" cy="166" rx="34" ry="5" fill="#FFFFFF"/>
+        <path d="M164 167C176 157 210 156 224 167Z" fill="#FBF8F2"/>
+        <path d="M166 166.4C178 160 208 159.4 222 166.4" stroke="#EAE4D8" stroke-width=".8" fill="none"/>
+        <path d="M161 172H227" stroke="#5B86B8" stroke-width="2.2" opacity=".85"/>
+        <path d="M206 160 232 140" stroke="#C99A69" stroke-width="3.2" stroke-linecap="round"/>
+        <ellipse cx="204" cy="162" rx="6" ry="3" fill="#E8DDC9" transform="rotate(-38 204 162)"/>
+
+        <!-- the jar: starter has risen well above the band that marks this morning's level -->
+        <ellipse cx="110" cy="192" rx="40" ry="5" fill="#7A4D2A" opacity=".28"/>
+        <g clip-path="url(#sd-jar)">
+          <rect x="70" y="50" width="80" height="150" fill="#EEF2F2" opacity=".55"/>
+          <path d="M70 92C80 86 90 90 98 87S112 84 120 88 136 86 150 90V200H70Z" fill="url(#sd-starter)"/>
+          <g fill="#E6D7B9" opacity=".55"><path d="M70 72C90 70 120 73 150 71V75C120 77 90 74 70 76Z"/><path d="M70 80C95 78 125 81 150 79V81.5C125 83 95 81 70 82.5Z"/></g>
+          <g fill="#FBF6EA" stroke="#D2BF98" stroke-width=".6">
+            <circle cx="86" cy="100" r="2.4"/><circle cx="96" cy="108" r="1.4"/><circle cx="108" cy="98" r="3.2"/><circle cx="124" cy="104" r="1.8"/>
+            <circle cx="134" cy="97" r="2.6"/><circle cx="82" cy="118" r="1.6"/><circle cx="116" cy="114" r="2.2"/><circle cx="138" cy="120" r="1.4"/>
+            <circle cx="92" cy="132" r="2.8"/><circle cx="104" cy="126" r="1.3"/><circle cx="126" cy="132" r="2"/><circle cx="84" cy="146" r="1.5"/>
+            <circle cx="112" cy="148" r="2.4"/><circle cx="136" cy="146" r="1.6"/><circle cx="98" cy="160" r="1.8"/><circle cx="124" cy="162" r="2.6"/>
+            <circle cx="86" cy="172" r="1.4"/><circle cx="110" cy="176" r="1.6"/><circle cx="132" cy="178" r="1.3"/><circle cx="100" cy="140" r="1.1"/>
+          </g>
+          <g fill="#FFFFFF" opacity=".7"><circle cx="107" cy="96.8" r=".9"/><circle cx="133.2" cy="96" r=".7"/><circle cx="91.2" cy="131" r=".8"/></g>
+          <rect x="70" y="50" width="80" height="150" fill="url(#sd-glass)"/>
+        </g>
+        <path d="M76 66C76 60 80 57 86 57H134C140 57 144 60 144 66V178C144 185 140 189 133 189H87C80 189 76 185 76 178Z" fill="none" stroke="#B9C9CE" stroke-width="1.4"/>
+        <path d="M82 70V176" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+        <path d="M137 74V120" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity=".5"/>
+        <!-- the band marking where it started -->
+        <path d="M75.4 130C96 133 124 133 144.6 130V134.4C124 137.4 96 137.4 75.4 134.4Z" fill="#E0573C"/>
+        <path d="M76 130.6C96 133.4 124 133.4 144 130.6" stroke="#F28A6E" stroke-width=".7" fill="none"/>
+        <!-- paper label -->
+        <path d="M92 146h36v22a2 2 0 0 1-2 2H94a2 2 0 0 1-2-2z" fill="#EBD5AA"/>
+        <path d="M92 146h36" stroke="#D8BE8A" stroke-width="1"/>
+        <text x="110" y="161.5" text-anchor="middle" font-family="Noteworthy, 'Bradley Hand', cursive" font-size="10.5" font-weight="700" fill="#5A3B22">day 4</text>
+        <!-- lid, resting loosely on top -->
+        <g transform="rotate(-5 110 52)">
+          <rect x="72" y="46" width="76" height="11" rx="3" fill="url(#sd-lid)"/>
+          <path d="M76 49.5H144M76 53H144" stroke="#A4ABB2" stroke-width=".6"/>
+          <rect x="72" y="46" width="76" height="2" rx="1" fill="#F2F4F6"/>
+        </g>
+
+        <!-- a striped tea towel over the edge -->
+        <path d="M14 150H56L60 222H10Z" fill="#F4F1EA"/>
+        <g fill="#6E93C2"><path d="M14.6 160H55.3L55.6 165H14.2Z"/><path d="M13.8 170H56L56.4 173H13.5Z"/><path d="M12.4 200H57.9L58.3 205H12Z"/></g>
+        <path d="M14 150H56" stroke="#E4DFD3" stroke-width="1.2"/>
+      </svg>
+
+      <div class="steps">
+        <div class="days"><span class="lbl">DAY</span><i class="done">1</i><i class="done">2</i><i class="done">3</i><i class="now">4</i><i>5</i><i>6</i><i>7</i></div>
+        <h3>Today's feeding <span>Makes about 150 g</span></h3>
+        <ul class="ingr">
+          <li>Starter from day 3<b>50 g</b></li>
+          <li>Whole wheat flour<b>25 g</b></li>
+          <li>Bread flour<b>25 g</b></li>
+          <li>Water, lukewarm<b>50 g</b></li>
+        </ul>
+        <h3>Method <span>10 min</span></h3>
+        <ol class="method">
+          <li>Keep 50 g of starter and discard the rest.</li>
+          <li>Stir in the flour and water until smooth.</li>
+          <li>Mark the level, leave it somewhere warm.</li>
+        </ol>
+      </div>
+    </div>
+  </article>
+</main>
+
+<!-- ============ Kyoto: a Chrome-like browser on a flight search ============ -->
+<header class="strip" data-v="kyoto">
+  <div class="lights"><i></i><i></i><i></i></div>
+  <div class="tabs">
+    <div class="tab on">
+      <svg class="fav" viewBox="0 0 16 16"><rect width="16" height="16" rx="4" fill="#2F6BE8"/><path d="M13.2 8c0-.4-.3-.7-.7-.7h-2.2L8.1 3.9h-1l1.1 3.4H6.1l-.8-1H4.7l.5 1.7-.5 1.7h.6l.8-1h2.1L7.1 12.1h1l2.2-3.4h2.2c.4 0 .7-.3.7-.7z" fill="#fff"/></svg>
+      <span class="t">Flights to Kyoto</span>
+      <span class="x"><svg class="g"><use href="#g-close"/></svg></span>
+    </div>
+    <div class="tab">
+      <svg class="fav" viewBox="0 0 16 16"><rect width="16" height="16" rx="4" fill="#E2553B"/><path d="M8 3.2 8.7 6.4 11.4 5.2 9.9 7.8 12.6 8.6 9.6 9.3 10.4 11.4 8.3 10.2V13H7.7V10.2L5.6 11.4 6.4 9.3 3.4 8.6 6.1 7.8 4.6 5.2 7.3 6.4Z" fill="#fff"/></svg>
+      <span class="t">Kyoto in autumn: where to see the maples</span>
+    </div>
+    <div class="tab">
+      <svg class="fav" viewBox="0 0 16 16"><rect width="16" height="16" rx="4" fill="#3BA0E6"/><circle cx="6.4" cy="6.4" r="2.6" fill="#FFD25A"/><path d="M5.2 12.2h6.2a2.1 2.1 0 0 0 .2-4.2 3 3 0 0 0-5.6.9 1.7 1.7 0 0 0-.8 3.3z" fill="#fff"/></svg>
+      <span class="t">Osaka weather, 10-day forecast</span>
+    </div>
+    <span class="newtab"><svg class="g"><use href="#g-plus"/></svg></span>
+  </div>
+</header>
+<div class="bar" data-v="kyoto">
+  <span class="btn"><svg class="g"><use href="#g-arrow-l"/></svg></span>
+  <span class="btn off"><svg class="g"><use href="#g-arrow-r"/></svg></span>
+  <span class="btn"><svg class="g"><use href="#g-reload"/></svg></span>
+  <div class="omni">
+    <span class="chip"><svg class="g"><use href="#g-tune"/></svg></span>
+    <span class="url">faregrid.com<span class="path">/flights/ams-kix?depart=2026-11-12&amp;return=2026-11-22</span></span>
+    <svg class="g star"><use href="#g-star"/></svg>
+  </div>
+  <span class="btn"><svg class="g"><use href="#g-puzzle"/></svg></span>
+  <span class="me">M</span>
+  <span class="btn"><svg class="g"><use href="#g-kebab"/></svg></span>
+</div>
+
+<main class="page ky" data-v="kyoto">
+  <div class="ky-nav">
+    <svg class="logo" viewBox="0 0 24 24">
+      <defs><linearGradient id="ky-logo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4C8DFF"/><stop offset="1" stop-color="#1F4FC9"/></linearGradient></defs>
+      <rect width="24" height="24" rx="7" fill="url(#ky-logo)"/>
+      <g fill="#fff" opacity=".35"><circle cx="6" cy="6" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="6" cy="12" r="1"/><circle cx="6" cy="18" r="1"/></g>
+      <path d="M19.4 12c0-.6-.5-1-1.1-1h-3.4L11.6 6H10.2l1.6 5H8.6L7.4 9.5h-.9l.7 2.5-.7 2.5h.9L8.6 13h3.2l-1.6 5h1.4l3.3-5h3.4c.6 0 1.1-.4 1.1-1z" fill="#fff"/>
+    </svg>
+    <span class="brand">Faregrid</span>
+    <div class="ky-links">
+      <span class="on"><svg class="g"><use href="#g-plane"/></svg>Flights</span>
+      <span>Stays</span>
+      <span>Trains</span>
+    </div>
+    <div class="ky-right"><span>EUR €</span><svg class="g" style="width:15px;height:15px"><use href="#g-bell"/></svg><span class="ky-signin">Sign in</span></div>
+  </div>
+
+  <div class="ky-hero">
+    <!-- Kyoto at dusk: the eastern hills, old rooftops, a five-storey pagoda and a few maple leaves -->
+    <svg viewBox="0 0 700 112" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="ky-sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#43509A"/>
+          <stop offset=".45" stop-color="#9A639F"/>
+          <stop offset=".8" stop-color="#E7907E"/>
+          <stop offset="1" stop-color="#F4B486"/>
+        </linearGradient>
+        <radialGradient id="ky-glow" cx="540" cy="66" r="170" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#FFE2B0" stop-opacity=".9"/>
+          <stop offset=".3" stop-color="#FFC59A" stop-opacity=".45"/>
+          <stop offset="1" stop-color="#FFC59A" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="ky-shade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#2A1E4E" stop-opacity=".42"/>
+          <stop offset=".55" stop-color="#2A1E4E" stop-opacity="0"/>
+        </linearGradient>
+        <symbol id="ky-leaf" viewBox="-10 -10 20 20">
+          <path d="M0-9 1.4-2.9 6.7-5.2 3.1-.8 7.4 1 2.8 1.6 3.5 4.2.7 2.1.5 2.6.4 8.6H-.4L-.5 2.6-.7 2.1-3.5 4.2-2.8 1.6-7.4 1-3.1-.8-6.7-5.2-1.4-2.9Z" stroke="currentColor" stroke-width=".7" stroke-linejoin="round" fill="currentColor"/>
+        </symbol>
+      </defs>
+      <rect width="700" height="112" fill="url(#ky-sky)"/>
+      <rect width="700" height="112" fill="url(#ky-glow)"/>
+      <circle cx="540" cy="60" r="12" fill="#FFE9C2" opacity=".92"/>
+      <g fill="#FFFFFF" opacity=".75"><circle cx="300" cy="10" r=".7"/><circle cx="352" cy="22" r=".6"/><circle cx="410" cy="8" r=".8"/><circle cx="452" cy="18" r=".5"/><circle cx="246" cy="20" r=".5"/></g>
+      <path d="M0 62C60 50 120 56 190 50S300 42 380 50 500 50 560 54 680 46 700 48V112H0Z" fill="#8D5D8E" opacity=".6"/>
+      <path d="M0 74C70 66 150 72 220 66S360 60 440 68 600 62 700 66V112H0Z" fill="#62406E" opacity=".85"/>
+      <!-- old rooftops -->
+      <path transform="translate(0 -16)" d="M0 128V100L10 96.5 20 100V98L32 93.5 44 98V100L54 97 64 100V97L78 92.5 92 97V100L102 96.5 112 100V98L124 94 136 98V100L148 96 160 100V98L172 93 184 98V101L194 98 204 101V98L216 94 228 98V100L240 96.5 252 100V97L264 93 276 97V100L288 96 300 100V98L312 94.5 324 98V100L336 97 348 100V97L360 92.5 372 97V100L384 96.5 396 100V98L408 94 420 98V101L432 97.5 444 101V98L456 94 468 98V100L480 96 492 100V98L504 94 516 98V100L528 96.5 540 100V97L552 93 564 97V100L576 96 588 100V98L600 94.5 612 98V101L624 97.5 636 101V98L648 94 660 98V100L672 96.5 684 100V97L696 93.5 700 95V128Z" fill="#3D2850"/>
+      <g fill="#FFC77A" opacity=".85" transform="translate(0 -16)"><rect x="40" y="103" width="2" height="2"/><rect x="118" y="104" width="2" height="2"/><rect x="236" y="103" width="2" height="2"/><rect x="330" y="104" width="2" height="2"/><rect x="452" y="103" width="2" height="2"/><rect x="520" y="104" width="2" height="2"/><rect x="664" y="103" width="2" height="2"/></g>
+      <!-- the pagoda -->
+      <g transform="translate(612 96) scale(1.08)" fill="#2C1D3D">
+        <rect x="-15" y="-3" width="30" height="3"/>
+        <rect x="-10.5" y="-11.4" width="21" height="8.4"/>
+        <path d="M-19.5-10.6C-15-11.6-12.5-13-11-14.8H11C12.5-13 15-11.6 19.5-10.6Z"/>
+        <rect x="-9.4" y="-22.8" width="18.8" height="8"/>
+        <path d="M-17.4-22C-13.4-23-11.2-24.4-9.9-26.05H9.9C11.2-24.4 13.4-23 17.4-22Z"/>
+        <rect x="-8.3" y="-33.65" width="16.6" height="7.6"/>
+        <path d="M-15.3-32.85C-11.8-33.8-9.8-35.1-8.8-36.75H8.8C9.8-35.1 11.8-33.8 15.3-32.85Z"/>
+        <rect x="-7.2" y="-43.95" width="14.4" height="7.2"/>
+        <path d="M-13.2-43.15C-10.2-44-8.5-45.3-7.7-46.9H7.7C8.5-45.3 10.2-44 13.2-43.15Z"/>
+        <rect x="-6.1" y="-53.7" width="12.2" height="6.8"/>
+        <path d="M-11.1-52.9C-8.6-53.7-7.2-54.9-6.6-56.5H6.6C7.2-54.9 8.6-53.7 11.1-52.9Z"/>
+        <path d="M-4-56.4 0-59.2 4-56.4Z"/>
+        <rect x="-.55" y="-78" width="1.1" height="19"/>
+        <g><rect x="-2.1" y="-61.6" width="4.2" height=".9"/><rect x="-2" y="-63.6" width="4" height=".9"/><rect x="-1.9" y="-65.6" width="3.8" height=".9"/>
+          <rect x="-1.8" y="-67.6" width="3.6" height=".9"/><rect x="-1.7" y="-69.6" width="3.4" height=".9"/><rect x="-1.6" y="-71.6" width="3.2" height=".9"/>
+          <rect x="-1.5" y="-73.6" width="3" height=".9"/><rect x="-1.4" y="-75.6" width="2.8" height=".9"/></g>
+        <circle cx="0" cy="-79.4" r="1.3"/>
+      </g>
+      <g fill="#FFC77A" opacity=".8"><rect x="609.6" y="78.6" width="1.4" height="2.4"/><rect x="613.2" y="78.6" width="1.4" height="2.4"/><rect x="611.4" y="66.8" width="1.3" height="2.2"/></g>
+      <rect width="700" height="112" fill="url(#ky-shade)"/>
+      <!-- maple leaves -->
+      <use href="#ky-leaf" x="652" y="10" width="20" height="20" color="#E8553A" transform="rotate(18 662 20)"/>
+      <use href="#ky-leaf" x="678" y="34" width="14" height="14" color="#F28C3A" transform="rotate(-24 685 41)"/>
+      <use href="#ky-leaf" x="420" y="16" width="12" height="12" color="#E8553A" transform="rotate(40 426 22)"/>
+      <use href="#ky-leaf" x="540" y="30" width="10" height="10" color="#F6A33F" transform="rotate(-10 545 35)"/>
+    </svg>
+    <h1>Flights to Kyoto</h1>
+    <p>Fly into Osaka Kansai (KIX), then 75 minutes to Kyoto by express train</p>
+  </div>
+
+  <div class="ky-search">
+    <div class="fld"><div><small>From</small><b>Amsterdam (AMS)</b></div></div>
+    <span class="swap"><svg class="g"><use href="#g-swap"/></svg></span>
+    <div class="fld swapped"><div><small>To</small><b>Osaka (KIX)</b></div></div>
+    <div class="fld"><svg class="g"><use href="#g-calendar"/></svg><div><small>Dates</small><b>Nov 12 – Nov 22</b></div></div>
+    <div class="fld"><svg class="g"><use href="#g-person"/></svg><div><small>Travelers</small><b>1 adult, Economy</b></div></div>
+    <span class="go"><svg class="g"><use href="#g-search"/></svg>Search</span>
+  </div>
+
+  <div class="sort">
+    <div class="on"><b>Best</b><span>€742 · 14h 20m</span></div>
+    <div><b>Cheapest</b><span>€689 · 20h 40m</span></div>
+    <div><b>Fastest</b><span>€801 · 12h 20m</span></div>
+  </div>
+
+  <div class="results">
+    <div class="flight">
+      <svg viewBox="0 0 30 30"><rect width="30" height="30" fill="#1D2B4A"/><path d="M5 17.5C9 13 14 11.5 19 12.4L25 9.5 22.4 14C20 18.6 14 21 8.6 19.6Z" fill="#F28C3A"/><path d="M14 13.2 18.4 7.4 19.6 12.6Z" fill="#F7B267"/><circle cx="21.2" cy="11.7" r=".9" fill="#1D2B4A"/></svg>
+      <div><b>11:45 – 10:05<sup>+1</sup></b><span>Kestrel Air</span></div>
+      <div><b>14h 20m</b><span>AMS – KIX</span></div>
+      <div class="stop"><b>1 stop</b><span>1h 35m in HEL</span></div>
+      <div class="price"><b>€742</b><span>round trip</span></div>
+      <span class="sel">Select</span>
+    </div>
+    <div class="flight">
+      <svg viewBox="0 0 30 30"><rect width="30" height="30" fill="#E3F2FC"/><path d="M6 20C10 18 13 12 15 6 17 12 20 18 24 20Z" fill="#1E88D6"/><path d="M4 22C9 20.4 12 21.8 15 21.8S21 20.4 26 22" stroke="#1E88D6" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      <div><b>13:20 – 09:40<sup>+1</sup></b><span>Bluefin Airways</span></div>
+      <div><b>12h 20m</b><span>AMS – KIX</span></div>
+      <div class="stop direct"><b>Nonstop</b><span>Direct flight</span></div>
+      <div class="price"><b>€801</b><span>round trip</span></div>
+      <span class="sel">Select</span>
+    </div>
+    <div class="flight">
+      <svg viewBox="0 0 30 30"><defs><linearGradient id="ky-aur" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FD3A3"/><stop offset="1" stop-color="#7B5CF0"/></linearGradient></defs><rect width="30" height="30" fill="#14213D"/><path d="M5 21C8 12 14 8 25 8" stroke="url(#ky-aur)" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M8 23C11 16 16 13.4 24 13.4" stroke="url(#ky-aur)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".7"/></svg>
+      <div><b>06:55 – 11:35<sup>+1</sup></b><span>Aurora Pacific</span></div>
+      <div><b>20h 40m</b><span>AMS – KIX</span></div>
+      <div class="stop"><b>1 stop</b><span>6h 10m in ICN</span></div>
+      <div class="price"><b>€689</b><span>round trip</span></div>
+      <span class="sel">Select</span>
+    </div>
+  </div>
+</main>
+
+<script>
+  // The town on the hill and the bridge's hangers, drawn from a fixed seed so every render is the same.
+  (function () {
+    var town = document.getElementById('ls-town');
+    if (!town) return;
+    var seed = 20261009;
+    function rnd() { seed = (seed * 48271) % 2147483647; return seed / 2147483647; }
+    function pick(list) { return list[Math.floor(rnd() * list.length)]; }
+    var walls = ['#F4E9D6', '#F2D48C', '#EBC37F', '#F3C3A1', '#EDB5A8', '#F7F2EA', '#C7DAE6', '#D6E3CF', '#F1DEB9', '#E9A99A', '#F6EEDD'];
+    var roofs = ['#C8653F', '#D47449', '#B95B38', '#CF6B43', '#C25E3B'];
+    var f = function (n) { return n.toFixed(1); };
+    town.querySelectorAll('g[data-row]').forEach(function (row) {
+      var p = row.getAttribute('data-row').split(' ').map(Number); // baseline, from, to, scale[, skip from, skip to]
+      var base = p[0], x = p[1], end = p[2], s = p[3], out = '';
+      while (x < end) {
+        var w = (7 + rnd() * 7.5) * s, h = (8.5 + rnd() * 5.5) * s, b = base + (rnd() - 0.5) * 2.4;
+        if (p.length > 4 && x + w > p[4] && x < p[5]) { x = p[5]; continue; }
+        var top = b - h, wall = pick(walls), roof = pick(roofs);
+        out += '<rect x="' + f(x) + '" y="' + f(top) + '" width="' + f(w) + '" height="' + f(h + 6) + '" fill="' + wall + '"/>';
+        out += '<rect x="' + f(x + w - 1.3 * s) + '" y="' + f(top) + '" width="' + f(1.3 * s) + '" height="' + f(h + 6) + '" fill="#000" opacity=".07"/>';
+        if (rnd() < 0.72) {
+          out += '<rect x="' + f(x - 0.5) + '" y="' + f(top - 2.3 * s) + '" width="' + f(w + 1) + '" height="' + f(2.7 * s) + '" fill="' + roof + '"/>';
+          out += '<rect x="' + f(x - 0.5) + '" y="' + f(top - 2.3 * s) + '" width="' + f(w + 1) + '" height="' + f(0.7 * s) + '" fill="#E58B5F" opacity=".7"/>';
+        } else {
+          out += '<path d="M' + f(x - 0.6) + ' ' + f(top + 0.3) + 'L' + f(x + w / 2) + ' ' + f(top - 3.4 * s) + 'L' + f(x + w + 0.6) + ' ' + f(top + 0.3) + 'Z" fill="' + roof + '"/>';
+        }
+        var ww = 1.35 * s, wh = 2.1 * s, gap = 3.3 * s;
+        for (var wy = top + 2.2 * s; wy + wh < b - 1.2 * s; wy += 3.9 * s) {
+          for (var wx = x + 1.8 * s; wx + ww < x + w - 1.6 * s; wx += gap) {
+            out += '<rect x="' + f(wx) + '" y="' + f(wy) + '" width="' + f(ww) + '" height="' + f(wh) + '" fill="#6F5647" opacity=".5"/>';
+          }
+        }
+        x += w + rnd() * 1.4 * s;
+      }
+      row.innerHTML = out;
+    });
+
+    // Hangers from the main cable down to the deck, between the two towers.
+    var hangers = document.getElementById('ls-hangers'), d = '';
+    function cable(p, from, to, step) { // p: the cubic's x0 y0 x1 y1 x2 y2 x3 y3
+      for (var t = from; t < to; t += step) {
+        var u = 1 - t;
+        var hx = u * u * u * p[0] + 3 * u * u * t * p[2] + 3 * u * t * t * p[4] + t * t * t * p[6];
+        var hy = u * u * u * p[1] + 3 * u * u * t * p[3] + 3 * u * t * t * p[5] + t * t * t * p[7];
+        if (hy < 88.6) d += 'M' + f(hx) + ' ' + f(hy) + 'V89.2';
+      }
+    }
+    cable([456, 61.5, 494, 87, 562, 87, 600, 61.5], 0.06, 0.95, 0.055);
+    cable([392, 90, 418, 80, 440, 68, 456, 61.5], 0.12, 0.97, 0.1);
+    hangers.innerHTML = '<path d="' + d + '"/>';
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+# Symlinks into ~/Library/Caches/Riffle (see Scripts/build.sh).
+.build
+build
+*.iconset/
+.DS_Store
+.claude/
+# The disk image the website offers, made by Scripts/make-dmg.sh: kept out of the history, copied along at deploy.
+website/download/
+# The same image as an update. The feed that lists it, website/updates/appcast.xml, stays in the history: each release
+# writes it again from the one before.
+website/updates/*.dmg
+website/updates/old_updates/
+
+# Wrangler's local state (Cloudflare/)
+.wrangler/
+# The demo film's renders (Marketing/film/render.cjs): big, and made again from the source at will.
+Marketing/film/out/
+# Pricing and competitor research (reports and their notes): kept on this Mac, out of the repository.
+reports/
+research_notes/
+# Notes for posting on Reddit: kept on this Mac, out of the repository.
+Marketing/reddit-post.md
+# Other makers' app icons, read from this Mac's own apps by Scripts/site-assets.sh: deployed from here, never shared in the repository.
+website/img/apps/

@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  pull_request:
+    paths:
+      - "Sources/**"
+      - "Tests/**"
+      - "Package.swift"
+      - "Scripts/**"
+      - ".github/workflows/ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "Sources/**"
+      - "Tests/**"
+      - "Package.swift"
+      - "Scripts/**"
+      - ".github/workflows/ci.yml"
+  workflow_dispatch:
+
+# A newer push to the same pull request or branch makes a running check pointless.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Build and test
+    # GitHub's generally available macOS 26 image (Apple silicon): the system Riffle is built for.
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      # The newest Xcode on that image with the macOS 26 SDK, pinned: the image's default moves under you.
+      XCODE: "26.6"
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Select Xcode ${{ env.XCODE }}
+        run: |
+          developer_dir="/Applications/Xcode_${XCODE}.app/Contents/Developer"
+          if [ ! -d "$developer_dir" ]; then
+            echo "::error::Xcode $XCODE isn't on this runner image any more: pick another from the macos-26 image's list."
+            exit 1
+          fi
+          echo "DEVELOPER_DIR=$developer_dir" >> "$GITHUB_ENV"
+          DEVELOPER_DIR="$developer_dir" xcodebuild -version
+          DEVELOPER_DIR="$developer_dir" swift --version
+          echo "macOS SDK $(DEVELOPER_DIR="$developer_dir" xcrun --sdk macosx --show-sdk-version)"
+
+      # Sources compile again after every checkout (they all get new dates), but the system modules built for this Xcode
+      # stay valid, and they are most of a cold build. Pull requests read the cache main saved; only main writes it.
+      - name: Restore the build cache
+        id: cache
+        uses: actions/cache/restore@v6
+        with:
+          path: .build
+          key: spm-${{ runner.os }}-${{ runner.arch }}-xcode${{ env.XCODE }}-${{ hashFiles('Package.swift', 'Package.resolved') }}
+          restore-keys: |
+            spm-${{ runner.os }}-${{ runner.arch }}-xcode${{ env.XCODE }}-
+
+      - name: Build
+        run: ./Scripts/test.sh build
+
+      - name: Unit tests
+        run: ./Scripts/test.sh unit
+        env:
+          # Also the one test that really crashes: its crash report is harmless on a throwaway runner.
+          RIFFLE_REAL_CRASH_TESTS: "1"
+
+      # The app ships as one binary for Apple silicon and Intel (macOS 26 still runs on some Intel Macs): both must
+      # build. The tests above run on this runner's Apple silicon only.
+      - name: Release build for Apple silicon and Intel
+        run: ./Scripts/test.sh universal
+
+      - name: Save the build cache
+        if: github.event_name == 'push' && steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: .build
+          key: ${{ steps.cache.outputs.cache-primary-key }}

@@ -1,0 +1,27 @@
+// Riffle's site on Cloudflare: the static files in website/ (the disk image too), served by a Worker (worker.js) that
+// sends www to the bare domain and can share the site by invitation instead of publicly. From the repository's root:
+//
+//   ./Scripts/make-dmg.sh                                     the disk image the download buttons link
+//   npx wrangler@4 deploy --config Cloudflare/wrangler.jsonc  publishes website/ at appriffle.com
+//
+// INVITE_SHA256 empty: the site is public. To share it by invitation again, put the SHA-256 of a code there and
+// deploy; the link is https://appriffle.com/?invite=<code>, and a new hash closes the old link.
+{
+  "name": "riffle-site",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-30",
+  "assets": {
+    "directory": "../website",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "routes": [
+    { "pattern": "appriffle.com", "custom_domain": true },
+    { "pattern": "www.appriffle.com", "custom_domain": true }
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+  "vars": {
+    "INVITE_SHA256": ""
+  }
+}

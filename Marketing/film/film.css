@@ -1,0 +1,156 @@
+/* Riffle's demo film: one 1920×1080 stage, drawn frame by frame by film.js (render(t)). Nothing here moves on its
+   own: every transition and animation is off, and film.js sets each moving property for the frame's time. The
+   switcher's look comes from the site's styles.css. */
+
+@font-face { font-family: "Bricolage Grotesque"; src: url("../../website/fonts/bricolage-latin.woff2") format("woff2"); font-weight: 200 800; font-display: block; }
+@font-face { font-family: "Geist"; src: url("../../website/fonts/geist-latin.woff2") format("woff2"); font-weight: 100 900; font-display: block; }
+
+*, *::before, *::after { transition: none !important; animation: none !important; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #12061f; }
+body { font: 500 16px/1.4 var(--font-text); color: #fff; }
+
+#frame { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #1d0b38; isolation: isolate; }
+.layer { position: absolute; inset: 0; }
+.bg { position: absolute; inset: 0; }
+.bg--dusk { background: var(--dusk); }
+.bg--paper {
+  background:
+    radial-gradient(70% 60% at 8% 0%, #ffe1d2, transparent 70%),
+    radial-gradient(70% 70% at 100% 100%, #ecdcf7, transparent 70%),
+    #fbebf0;
+}
+.bg--night {
+  background:
+    radial-gradient(55% 60% at 50% 42%, rgb(224 74 109 / 0.32), transparent 70%),
+    radial-gradient(80% 80% at 100% 0%, rgb(255 138 76 / 0.22), transparent 70%),
+    linear-gradient(160deg, #1d0b38 0%, #2c0f4c 45%, #170827 100%);
+}
+/* A soft vignette over everything but the captions. */
+.vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgb(8 2 18 / 0.45) 100%); }
+
+/* ------------------------------------------------------------------ captions */
+.cap { position: absolute; left: 0; right: 0; top: 34px; text-align: center; z-index: 30; }
+.cap h2 { margin: 0; font: 800 64px/1.02 var(--font-display); letter-spacing: -0.038em; text-wrap: balance; }
+.cap p { margin: 10px 0 0; font: 500 23px/1.3 var(--font-text); letter-spacing: -0.005em; color: rgb(255 255 255 / 0.8); }
+.cap--ink h2 { color: #2a1238; }
+.cap--ink p { color: #6b5677; }
+.line { display: block; overflow: hidden; padding: 0 0.1em 0.1em; margin-bottom: -0.1em; }
+.line > span { display: inline-block; will-change: transform; }
+.cap kbd, .chip kbd {
+  display: inline-block; padding: 0.06em 0.36em 0.1em; border-radius: 0.3em; font: 600 0.9em/1 var(--font-text);
+  background: rgb(255 255 255 / 0.16); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22);
+}
+
+/* ------------------------------------------------------------------ the Mac's screen */
+.screen {
+  position: absolute; left: 240px; top: 178px; width: 1440px; height: 900px; border-radius: 26px; overflow: hidden;
+  background: var(--desk); transform-origin: 50% 45%;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.16), 0 0 0 9px rgb(14 6 24 / 0.92), 0 0 0 10px rgb(255 255 255 / 0.08),
+    0 50px 120px -30px rgb(8 2 18 / 0.85);
+}
+.menubar {
+  position: absolute; left: 0; right: 0; top: 0; height: 32px; z-index: 500; display: flex; align-items: center; gap: 24px; padding: 0 20px;
+  font: 500 14.5px/1 var(--font-text); color: rgb(255 255 255 / 0.92); background: rgb(255 255 255 / 0.14);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6); backdrop-filter: blur(24px) saturate(1.6);
+}
+.menubar b { font-weight: 700; color: #fff; }
+.menubar .mb-icon { width: 16px; height: 16px; opacity: 0.95; }
+.menubar .mb-right { margin-left: auto; display: flex; align-items: center; gap: 18px; }
+.win { position: absolute; border-radius: 13px; overflow: hidden; transform-origin: 50% 50%;
+  box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.3), 0 22px 46px -14px rgb(10 3 24 / 0.65); }
+.win img { display: block; width: 100%; height: auto; }
+.desk-sw { position: absolute; inset: 32px 0 0; z-index: 1000; display: grid; place-items: center; transform-origin: 50% 50%; }
+
+/* ------------------------------------------------------------------ keys */
+.keys { position: absolute; left: 50%; display: flex; align-items: flex-end; gap: 18px; z-index: 40; }
+.kc {
+  position: relative; display: inline-flex; align-items: flex-end; flex: none; width: 104px; height: 104px; padding: 0 0 14px 16px;
+  border-radius: 18px; background: linear-gradient(180deg, #2b2632, #16131a); color: rgb(255 255 255 / 0.84);
+  font: 500 18px/1 var(--font-text);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), inset 0 0 0 1px rgb(255 255 255 / 0.07), 0 6px 0 #0a080c, 0 22px 34px -12px rgb(0 0 0 / 0.7);
+}
+.kc small { position: absolute; top: 12px; right: 15px; font-size: 28px; color: #fff; line-height: 1; }
+.kc--wide { width: 150px; }
+.kc.is-down {
+  translate: 0 5px; color: #ffd0de; background: linear-gradient(180deg, #4a2340, #23101f);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), inset 0 0 0 1px rgb(255 143 179 / 0.5), 0 1px 0 #0a080c, 0 0 34px -4px rgb(255 107 153 / 0.55);
+}
+.kc.is-down small { color: #ff8fb3; }
+.kc--small { width: 74px; height: 74px; padding: 0 0 10px 12px; border-radius: 14px; font-size: 14px; }
+.kc--small small { top: 10px; right: 12px; font-size: 22px; }
+
+/* One-key commands, a key above its word. */
+.legend { position: absolute; left: 50%; bottom: 40px; display: flex; gap: 34px; z-index: 40; }
+.legend__item { display: grid; justify-items: center; gap: 10px; font: 500 18px/1 var(--font-text); color: rgb(255 255 255 / 0.78); }
+.legend .kc--small { justify-content: center; align-items: center; padding: 0; font: 600 26px/1 var(--font-text); color: #fff; }
+
+/* ------------------------------------------------------------------ five ways: the wall on paper */
+.wall {
+  position: absolute; left: 210px; top: 182px; width: 1500px; height: 744px; border-radius: 34px; overflow: hidden;
+  background: var(--wall); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.5), 0 50px 100px -46px rgb(90 30 90 / 0.6);
+}
+.wall__sw { position: absolute; inset: 0; display: grid; place-items: center; transform-origin: 50% 50%; }
+.pills {
+  position: absolute; left: 50%; top: 952px; display: inline-flex; gap: 4px; padding: 6px; border-radius: 999px; z-index: 20;
+  background: rgb(255 255 255 / 0.66); box-shadow: inset 0 0 0 1px rgb(42 18 56 / 0.12), 0 14px 34px rgb(90 30 90 / 0.14);
+}
+.pills span { position: relative; z-index: 1; height: 46px; padding: 0 24px; display: grid; place-items: center; border-radius: 999px; font: 600 18px/1 var(--font-text); color: #6b5677; }
+.pills span.is-on { color: #fff; }
+.pills i { position: absolute; left: 0; top: 6px; height: 46px; border-radius: 999px; background: #2a1238; }
+
+/* ------------------------------------------------------------------ the dark deck alone */
+.solo { position: absolute; inset: 100px 0 0; display: grid; place-items: center; }
+.camera { position: absolute; inset: 0; transform-origin: 0 0; }
+
+/* ------------------------------------------------------------------ ⌘ Tab */
+.deck2 {
+  position: absolute; left: 50%; top: 360px; display: flex; gap: 26px; padding: 76px 88px; border-radius: 40px;
+  background: linear-gradient(160deg, #3a3140, #1d1824);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), inset 0 -2px 0 rgb(0 0 0 / 0.35), 0 50px 100px -40px rgb(8 2 18 / 0.8);
+}
+.bk {
+  position: relative; width: 236px; height: 236px; flex: none; perspective: 1100px;
+}
+.bk--tab { width: 330px; }
+.bk__face {
+  position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 0 0 26px 30px; border-radius: 26px; backface-visibility: hidden;
+  background: linear-gradient(180deg, #24202a, #141117); color: rgb(255 255 255 / 0.86); font: 500 32px/1 var(--font-text);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), inset 0 0 0 1px rgb(255 255 255 / 0.06), 0 7px 0 #0a080c, 0 18px 30px -8px rgb(0 0 0 / 0.6);
+}
+.bk__face small { position: absolute; top: 22px; right: 26px; font-size: 54px; color: #fff; line-height: 1; }
+.bk__face--back { transform: rotateX(180deg); }
+.bk__turn { position: absolute; inset: 0; transform-style: preserve-3d; }
+.bk.is-down .bk__face {
+  color: #ffd0de; background: linear-gradient(180deg, #4a2340, #23101f);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), inset 0 0 0 1px rgb(255 143 179 / 0.5), 0 2px 0 #0a080c, 0 0 44px -6px rgb(255 107 153 / 0.6);
+}
+.bk.is-down .bk__face small { color: #ff8fb3; }
+.chips { position: absolute; left: 50%; top: 820px; display: flex; gap: 14px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; border-radius: 999px; white-space: nowrap;
+  font: 600 20px/1 var(--font-text); color: #fff; background: rgb(255 255 255 / 0.1); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18);
+}
+.chip svg { width: 22px; height: 22px; opacity: 0.9; }
+
+/* ------------------------------------------------------------------ the close: the icon riffles out */
+.outro { position: absolute; inset: 0; display: grid; place-items: center; }
+.outro__in { display: grid; justify-items: center; text-align: center; transform-origin: 50% 45%; }
+.flogo { position: relative; width: 300px; height: 300px; filter: drop-shadow(0 26px 34px rgb(10 3 24 / 0.45)); }
+.flogo img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.flogo .card { transform-origin: 53.5% 82.6%; }
+.word { margin-top: 26px; font: 800 120px/0.95 var(--font-display); letter-spacing: -0.05em; }
+.tag { margin-top: 18px; font: 600 34px/1.2 var(--font-display); letter-spacing: -0.02em; color: rgb(255 255 255 / 0.92); }
+.fine { margin-top: 26px; font: 500 22px/1.3 var(--font-text); color: rgb(255 255 255 / 0.72); }
+.fine b { color: #fff; font-weight: 600; }
+
+/* ------------------------------------------------------------------ the switcher, as the film needs it */
+/* The search field shows typed text and a caret, not a live input. */
+.sw__search .q { flex: 1; min-width: 0; font: 500 1.1em var(--font-text); white-space: pre; overflow: hidden; }
+.sw__search .q i { font-style: normal; }
+.sw__search .q i.sel { background: rgb(255 143 179 / 0.45); border-radius: 0.15em; }
+.sw__search .caret { display: inline-block; width: 0.09em; height: 1.15em; margin-left: 0.04em; vertical-align: -0.2em; background: #ff8fb3; border-radius: 1px; }
+.sw__search .ph { color: rgb(255 255 255 / 0.42); }
+.sw:not(.sw--dark) .sw__search .ph { color: rgb(29 20 38 / 0.38); }
+.sw__ghost { position: absolute; z-index: 2; pointer-events: none; }
+.sw__big { position: relative; }
+.sw__big > img.next { position: absolute; }

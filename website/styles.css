@@ -1,0 +1,777 @@
+/* Riffle: one look, whatever the Mac's appearance. The icon's dusk at both ends of the page, and between them a paper
+   that carries the icon's afterglow: peach, rose and lilac, never white and never dark. The demos' walls are the icon's
+   sunset. Raspberry is the one accent. The switcher on the page copies the app's own: frosted, a rose selection plate.
+   Shapes: screens 22-30px, panels and cards 1.1-2.2em (they scale with their screen), buttons pills, keys 12px. */
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("fonts/bricolage-latin.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("fonts/bricolage-latin-ext.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("fonts/geist-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("fonts/geist-latin-ext.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+:root {
+  --paper: #fbebf0;
+  --surface: rgb(255 255 255 / 0.66);
+  --ink: #2a1238;
+  --muted: #6b5677;
+  --line: rgb(42 18 56 / 0.12);
+  --accent: #cf3564;
+  --accent-down: #b82c57;
+  --accent-ink: #b42853;
+  --focus: #cf3564;
+  --dusk:
+    radial-gradient(60% 80% at 96% 12%, rgb(255 184 128 / 0.6), transparent 70%),
+    radial-gradient(50% 60% at 0% 100%, rgb(10 3 24 / 0.55), transparent 70%),
+    linear-gradient(105deg, #1d0b38 0%, #3c1563 30%, #8e2a7c 53%, #e04a6d 75%, #ff8a4c 100%);
+  /* The app's selection. */
+  --plate: rgb(255 107 153 / 0.26);
+  --plate-edge: #ff6b99;
+  --match: #e8336d;
+  /* The five layouts' wall: the icon's sunset. */
+  --wall:
+    radial-gradient(60% 70% at 8% 100%, rgb(255 222 180 / 0.55), transparent 70%),
+    radial-gradient(70% 70% at 100% 0%, rgb(20 6 58 / 0.45), transparent 62%),
+    linear-gradient(165deg, #ff9a4d 0%, #ff4f7b 36%, #7b3bf2 70%, #26104a 100%);
+  /* The MacBook's desktop: the dusk, turned the other way. */
+  --desk:
+    radial-gradient(55% 70% at 10% 8%, rgb(255 170 120 / 0.55), transparent 70%),
+    radial-gradient(60% 70% at 100% 100%, rgb(255 92 140 / 0.45), transparent 70%),
+    linear-gradient(200deg, #2a1050 0%, #5a1d78 38%, #b13a82 70%, #f06a6a 100%);
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-text: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --gutter: clamp(20px, 5vw, 64px);
+  --maxw: 1320px;
+  --nav: 68px;
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --glide: cubic-bezier(0.3, 1.18, 0.45, 1);
+  --shadow: 0 1px 2px rgb(60 20 70 / 0.06), 0 14px 34px rgb(90 30 90 / 0.12);
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--nav) + 16px); background: #1d0b38; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; color: var(--ink); font: 420 1.0625rem/1.6 var(--font-text); -webkit-font-smoothing: antialiased; overflow-x: clip;
+  /* The afterglow: peach under the hero, rose through the middle, lilac before the dusk comes back. */
+  background:
+    radial-gradient(60% 900px at 0% 900px, rgb(255 205 175 / 0.7), transparent 70%),
+    radial-gradient(55% 900px at 100% 1900px, rgb(226 208 255 / 0.75), transparent 70%),
+    linear-gradient(180deg, #fde9e1 0%, #fbe6ee 45%, #efe5fb 100%);
+}
+img { display: block; max-width: 100%; height: auto; }
+button { font: inherit; color: inherit; }
+h1, h2, h3, p { margin: 0; }
+h1, h2 { text-wrap: balance; }
+p { text-wrap: pretty; }
+a { color: inherit; }
+::selection { background: rgb(255 107 153 / 0.3); }
+:focus-visible { outline: 2.5px solid var(--focus); outline-offset: 3px; border-radius: 8px; }
+kbd {
+  font: 600 0.84em/1 var(--font-text); padding: 0.2em 0.45em 0.24em; border-radius: 6px; white-space: nowrap;
+  background: rgb(255 255 255 / 0.8); box-shadow: inset 0 0 0 1px var(--line), 0 1px 0 rgb(42 18 56 / 0.14);
+}
+.skip {
+  position: fixed; left: 12px; top: -60px; z-index: 100; padding: 10px 16px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-weight: 600; text-decoration: none;
+}
+.skip:focus { top: 12px; }
+.title { font: 800 clamp(2.2rem, 1.45rem + 2.7vw, 3.9rem)/1.02 var(--font-display); letter-spacing: -0.035em; }
+/* A section's heading: centered, a line of plain words under it. */
+.section-head { max-width: 760px; margin: 0 auto; display: grid; gap: 14px; text-align: center; }
+.section-head p { color: var(--muted); font-size: 1.1rem; max-width: 50ch; margin: 0 auto; }
+
+/* ------------------------------------------------------------------ buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 52px; padding: 0 24px;
+  border-radius: 999px; border: 0; font: 600 1.0625rem/1 var(--font-text); text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: transform 160ms var(--ease), box-shadow 160ms var(--ease), background-color 160ms var(--ease);
+}
+.btn svg { width: 20px; height: 20px; }
+.btn:active { transform: translateY(1px) scale(0.985); }
+.btn--primary { background: var(--accent); color: #fff; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 12px 26px -12px rgb(207 53 100 / 0.8); }
+.btn--primary:hover { background: var(--accent-down); }
+/* On the dusk: glass. */
+.btn--glass { background: rgb(255 255 255 / 0.14); color: #fff; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.3); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.btn--glass:hover { background: rgb(255 255 255 / 0.24); }
+.btn--small { height: 42px; padding: 0 20px; font-size: 0.97rem; }
+
+/* ------------------------------------------------------------------ navigation: glass on the dusk, then on the paper */
+.nav {
+  position: fixed; inset: 0 0 auto; z-index: 50; height: var(--nav); color: #fff;
+  background: rgb(20 6 36 / 0.42); -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5);
+  box-shadow: inset 0 -1px 0 rgb(255 255 255 / 0.12); transition: background-color 240ms var(--ease), color 240ms var(--ease), box-shadow 240ms var(--ease);
+}
+.nav.is-paper { color: var(--ink); background: rgb(252 236 242 / 0.8); box-shadow: inset 0 -1px 0 var(--line); }
+/* The same edges as the content under it: the brand over the hero's logo and words, Download over the switcher's edge. */
+.nav__inner { height: 100%; max-width: calc(var(--maxw) + 2 * var(--gutter)); margin: 0 auto; padding: 0 var(--gutter); display: flex; align-items: center; gap: 24px; }
+.brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand img { width: 42px; height: 42px; }
+.brand span { font: 800 1.6rem/1 var(--font-display); letter-spacing: -0.035em; }
+.nav__links { display: flex; gap: 4px; margin-left: auto; }
+.nav__links a { padding: 8px 14px; border-radius: 999px; font-size: 1rem; font-weight: 500; text-decoration: none; opacity: 0.86; transition: opacity 140ms var(--ease), background-color 140ms var(--ease); }
+.nav__links a:hover, .nav__links a[aria-current="page"] { opacity: 1; background: rgb(127 100 150 / 0.16); }
+
+/* ------------------------------------------------------------------ hero: the dusk, Riffle open on it */
+.hero {
+  position: relative; isolation: isolate; color: #fff; background: var(--dusk); overflow: clip;
+  min-height: min(100dvh, 940px); padding: calc(var(--nav) + clamp(28px, 6vh, 72px)) var(--gutter) clamp(48px, 8vh, 96px);
+  display: grid; align-items: center;
+}
+.hero__inner { max-width: var(--maxw); width: 100%; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(28px, 4vw, 56px); align-items: center; }
+.hero__copy { display: grid; gap: 22px; justify-items: start; }
+/* The logo stands centered over the words of the headline: the block is as wide as its longest line. */
+.hero__mark { display: grid; justify-items: center; gap: 18px; width: max-content; max-width: 100%; }
+.hero__title { width: max-content; max-width: 100%; font: 800 clamp(2.9rem, 1.6rem + 3.7vw, 4.7rem)/0.95 var(--font-display); letter-spacing: -0.045em; padding-bottom: 0.05em; }
+.hero__lede { max-width: 30rem; font-size: clamp(1.08rem, 1rem + 0.35vw, 1.28rem); line-height: 1.5; color: rgb(255 255 255 / 0.88); }
+.hero__lede kbd { color: #fff; background: rgb(255 255 255 / 0.16); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.28); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+/* Its right edge on the content edge, under the Download button. */
+.hero__show { position: relative; display: grid; place-items: center end; --u: calc((min(var(--maxw), 100vw - 2 * var(--gutter)) - 56px) * 0.0055); }
+.hero__show .sw { font-size: clamp(6px, calc(var(--u) * 2.45), 19px); }
+/* The icon, in its parts: on arrival the cards lie stacked and riffle out into the fan, then the arrow sweeps across.
+   Pointing at it spreads the hand a little wider. The cards turn about the fan's pivot, low and right of centre. */
+.logo { --size: clamp(112px, 10vw, 148px); position: relative; width: var(--size); aspect-ratio: 1; filter: drop-shadow(0 18px 24px rgb(10 3 24 / 0.35)); }
+.logo__part { position: absolute; inset: 0; width: 100%; height: 100%; }
+.logo__card { transform-origin: 53.5% 82.6%; transition: rotate 760ms var(--glide); }
+.logo__card--middle { transition-delay: 70ms; }
+.logo__arrow { transition: clip-path 620ms cubic-bezier(0.65, 0, 0.35, 1) 420ms; clip-path: inset(0 0 0 0); }
+.logo.is-stacked .logo__card--back { rotate: 31deg; }
+.logo.is-stacked .logo__card--middle { rotate: 17deg; }
+.logo.is-stacked .logo__arrow { clip-path: inset(0 100% 0 0); }
+@media (hover: hover) {
+  .logo:hover .logo__card { transition-delay: 0ms; transition-duration: 420ms; }
+  .logo:hover .logo__card--back { rotate: -7deg; }
+  .logo:hover .logo__card--middle { rotate: -3deg; }
+  .logo:hover .logo__card--front { rotate: 2deg; }
+}
+
+/* ------------------------------------------------------------------ the MacBook you can use */
+/* A 14-inch MacBook Pro in space black, drawn in CSS so its screen can hold the live demo. --lw is its width; the lid
+   is the 16:10 screen plus a thin bezel, and the deck is as deep as the lid is tall, so the closed lid covers it.
+   Both are slabs: a lid 0.012 lw thick and a deck 0.036 lw thick, with corners rounded the same in plan, their edges
+   walls that turn around those corners. Light comes from the top left. Open, the lid faces you square (nothing but a 2D
+   nudge, so the demo stays sharp and clickable) and the deck lies flat, seen from about screen height through a long
+   lens: a thin wedge. Closed, the whole laptop is turned toward you, as if you looked down on it from above. The deck's
+   front edge is nearer you than the hinge, so it looks 1.153 times as wide as the lid (5 lw of perspective, 0.661 lw
+   deep): on a narrow screen that edge, not the lid, is what has to fit, and it reaches halfway into the gutter. */
+.try {
+  --lw: min((100vw - var(--gutter)) / 1.153, 1080px, (100vh - 212px) / 0.8);
+  --lw: min((100vw - var(--gutter)) / 1.153, 1080px, (100svh - 212px) / 0.8);
+  --lh: calc(var(--lw) * 0.661);
+  --gap: clamp(18px, 2.6vh, 28px);
+  --keys-h: 116px; /* the caption and keys under the laptop: one line of caption is 102px, two are 129px */
+  position: relative; padding: clamp(80px, 12vh, 128px) var(--gutter) 0;
+}
+.try__anchor, .try__opened { position: absolute; left: 0; width: 1px; height: 1px; top: 0; pointer-events: none; }
+.try__stage { display: grid; justify-items: center; gap: var(--gap); }
+.laptop {
+  --r: calc(var(--lw) * 0.034); /* the corners of the lid's free edge and the deck's front edge, in plan */
+  --lid-t: calc(var(--lw) * 0.012);
+  --base-t: calc(var(--lw) * 0.036);
+  position: relative; width: var(--lw); perspective: calc(var(--lw) * 5); perspective-origin: 50% calc(var(--lh) * 0.42);
+}
+.laptop__body { position: relative; width: 100%; height: calc(var(--lh) + var(--lw) * 0.12); transform-style: preserve-3d; transform-origin: 50% var(--lh); }
+.laptop__shadow {
+  position: absolute; left: -7%; right: -7%; top: calc(var(--lh) + var(--lw) * 0.07); height: calc(var(--lw) * 0.08); border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(70 24 80 / 0.38), rgb(70 24 80 / 0.12) 60%, transparent); filter: blur(calc(var(--lw) * 0.012));
+}
+/* The deck: a plane hinged at the back edge, laid down toward you. */
+.laptop__base {
+  position: absolute; left: 0; top: var(--lh); width: 100%; height: var(--lh); transform-origin: 50% 0; transform: rotateX(90deg);
+  transform-style: preserve-3d; border-radius: calc(var(--lw) * 0.006) calc(var(--lw) * 0.006) var(--r) var(--r);
+  background:
+    radial-gradient(120% 70% at 18% 0%, rgb(255 255 255 / 0.07), transparent 60%),
+    linear-gradient(180deg, #3a383e 0%, #302e34 60%, #2a282e 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.05);
+}
+.laptop__keyboard {
+  position: absolute; left: 7%; right: 7%; top: 5.2%; height: 49%; display: grid; grid-template-rows: 0.56fr repeat(5, 1fr); gap: 1.4% 0;
+  padding: 1.2% 1.1%; border-radius: calc(var(--lw) * 0.008); background: #1d1b20;
+  box-shadow: inset 0 calc(var(--lw) * 0.002) calc(var(--lw) * 0.006) rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.04);
+}
+.laptop__keyboard > div { display: flex; gap: 0.55%; }
+.laptop__keyboard i {
+  flex: 1 1 0; min-width: 0; border-radius: calc(var(--lw) * 0.004);
+  background: linear-gradient(180deg, #17161a, #111013); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 0 0 0.5px rgb(0 0 0 / 0.6);
+}
+.laptop__keyboard .is-low { align-self: flex-end; height: 48%; }
+.laptop__keyboard .updown { flex: 1 1 0; display: grid; grid-template-rows: 1fr 1fr; gap: 4%; }
+.laptop__speaker {
+  position: absolute; top: 5.2%; width: 4%; height: 49%;
+  background: radial-gradient(circle, rgb(0 0 0 / 0.55) 32%, transparent 38%) 0 0 / calc(var(--lw) * 0.0055) calc(var(--lw) * 0.0055);
+  opacity: 0.8;
+}
+.laptop__speaker--left { left: 1.6%; }
+.laptop__speaker--right { right: 1.6%; }
+.laptop__pad {
+  position: absolute; left: 28%; right: 28%; top: 58.5%; height: 34%; border-radius: calc(var(--lw) * 0.012);
+  background: linear-gradient(180deg, #38363c, #322f36); box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.05);
+}
+/* The deck's front wall, hanging down from its straight front edge, with the thumb scoop in the middle; its corners
+   turn with the deck's (.laptop__turn). */
+.laptop__lip {
+  position: absolute; left: calc(var(--r) - 1.5px); top: 100%; width: calc(100% - 2 * var(--r) + 3px); height: var(--base-t); transform-origin: 50% 0;
+  transform: rotateX(-90deg); backface-visibility: hidden;
+  background:
+    radial-gradient(8% 80% at 50% 0%, rgb(0 0 0 / 0.6), rgb(0 0 0 / 0.25) 60%, transparent 62%),
+    linear-gradient(180deg, #3a383e 0%, #2a282e 45%, #18171b 100%);
+}
+/* The lid: a thin slab hinged at the bottom edge. Its back is plain aluminium; no logo. */
+.laptop__lid { position: absolute; left: 0; top: 0; width: 100%; height: var(--lh); transform-origin: 50% 100%; transform: translateY(calc(var(--lw) * -0.004)); transform-style: preserve-3d; }
+.laptop__face, .laptop__back { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: calc(var(--lw) * 0.034) calc(var(--lw) * 0.034) calc(var(--lw) * 0.014) calc(var(--lw) * 0.014); }
+.laptop__face {
+  background: #0d0c10;
+  box-shadow: inset 0 0 0 calc(var(--lw) * 0.0024) #3c3a40, inset 0 0 0 calc(var(--lw) * 0.0024 + 1px) rgb(255 255 255 / 0.06);
+}
+.laptop__back {
+  transform: translateZ(calc(-1 * var(--lid-t))) rotateY(180deg); overflow: hidden;
+  background:
+    radial-gradient(70% 60% at 22% 18%, rgb(255 255 255 / 0.12), transparent 70%),
+    linear-gradient(165deg, #56545b 0%, #403e45 40%, #302f35 75%, #29282d 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07);
+}
+.laptop__sheen { position: absolute; inset: -40% -10%; background: linear-gradient(115deg, transparent 38%, rgb(255 255 255 / 0.1) 48%, transparent 58%); opacity: 0; }
+/* The lid's free edge: a wall from the screen's face back to the aluminium, along the straight part of the edge. */
+.laptop__rim {
+  position: absolute; left: calc(var(--r) - 1.5px); right: calc(var(--r) - 1.5px); top: 0; height: var(--lid-t); transform-origin: 50% 0;
+  transform: rotateX(-90deg) rotateY(180deg); backface-visibility: hidden; background: linear-gradient(180deg, #55535a, #2b2a2f);
+}
+/* A rounded corner's wall: eight narrow strips standing on the quarter circle, each turned to face out from it (at
+   this size eight sides are within a tenth of a pixel of the curve, and the foot of the deck's corner stays smooth). --from is where the quarter starts, --cx and --cy its centre,
+   --facing the way the straight wall beside it faces, --stand how that wall stands up from the slab. */
+.laptop__turn { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
+.laptop__turn i {
+  --a0: calc(var(--from) + 11.25deg * var(--k));
+  --a1: calc(var(--a0) + 11.25deg);
+  --mid: calc(var(--a0) + 5.625deg);
+  --w: calc(var(--r) * 0.19603 + 1.5px); /* the chord, and a hair more so neighbours meet */
+  position: absolute; width: var(--w); height: var(--h);
+  left: calc(var(--cx) + var(--r) * 0.99518 * cos(var(--mid)) - var(--w) / 2);
+  top: calc(var(--cy) + var(--r) * 0.99518 * sin(var(--mid)));
+  transform-origin: 50% 0; transform: rotateZ(calc(var(--mid) - var(--facing))) var(--stand); backface-visibility: hidden;
+  background: var(--wall);
+}
+.laptop__turn i:nth-child(1) { --k: 0; }
+.laptop__turn i:nth-child(2) { --k: 1; }
+.laptop__turn i:nth-child(3) { --k: 2; }
+.laptop__turn i:nth-child(4) { --k: 3; }
+.laptop__turn i:nth-child(5) { --k: 4; }
+.laptop__turn i:nth-child(6) { --k: 5; }
+.laptop__turn i:nth-child(7) { --k: 6; }
+.laptop__turn i:nth-child(8) { --k: 7; }
+.laptop__turn--top-left, .laptop__turn--top-right {
+  --cy: var(--r); --facing: 270deg; --stand: rotateX(-90deg) rotateY(180deg); --h: var(--lid-t);
+  --wall: linear-gradient(180deg, #55535a, #2b2a2f);
+}
+.laptop__turn--top-left { --from: 180deg; --cx: var(--r); }
+.laptop__turn--top-right { --from: 270deg; --cx: calc(var(--lw) - var(--r)); }
+/* The deck's front corners keep the front wall's look, and their foot curves up as the corner turns, so seen from the
+   front the deck's ends are as round as its corners. */
+.laptop__turn--front-left, .laptop__turn--front-right {
+  --cy: calc(var(--lh) - var(--r)); --facing: 90deg; --stand: rotateX(-90deg); --h: var(--base-t);
+  --wall: linear-gradient(180deg, #3a383e 0%, #2a282e 45%, #18171b 100%);
+}
+.laptop__turn--front-left { --from: 90deg; --cx: var(--r); }
+.laptop__turn--front-right { --from: 0deg; --cx: calc(var(--lw) - var(--r)); }
+.laptop__turn--front-left i, .laptop__turn--front-right i {
+  clip-path: polygon(0 0, 100% 0, 100% calc(var(--h) - var(--r) * (1 - sin(var(--a0)))), 0 calc(var(--h) - var(--r) * (1 - sin(var(--a1)))));
+}
+/* The hinge: a dark bar along the axis that stays with the body, facing you, so the line between the lid's foot and the
+   deck's back edge is filled at every angle. It sits just behind the open lid's face. */
+.laptop__hinge {
+  position: absolute; left: calc(var(--lw) * 0.009); right: calc(var(--lw) * 0.009); top: calc(var(--lh) - var(--lw) * 0.009);
+  height: calc(var(--lw) * 0.011); transform: translateZ(calc(var(--lw) * -0.002)); border-radius: calc(var(--lw) * 0.0055);
+  background: linear-gradient(180deg, #2a292e, #0c0b0e);
+}
+.laptop__notch {
+  position: absolute; left: 50%; top: calc(var(--lw) * 0.028); translate: -50% 0; width: calc(var(--lw) * 0.058); height: calc(var(--lw) * 0.019);
+  border-radius: 0 0 calc(var(--lw) * 0.006) calc(var(--lw) * 0.006); background: #0d0c10; pointer-events: none; z-index: 2;
+}
+.laptop__notch::after {
+  content: ""; position: absolute; left: 50%; top: 32%; width: calc(var(--lw) * 0.0045); aspect-ratio: 1; translate: -50% 0; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #3a4a6a, #101018 70%);
+}
+/* The screen inside the bezel: rounded at the top like the real display, near square at the bottom. */
+.mac {
+  --u: 9.6px;
+  position: absolute; left: calc(var(--lw) * 0.0225); right: calc(var(--lw) * 0.0225); top: calc(var(--lw) * 0.028);
+}
+.mac__screen { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--desk); isolation: isolate;
+  border-radius: calc(var(--lw) * 0.018) calc(var(--lw) * 0.018) calc(var(--lw) * 0.005) calc(var(--lw) * 0.005); }
+/* The screen asleep, until the lid is far enough open. */
+.laptop__dark { position: absolute; inset: 0; z-index: 90; background: #060509; border-radius: inherit; opacity: 0; pointer-events: none; }
+/* Nothing on the laptop's screen blurs what's behind it: inside the 3D lid Safari can't draw a backdrop-filter, and once
+   the lid has opened it drops the whole screen, leaving it black. The menu bar, the Dock and the switcher are a little
+   more solid instead. */
+.mac__bar {
+  position: absolute; inset: 0 0 auto; z-index: 40; height: calc(var(--u) * 3.4); min-height: 18px; display: flex; align-items: center; gap: calc(var(--u) * 2.1); padding: 0 calc(var(--u) * 1.8);
+  background: rgb(255 255 255 / 0.56);
+  font: 500 clamp(8px, calc(var(--u) * 1.15), 14px)/1 var(--font-text); color: rgb(29 20 38 / 0.85); transition: translate 380ms var(--ease);
+}
+.mac__app { font-weight: 700; color: #1d1426; }
+.mac__menus { display: flex; gap: calc(var(--u) * 1.8); }
+.mac__extra {
+  margin-left: auto; display: grid; place-items: center; width: calc(var(--u) * 2.6); min-width: 18px; height: calc(var(--u) * 2.4); min-height: 16px; padding: 0; border: 0;
+  border-radius: 6px; background: none; color: #1d1426; cursor: pointer;
+}
+.mac__extra svg { width: 72%; height: 72%; }
+.mac__extra:hover, .mac__extra[aria-expanded="true"] { background: rgb(29 20 38 / 0.1); }
+.mac__extra[hidden] { display: none; }
+.mac__spaces { position: absolute; inset: 0; display: flex; transition: transform 620ms cubic-bezier(0.3, 0.7, 0.15, 1); }
+.mac__space { position: relative; flex: none; width: 100%; height: 100%; }
+.win {
+  position: absolute; border-radius: calc(var(--u) * 0.9); overflow: hidden; transform-origin: 50% 100%;
+  box-shadow: 0 0 0 0.5px rgb(29 20 38 / 0.18), 0 calc(var(--u) * 1.2) calc(var(--u) * 2.8) calc(var(--u) * -0.9) rgb(60 20 80 / 0.42);
+}
+.win img { width: 100%; }
+.win.is-raised { animation: raise 420ms var(--ease); }
+@keyframes raise { 0% { scale: 0.985; } 50% { scale: 1.012; } 100% { scale: 1; } }
+.win[hidden] { display: none; }
+.win--full { inset: 0 !important; width: 100% !important; border-radius: 0; box-shadow: none; }
+.win--full img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.mac__dock {
+  position: absolute; z-index: 30; left: 50%; bottom: calc(var(--u) * 1.1); translate: -50% 0; display: flex; align-items: flex-end; gap: calc(var(--u) * 0.55);
+  padding: calc(var(--u) * 0.6); border-radius: calc(var(--u) * 1.8); background: rgb(255 255 255 / 0.62);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.6), 0 calc(var(--u) * 0.8) calc(var(--u) * 2) calc(var(--u) * -0.8) rgb(60 20 80 / 0.35);
+  transition: translate 380ms var(--ease);
+}
+.mac__dock img { width: calc(var(--u) * 3.7); height: calc(var(--u) * 3.7); }
+.mac__dock .dock__sep { align-self: stretch; width: 1px; margin: calc(var(--u) * 0.4) calc(var(--u) * 0.2); background: rgb(29 20 38 / 0.18); }
+.mac__dock .dock__mins { display: flex; gap: calc(var(--u) * 0.55); }
+.mac__dock .dock__mins:empty { display: none; }
+.mac__dock .dock__min { width: calc(var(--u) * 5); height: calc(var(--u) * 3.7); display: grid; place-items: center; }
+.mac__dock .dock__min img { width: 100%; height: auto; border-radius: calc(var(--u) * 0.3); box-shadow: 0 calc(var(--u) * 0.2) calc(var(--u) * 0.6) rgb(60 20 80 / 0.3); }
+.is-fullscreen .mac__bar { translate: 0 -110%; }
+.is-fullscreen .mac__dock { translate: -50% 160%; }
+.mac__overlay { position: absolute; inset: 0; z-index: 60; display: grid; place-items: center; pointer-events: none; }
+.mac__overlay[hidden] { display: none; }
+.mac__overlay .sw {
+  pointer-events: auto; max-width: 94%; font-size: min(16px, calc(var(--u) * var(--fit))); animation: summon 160ms var(--ease);
+  /* Frosted glass without the blur: the desktop's own colours under a pale veil, so no window shows through. */
+  background: linear-gradient(rgb(250 246 252 / 0.9), rgb(250 246 252 / 0.9)), var(--desk);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.mac__overlay .sw__acts { background: rgb(255 255 255 / 0.85); -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* Each layout as large as fits the laptop's screen with all fourteen windows, search open too: the deck by its width,
+   the others by their height. The screen is 100 by 62.5 u. */
+.mac__overlay .sw--deck { --fit: 1.46; }
+.mac__overlay .sw--stage { --fit: 1.2; }
+.mac__overlay .sw--icons { --fit: 1.5; }
+.mac__overlay .sw--titles { --fit: 1.26; }
+.mac__overlay .sw--list { --fit: 1.14; }
+@keyframes summon { from { opacity: 0; scale: 0.98; } to { opacity: 1; scale: 1; } }
+
+.keys { display: grid; justify-items: center; gap: 16px; text-align: center; }
+.keys__say { min-height: 1.6em; max-width: 46rem; font-size: 1.08rem; font-weight: 500; color: var(--ink); }
+.keys__say kbd { font-size: 0.86em; }
+.keys__row { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.key {
+  position: relative; display: inline-flex; align-items: flex-end; min-width: 68px; height: 58px; padding: 0 11px 9px; border: 0; border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff, #f6eef6); color: var(--muted); font: 500 0.76rem/1 var(--font-text); cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgb(42 18 56 / 0.1), inset 0 -3px 0 rgb(42 18 56 / 0.08), 0 3px 0 rgb(42 18 56 / 0.14), 0 6px 14px -4px rgb(80 20 90 / 0.25);
+  transition: transform 110ms var(--ease), box-shadow 110ms var(--ease), color 110ms var(--ease);
+}
+.key small { position: absolute; top: 8px; right: 11px; font-size: 1rem; color: var(--ink); }
+.key--tab { min-width: 94px; }
+.key--mod { min-width: 86px; }
+.key:hover { color: var(--ink); }
+/* Pressed: down, and lit (the option key stays so while ⌥ is held). */
+.key.is-down {
+  transform: translateY(3px); color: var(--accent-ink); background: linear-gradient(180deg, #fff0f5, #ffdce9);
+  box-shadow: inset 0 0 0 1px rgb(207 53 100 / 0.28), inset 0 -1px 0 rgb(42 18 56 / 0.06), 0 0 0 rgb(42 18 56 / 0.14), 0 0 0 3px rgb(255 107 153 / 0.5);
+}
+.key.is-down small { color: var(--accent-ink); }
+/* After the tour, the keys ask once to be pressed. */
+.keys.is-inviting .key--mod, .key.is-nudged { animation: invite 1.4s var(--ease) 2; }
+/* ⌥ is held and Riffle isn't open yet: the tab key breathes a soft glow, asking to be clicked. */
+.keys.is-ready .key--tab {
+  color: var(--ink); animation: ready 1.3s ease-in-out infinite;
+  box-shadow: inset 0 0 0 1px rgb(42 18 56 / 0.1), inset 0 -3px 0 rgb(42 18 56 / 0.08), 0 3px 0 rgb(42 18 56 / 0.14), 0 0 0 4px rgb(255 107 153 / 0.35);
+}
+@keyframes ready {
+  0%, 100% { box-shadow: inset 0 0 0 1px rgb(42 18 56 / 0.1), inset 0 -3px 0 rgb(42 18 56 / 0.08), 0 3px 0 rgb(42 18 56 / 0.14), 0 0 0 2px rgb(255 107 153 / 0.16); }
+  50% { box-shadow: inset 0 0 0 1px rgb(42 18 56 / 0.1), inset 0 -3px 0 rgb(42 18 56 / 0.08), 0 3px 0 rgb(42 18 56 / 0.14), 0 0 0 7px rgb(255 107 153 / 0.4); }
+}
+@keyframes invite { 0%, 100% { box-shadow: inset 0 0 0 1px rgb(42 18 56 / 0.1), inset 0 -3px 0 rgb(42 18 56 / 0.08), 0 3px 0 rgb(42 18 56 / 0.14), 0 0 0 0 rgb(255 107 153 / 0); } 50% { box-shadow: inset 0 0 0 1px rgb(42 18 56 / 0.1), inset 0 -3px 0 rgb(42 18 56 / 0.08), 0 3px 0 rgb(42 18 56 / 0.14), 0 0 0 6px rgb(255 107 153 / 0.35); } }
+.keys__reset { margin-left: 10px; padding: 8px 12px; border: 0; border-radius: 999px; background: none; color: var(--muted); font-weight: 500; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.keys__reset:hover { color: var(--ink); }
+
+
+/* A card's quick actions, shown on the selected card and under the pointer. */
+.sw__acts {
+  position: absolute; top: 0.4em; left: 0.4em; display: flex; gap: 0.35em; padding: 0.3em; border-radius: 0.8em; opacity: 0; transition: opacity 140ms var(--ease);
+  background: rgb(255 255 255 / 0.55); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 0.2em 0.6em rgb(30 10 50 / 0.25);
+}
+.sw__item.is-selected .sw__acts, .sw__item:hover .sw__acts { opacity: 1; }
+.sw__act { width: 1.5em; height: 1.5em; border-radius: 0.45em; cursor: pointer; display: grid; place-items: center; }
+.sw__act--close { background: linear-gradient(#ff6b6b, #e5484d); }
+.sw__act--min { background: linear-gradient(#ffd25a, #f0a500); }
+.sw__act::before, .sw__act::after { content: ""; grid-area: 1 / 1; width: 0.75em; height: 0.15em; border-radius: 1px; background: #fff; }
+.sw__act--close::before { rotate: 45deg; }
+.sw__act--close::after { rotate: -45deg; }
+.sw__act--min::after { display: none; }
+
+/* ------------------------------------------------------------------ the switcher, as the app draws it in light mode */
+.sw {
+  position: relative; display: grid; gap: 0.9em; padding: 1.1em; border-radius: 2em; color: #1d1426; text-align: start;
+  background: rgb(250 246 252 / 0.8); -webkit-backdrop-filter: blur(30px) saturate(1.8); backdrop-filter: blur(30px) saturate(1.8);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.8), 0 0 0 0.5px rgb(29 20 38 / 0.12), 0 1.6em 3.4em -1.2em rgb(60 20 80 / 0.5);
+  font-family: var(--font-text);
+}
+.sw__body { display: grid; gap: 0.9em; min-width: 0; }
+.sw__items { position: relative; display: grid; }
+.sw__plate {
+  position: absolute; left: 0; top: 0; z-index: 0; border-radius: 1.05em; pointer-events: none; opacity: 0;
+  background: var(--plate); box-shadow: inset 0 0 0 0.16em var(--plate-edge);
+  transition: transform 260ms var(--glide), width 260ms var(--glide), height 260ms var(--glide), opacity 140ms var(--ease);
+}
+.sw.no-glide .sw__plate { transition: opacity 140ms var(--ease); }
+.sw__item {
+  position: relative; z-index: 1; min-width: 0; border: 0; background: none; padding: 0; text-align: start; color: inherit; cursor: default;
+  font-size: 1em; border-radius: 1.05em;
+}
+.sw__item:focus-visible { outline: 0.18em solid var(--focus); outline-offset: 0.1em; }
+.sw__icon { position: relative; flex: none; }
+.sw__icon img { width: 100%; height: 100%; }
+.sw__badge {
+  position: absolute; top: -0.3em; right: -0.35em; min-width: 1.25em; height: 1.25em; padding: 0 0.3em; border-radius: 99px;
+  background: #ff3b30; color: #fff; font: 700 0.62em/1.25em var(--font-text); text-align: center; font-size: 0.62em;
+}
+.sw__title { min-width: 0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sw__title mark, .sw__app mark { background: none; color: var(--match); }
+.sw__app { color: rgb(29 20 38 / 0.55); font-size: 0.86em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sw__marks { display: flex; align-items: center; gap: 0.35em; color: rgb(29 20 38 / 0.6); font-size: 0.82em; font-weight: 650; }
+.sw__marks svg { width: 1.15em; height: 1.15em; }
+.sw__mark { display: inline-flex; align-items: center; gap: 0.2em; }
+.sw__chip { display: inline-flex; align-items: center; gap: 0.25em; padding: 0.18em 0.42em; border-radius: 0.55em; background: rgb(29 20 38 / 0.08); }
+.sw__num { color: rgb(29 20 38 / 0.45); font-size: 0.82em; font-variant-numeric: tabular-nums; min-width: 1.2em; text-align: end; }
+/* A preview keeps its window's shape and fits its box: as wide as the box allows, or as tall. */
+/* As wide as the box, or narrower by the ratio of the window's shape (--r) to the box's (--box): the picture fits
+   the box either way, with no container query to lay out again on every change. */
+.sw__thumb { position: relative; display: grid; place-items: center; --box: 1.6; }
+.sw__thumb > img { width: calc(min(1, var(--r, 1.6) / var(--box)) * 100%); height: auto; max-width: none; border-radius: 0.45em; box-shadow: 0 0 0 0.5px rgb(29 20 38 / 0.14), 0 0.4em 1em -0.3em rgb(60 20 80 / 0.35); }
+.sw__item.is-dim .sw__thumb img, .sw__item.is-dim .sw__icon img { opacity: 0.55; }
+.sw__empty { display: grid; place-items: center; gap: 0.4em; color: rgb(29 20 38 / 0.5); font-size: 0.86em; }
+.sw__empty img { width: 3.2em; height: 3.2em; }
+.sw__search {
+  display: flex; align-items: center; gap: 0.6em; height: 2.6em; padding: 0 0.9em; border-radius: 0.9em;
+  background: rgb(29 20 38 / 0.07); color: rgb(29 20 38 / 0.6);
+}
+.sw__search svg { width: 1.2em; height: 1.2em; flex: none; }
+.sw__search input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: none; color: #1d1426; font: 500 1.1em var(--font-text); }
+.sw__search output { font-size: 0.82em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sw__none { padding: 2em 1em; color: rgb(29 20 38 / 0.55); text-align: center; }
+.sw__counter { color: rgb(29 20 38 / 0.45); font-size: 0.86em; font-variant-numeric: tabular-nums; }
+
+/* On the dusk, the switcher as the app draws it in dark mode. */
+.sw--dark {
+  color: #f6f1f8; background: rgb(28 12 44 / 0.56);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18), inset 0 1px 0 rgb(255 255 255 / 0.12), 0 1.6em 3.4em -1.2em rgb(10 3 24 / 0.6);
+}
+.sw--dark .sw__app, .sw--dark .sw__num, .sw--dark .sw__counter, .sw--dark .sw__empty { color: rgb(255 255 255 / 0.62); }
+.sw--dark .sw__marks { color: rgb(255 255 255 / 0.72); }
+.sw--dark .sw__chip, .sw--dark .sw__big, .sw--dark .sw__search { background: rgb(255 255 255 / 0.1); }
+.sw--dark .sw__search, .sw--dark .sw__search input { color: #fff; }
+.sw--dark .sw__plate { background: rgb(255 107 153 / 0.3); box-shadow: inset 0 0 0 0.16em #ff8fb3; }
+
+/* Deck: cells with the icon and title over a preview, in balanced rows. */
+.sw--deck .sw__items { gap: 0.6em; }
+/* Fewer cards than the panel was sized for (while searching): the rows stay centered in it. */
+.sw--deck .sw__items, .sw--icons .sw__items { justify-content: center; }
+.sw { align-content: start; }
+.sw--deck .sw__item { display: grid; gap: 0.5em; padding: 0.7em; }
+.sw--deck .sw__head { display: flex; align-items: center; gap: 0.5em; min-width: 0; height: 1.8em; }
+.sw--deck .sw__icon { width: 1.75em; height: 1.75em; }
+.sw--deck .sw__title { flex: 1; font-size: 1.02em; }
+.sw--deck .sw__thumb { aspect-ratio: 16 / 10.4; --box: 1.5385; }
+
+/* Stage: the selected window large, every window on a filmstrip. */
+.sw--stage { width: min(56em, 100%); }
+.sw__stage { display: grid; gap: 0.9em; }
+.sw__big { display: grid; place-items: center; aspect-ratio: 16 / 9; --box: 1.7778; border-radius: 1.4em; background: rgb(29 20 38 / 0.05); }
+.sw__big > img { width: calc(min(0.92, 0.88 * var(--r, 1.6) / var(--box)) * 100%); height: auto; max-width: none; border-radius: 0.6em; box-shadow: 0 0 0 0.5px rgb(29 20 38 / 0.14), 0 0.8em 2em -0.6em rgb(60 20 80 / 0.4); }
+.sw__info { display: flex; align-items: center; gap: 0.75em; min-width: 0; }
+.sw__info .sw__icon { width: 2.6em; height: 2.6em; }
+.sw__info div { flex: 1; min-width: 0; display: grid; }
+.sw__info .sw__title { font-size: 1.3em; font-weight: 700; }
+.sw--stage .sw__items { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); justify-content: center; gap: 0.6em; }
+.sw--stage .sw__item { padding: 0.35em; }
+.sw--stage .sw__thumb { aspect-ratio: 16 / 10; --box: 1.6; }
+.sw--stage .sw__thumb .sw__icon { position: absolute; left: 0.3em; bottom: 0.25em; width: 1.7em; height: 1.7em; }
+.sw--stage .sw__marks { position: absolute; left: 0.35em; top: 0.3em; }
+
+/* Icons: like the Dock. */
+.sw--icons .sw__items { gap: 0.4em; }
+.sw--icons .sw__item { display: grid; justify-items: center; gap: 0.45em; width: 7.4em; padding: 1.7em 0.4em 0.7em; }
+.sw--icons .sw__icon { width: 4.6em; height: 4.6em; }
+.sw--icons .sw__title { max-width: 100%; font-size: 0.86em; font-weight: 500; text-align: center; }
+.sw--icons .sw__item.is-selected .sw__title { font-weight: 700; }
+.sw--icons .sw__marks { position: absolute; top: 0.35em; left: 0; right: 0; justify-content: center; }
+
+/* Titles: one row per window, as wide as the longest title. */
+.sw--titles { width: min(36em, 100%); }
+.sw--titles .sw__items { gap: 0.15em; }
+.sw--titles .sw__item { display: flex; align-items: center; gap: 0.75em; height: 2.9em; padding: 0 0.9em; border-radius: 0.8em; }
+.sw--titles .sw__icon { width: 1.9em; height: 1.9em; }
+.sw--titles .sw__title { flex: 1; font-size: 1.2em; font-weight: 500; }
+.sw--titles .sw__plate { border-radius: 0.75em; }
+
+/* List: the windows on the left, the selected one large on the right. */
+.sw--list { width: min(64em, 100%); }
+.sw--list .sw__body { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.1fr); align-items: center; }
+.sw--list .sw__items { gap: 0.1em; }
+.sw--list .sw__item { display: flex; align-items: center; gap: 0.7em; height: 3.3em; padding: 0 0.8em; border-radius: 0.85em; }
+.sw--list .sw__icon { width: 2.2em; height: 2.2em; }
+.sw--list .sw__text { flex: 1; min-width: 0; display: grid; }
+.sw--list .sw__plate { border-radius: 0.85em; }
+.sw--list .sw__stage { align-self: stretch; align-content: center; }
+.sw--list .sw__big { aspect-ratio: 4 / 3; --box: 1.3333; }
+
+/* ------------------------------------------------------------------ five layouts, large */
+.layouts { max-width: calc(var(--maxw) + 2 * var(--gutter)); margin: 0 auto; padding: clamp(110px, 16vh, 170px) var(--gutter) 0; display: grid; justify-items: center; gap: 26px; text-align: center; }
+.seg { display: inline-flex; gap: 4px; padding: 5px; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line), var(--shadow); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.seg button { height: 44px; padding: 0 22px; border: 0; border-radius: 999px; background: none; color: var(--muted); font-weight: 600; cursor: pointer; transition: color 140ms var(--ease), background-color 140ms var(--ease); }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-selected="true"] { background: var(--ink); color: #fff; }
+/* The wall's width is the page's, never its switcher's: the switcher's size comes from the wall's (--u), so letting the
+   switcher widen the wall would chase itself frame after frame. */
+.stage-demo { width: 100%; min-width: 0; display: grid; gap: 16px; }
+.stage-demo__wall { min-width: 0; }
+/* One size for all five, so picking another doesn't move the page; each layout sized to fill it. */
+.stage-demo__wall {
+  --u: 12px; display: grid; place-items: center; aspect-ratio: 2 / 1; padding: clamp(18px, 3.6vw, 48px); border-radius: 32px;
+  background: var(--wall); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.5), 0 40px 80px -40px rgb(90 30 90 / 0.55);
+}
+.stage-demo__wall .sw { max-width: 100%; }
+.stage-demo__wall .sw--deck { font-size: min(21px, calc(var(--u) * 1.88)); }
+.stage-demo__wall .sw--icons { font-size: min(21px, calc(var(--u) * 1.82)); }
+.stage-demo__wall .sw--titles { font-size: min(21px, calc(var(--u) * 1.6)); }
+.stage-demo__wall .sw--list { font-size: min(19px, calc(var(--u) * 1.45)); }
+.stage-demo__wall .sw--stage { width: min(44em, 100%); font-size: min(16px, calc(var(--u) * 1.3)); }
+.stage-demo__caption { color: var(--muted); min-height: 1.6em; font-size: 1.05rem; }
+
+/* ------------------------------------------------------------------ search, with the visitor's own keyboard */
+.find { max-width: calc(var(--maxw) + 2 * var(--gutter)); margin: 0 auto; padding: clamp(110px, 16vh, 170px) var(--gutter) 0; display: grid; gap: 26px; }
+/* The dawn: the icon's colours at their lightest, under a frosted switcher. */
+.find__stage {
+  --u: 12px; display: grid; justify-items: center; align-content: start; gap: 22px; padding: clamp(26px, 4vw, 52px) clamp(18px, 4vw, 48px); border-radius: 32px;
+  background:
+    radial-gradient(60% 80% at 0% 0%, rgb(255 214 170 / 0.9), transparent 70%),
+    radial-gradient(60% 80% at 100% 100%, rgb(170 140 255 / 0.85), transparent 70%),
+    linear-gradient(135deg, #ffb48a 0%, #ff86ac 50%, #b99cff 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.5), 0 40px 80px -40px rgb(90 30 90 / 0.5);
+ 
+}
+/* As tall as the whole list, whatever the search leaves in it, so the page doesn't move while you type. */
+.find__panel { width: 100%; display: grid; justify-items: center; font-size: clamp(11px, calc(var(--u) * 1.55), 17px); }
+/* One size whatever the search leaves in it, like the app's own window, so nothing on the page moves while you type. */
+.find__panel .sw { width: min(34em, 100%); height: 26.5em; align-content: start; }
+.find__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.find__chips button {
+  display: inline-flex; align-items: baseline; gap: 7px; height: 40px; padding: 0 16px; border: 0; border-radius: 999px; cursor: pointer;
+  background: rgb(255 255 255 / 0.74); color: #4a3d57; font: 500 0.95rem/40px var(--font-text);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 6px 16px -8px rgb(60 20 80 / 0.45);
+  transition: background-color 140ms var(--ease), color 140ms var(--ease), transform 110ms var(--ease);
+}
+.find__chips b { color: #1d1426; font-weight: 700; }
+.find__chips button:hover { background: rgb(255 255 255 / 0.92); }
+.find__chips button:active { transform: translateY(1px); }
+.find__chips button[aria-pressed="true"] { background: #2a1238; color: rgb(255 255 255 / 0.78); }
+.find__chips button[aria-pressed="true"] b { color: #fff; }
+.find__say { min-height: 1.6em; text-align: center; color: var(--muted); font-size: 1.05rem; }
+
+/* ------------------------------------------------------------------ your shortcut: two big keys */
+.yours {
+  max-width: calc(var(--maxw) + 2 * var(--gutter)); margin: 0 auto; padding: clamp(110px, 16vh, 170px) var(--gutter) 0;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(32px, 5vw, 80px); align-items: center;
+}
+.yours__text { display: grid; gap: 18px; justify-items: start; }
+.yours__text p { color: var(--muted); font-size: 1.12rem; max-width: 34ch; }
+.yours__pick button { min-width: 108px; font-size: 1.02rem; }
+.yours__pick button[aria-checked="true"] { background: var(--ink); color: #fff; }
+/* The keys sit in the Mac's own keyboard deck: space grey, keys in black. */
+.yours__deck {
+  display: flex; justify-content: center; align-items: center; gap: clamp(14px, 2vw, 22px); padding: clamp(36px, 6vw, 72px) clamp(20px, 4vw, 48px);
+  border-radius: 32px; background: linear-gradient(160deg, #3a3140, #1d1824);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), inset 0 -2px 0 rgb(0 0 0 / 0.35), 0 40px 80px -40px rgb(60 20 80 / 0.6);
+}
+.bigkey {
+  position: relative; display: inline-flex; align-items: flex-end; width: clamp(120px, 15vw, 172px); aspect-ratio: 1; padding: 0 0 clamp(14px, 1.6vw, 20px) clamp(14px, 1.6vw, 20px);
+  border-radius: clamp(14px, 1.6vw, 20px); background: linear-gradient(180deg, #24202a, #141117); color: rgb(255 255 255 / 0.86);
+  font: 500 clamp(1rem, 0.8rem + 0.6vw, 1.3rem)/1 var(--font-text);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), inset 0 0 0 1px rgb(255 255 255 / 0.06), 0 6px 0 #0a080c, 0 14px 26px -8px rgb(0 0 0 / 0.6);
+}
+.bigkey small { position: absolute; top: clamp(12px, 1.4vw, 18px); right: clamp(14px, 1.6vw, 20px); font-size: clamp(1.6rem, 1.1rem + 1.3vw, 2.3rem); color: #fff; line-height: 1; }
+.bigkey--tab { width: clamp(170px, 21vw, 240px); aspect-ratio: auto; height: clamp(120px, 15vw, 172px); }
+
+/* ------------------------------------------------------------------ the one scroll moment: the lid opens */
+/* Where the browser can tie animation to scrolling (and motion is welcome), the section grows tall and its stage stays
+   pinned while you scroll through it: the laptop, seen closed from above, turns toward you and opens, the screen
+   wakes, the words step aside and the keys arrive. Every moving part has its own transform or opacity keyframes on one
+   timeline, so it all runs off the main thread. The lid and the deck share one curve, so the lid never passes through
+   the deck. Elsewhere the laptop simply stands open. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .try { height: calc(100vh + 150vh); height: calc(100svh + 150svh); padding: 0; view-timeline: --lid block; }
+    /* When the open laptop doesn't fill the height (a phone, a tall window), it and its keys sit in the middle of
+       what's left under the bar. --drop is that extra room above them; the camera starts from the same place either way. */
+    .try__stage {
+      --drop: max(0px, (100svh - var(--nav) - 32px - var(--lh) - var(--lw) * 0.12 - var(--gap) - var(--keys-h)) / 2);
+      position: sticky; top: 0; height: 100vh; height: 100svh; overflow: clip; align-content: start;
+      padding: calc(var(--nav) + 14px + var(--drop)) var(--gutter) 18px;
+    }
+    .try__head {
+      position: absolute; left: var(--gutter); right: var(--gutter); top: calc(var(--nav) + clamp(16px, 4vh, 44px)); z-index: 2;
+      animation: lid-words linear both; animation-timeline: --lid; animation-range: contain 0% contain 24%;
+    }
+    .laptop__body, .laptop__base, .laptop__lid, .laptop__shadow {
+      animation-timing-function: cubic-bezier(0.45, 0.05, 0.3, 1); animation-fill-mode: both;
+      animation-timeline: --lid; animation-range: contain 2% contain 60%;
+    }
+    .laptop__body { animation-name: lid-camera; }
+    .laptop__base { animation-name: lid-deck; }
+    .laptop__lid { animation-name: lid-open; }
+    .laptop__shadow { animation-name: lid-shadow; }
+    .laptop__dark { animation: lid-wake linear both; animation-timeline: --lid; animation-range: contain 30% contain 56%; }
+    .laptop__sheen { animation: lid-sheen linear both; animation-timeline: --lid; animation-range: contain 0% contain 34%; }
+    .keys { animation: lid-keys linear both; animation-timeline: --lid; animation-range: contain 56% contain 66%; }
+    /* Until the lid is open, nothing on the laptop or the keys takes a click. */
+    .try:not(.is-open) .laptop, .try:not(.is-open) .keys { pointer-events: none; }
+    /* "Try it" lands just after the lid has opened; the script hears the lid open from the second mark. */
+    .try__anchor { top: calc(0.64 * (100% - 100svh) + var(--nav) + 16px); }
+    .try__opened { top: calc(0.6 * (100% - 100svh) + 100svh); }
+  }
+}
+@keyframes lid-words { to { opacity: 0; transform: translateY(-40px); } }
+/* Closed, the hinge (the back edge) sits at 40% of the screen's height, under the words; open, the laptop is where it
+   stands. */
+@keyframes lid-camera { from { transform: translateY(calc(40svh - var(--nav) - 14px - var(--drop) - var(--lh))) scale(0.76); } to { transform: none; } }
+@keyframes lid-deck { from { transform: rotateX(38deg); } to { transform: rotateX(90deg); } }
+@keyframes lid-open {
+  from { transform: translateY(calc(var(--lw) * -0.004)) rotateX(-142deg); }
+  to { transform: translateY(calc(var(--lw) * -0.004)) rotateX(0deg); }
+}
+@keyframes lid-shadow { from { opacity: 0.55; transform: translateY(calc(40svh - var(--nav) - 14px - var(--drop) - var(--lh) + var(--lw) * 0.27)) scale(0.8, 2.4); } to { opacity: 1; transform: none; } }
+@keyframes lid-wake { from { opacity: 1; } to { opacity: 0; } }
+@keyframes lid-sheen { from { opacity: 1; transform: translateX(-28%); } to { opacity: 0; transform: translateX(32%); } }
+@keyframes lid-keys { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ------------------------------------------------------------------ the end of the page: the dusk again */
+/* The dusk again, darkened toward the bottom so the white words on its orange side stay easy to read. */
+.end { margin-top: clamp(110px, 16vh, 170px); color: #fff; background: linear-gradient(180deg, rgb(20 6 36 / 0) 20%, rgb(20 6 36 / 0.62) 100%), var(--dusk); }
+.end--slim { margin-top: 0; }
+.closing { display: grid; justify-items: center; gap: 20px; text-align: center; padding: clamp(90px, 14vh, 150px) var(--gutter) clamp(56px, 9vh, 96px); }
+.closing img { width: 120px; filter: drop-shadow(0 18px 24px rgb(10 3 24 / 0.4)); }
+.closing__fine { font-size: 0.95rem; color: rgb(255 255 255 / 0.95); }
+.closing__fine a { color: #fff; text-underline-offset: 3px; }
+.facts { list-style: none; margin: clamp(28px, 5vh, 48px) 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 34px; color: rgb(255 255 255 / 0.88); font-size: 0.98rem; }
+.facts li { display: inline-flex; align-items: center; gap: 10px; }
+.facts svg { width: 20px; height: 20px; flex: none; opacity: 0.85; }
+.footer { color: rgb(255 255 255 / 0.86); font-size: 0.92rem; background: rgb(20 6 36 / 0.42); }
+.footer__inner {
+  max-width: calc(var(--maxw) + 2 * var(--gutter)); margin: 0 auto; padding: 24px var(--gutter) 36px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12);
+}
+.footer nav { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.footer a { text-decoration: none; }
+.footer a:hover, .footer a[aria-current="page"] { color: #fff; }
+
+/* ------------------------------------------------------------------ help: installing, and questions */
+.help-hero { color: #fff; background: var(--dusk); padding: calc(var(--nav) + clamp(40px, 8vh, 88px)) var(--gutter) clamp(48px, 8vh, 88px); }
+.help-hero__inner { max-width: calc(820px - 2 * var(--gutter)); margin: 0 auto; display: grid; justify-items: start; gap: 18px; }
+.help-hero__icon { width: 88px; height: 88px; filter: drop-shadow(0 14px 22px rgb(20 4 40 / 0.4)); }
+.help-hero__title { font: 800 clamp(2.6rem, 1.6rem + 3vw, 4rem)/1 var(--font-display); letter-spacing: -0.04em; }
+.help-hero__lede { max-width: 34rem; font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem); line-height: 1.5; color: rgb(255 255 255 / 0.88); }
+.help-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 6px; }
+.help-hero__fine { color: rgb(255 255 255 / 0.78); font-size: 0.95rem; }
+.help-hero__fine a { text-underline-offset: 3px; }
+.steps { max-width: 820px; margin: 0 auto; padding: clamp(48px, 8vh, 80px) var(--gutter) 0; display: grid; gap: 28px; }
+.steps__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; counter-reset: step; }
+.steps__list li {
+  counter-increment: step; position: relative; display: grid; gap: 6px; padding: 22px 24px 22px 80px; border-radius: 22px;
+  background: var(--surface); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.7), var(--shadow);
+}
+.steps__list li::before {
+  content: counter(step); position: absolute; left: 22px; top: 20px; width: 38px; height: 38px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--accent); color: #fff; font: 700 1.05rem/1 var(--font-text);
+}
+.steps__list h2 { font: 650 1.2rem/1.3 var(--font-text); letter-spacing: -0.01em; }
+.steps__list p { color: var(--muted); max-width: 60ch; }
+.steps__list strong { color: var(--ink); font-weight: 650; }
+.steps__done { color: var(--muted); padding-left: 4px; }
+.faq { max-width: 820px; margin: 0 auto; padding: clamp(72px, 11vh, 120px) var(--gutter) clamp(72px, 11vh, 120px); display: grid; gap: 28px; }
+.faq__list details { box-shadow: inset 0 -1px 0 var(--line); }
+.faq summary { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 20px 2px; cursor: pointer; list-style: none; font-weight: 600; font-size: 1.08rem; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; flex: none; font-weight: 400; font-size: 1.5rem; line-height: 1; color: var(--muted); transition: transform 200ms var(--ease); }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding: 0 2px 22px; color: var(--muted); max-width: 64ch; }
+.faq__more { color: var(--muted); max-width: 64ch; padding-left: 2px; }
+.faq__more a { color: var(--ink); font-weight: 600; text-underline-offset: 3px; }
+
+/* ------------------------------------------------------------------ narrow screens */
+@media (max-width: 1000px) {
+  .hero__inner { grid-template-columns: minmax(0, 1fr); }
+  .yours { grid-template-columns: minmax(0, 1fr); }
+  .hero__show { place-items: center; }
+  .stage-demo__wall { aspect-ratio: 16 / 10; }
+}
+@media (max-width: 760px) {
+  :root { --nav: 62px; }
+  .find__panel { font-size: clamp(10px, calc(var(--u) * 3.4), 14px); }
+  .nav__links { display: none; }
+  .nav .btn--small { margin-left: auto; }
+  .brand img { width: 38px; height: 38px; }
+  .brand span { font-size: 1.45rem; }
+  .mac__menus { display: none; }
+  /* On a phone the screen is small: the switcher stays inside it, so it never covers the keys, and moves its own list to
+     keep the selection in view. It clips rather than scrolls: Safari doesn't draw a scrolling box inside the 3D lid. */
+  .mac__overlay .sw {
+    max-width: 100%; max-height: calc(100% - 6px); overflow-y: hidden;
+    font-size: clamp(10px, calc(var(--u) * 1.5), 16px);
+  }
+  /* Icons keep their rows on a phone too (the deck turns into titles there): smaller, so a row fits the MacBook's screen. */
+  .mac__overlay .sw--icons { font-size: calc(var(--u) * 1.75); }
+  .stage-demo__wall { aspect-ratio: auto; min-height: 380px; border-radius: 24px; }
+  /* The deck and the icons keep their rows on a phone: smaller, so the rows fit. */
+  .stage-demo__wall .sw--deck, .stage-demo__wall .sw--icons { font-size: calc(var(--u) * 1.75); }
+  .stage-demo__wall .sw--titles, .stage-demo__wall .sw--list, .stage-demo__wall .sw--stage { font-size: clamp(9px, calc(var(--u) * 2.9), 13px); }
+  .seg button { height: 38px; padding: 0 12px; font-size: 0.92rem; }
+  .key { min-width: 76px; height: 64px; }
+  .key--tab { min-width: 104px; }
+  .try { --keys-h: 148px; }
+  .steps__list li { padding: 20px 20px 20px 68px; }
+  .steps__list li::before { left: 18px; width: 34px; height: 34px; }
+}
+@media (max-width: 400px) {
+  .seg button { padding: 0 9px; font-size: 0.86rem; }
+  .keys__row { flex-wrap: wrap; }
+}
+@media (max-width: 360px) { .try { --keys-h: 214px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

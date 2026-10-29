@@ -1,0 +1,2787 @@
+[
+  {
+    "en": "Quit Riffle",
+    "tr": "Riffle'dan Çık",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:318",
+      "Sources/Riffle/App/AppDelegate.swift:413"
+    ],
+    "code": "appMenu.addItem(withTitle: L.t(\"Riffle'dan Çık\", \"Quit Riffle\"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: \"q\")"
+  },
+  {
+    "en": "Riffle needs Accessibility",
+    "tr": "Riffle'ın Erişilebilirlik iznine ihtiyacı var",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:356"
+    ],
+    "code": "item.button?.toolTip = needsAccessibility ? L.t(\"Riffle'ın Erişilebilirlik iznine ihtiyacı var\", \"Riffle needs Accessibility\") : \"Riffle\""
+  },
+  {
+    "en": "Update Available…",
+    "tr": "Güncelleme Mevcut…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:378"
+    ],
+    "code": "let update = NSMenuItem(title: L.t(\"Güncelleme Mevcut…\", \"Update Available…\"), action: #selector(checkForUpdates), keyEquivalent: \"\")"
+  },
+  {
+    "en": "Grant Accessibility…",
+    "tr": "Erişilebilirlik İzni Ver…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:386"
+    ],
+    "code": "let grant = NSMenuItem(title: L.t(\"Erişilebilirlik İzni Ver…\", \"Grant Accessibility…\"), action: #selector(grantAccessibility), keyEquivalent: \"\")"
+  },
+  {
+    "en": "Riffle can't switch windows without it",
+    "tr": "Riffle bu izin olmadan pencere değiştiremez",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:388"
+    ],
+    "code": "grant.subtitle = L.t(\"Riffle bu izin olmadan pencere değiştiremez\", \"Riffle can't switch windows without it\")"
+  },
+  {
+    "en": "Show Windows",
+    "tr": "Pencereleri Göster",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:399"
+    ],
+    "code": "let show = NSMenuItem(title: L.t(\"Pencereleri Göster\", \"Show Windows\") + \"  (\\(shortcut))\", action: #selector(showSwitcher), keyEquivalent: \"\")"
+  },
+  {
+    "en": "Search Windows…",
+    "tr": "Pencerelerde Ara…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:401"
+    ],
+    "code": "menu.addItem(NSMenuItem(title: L.t(\"Pencerelerde Ara…\", \"Search Windows…\"), action: #selector(showSearch), keyEquivalent: \"\"))"
+  },
+  {
+    "en": "Settings…",
+    "tr": "Ayarlar…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:403"
+    ],
+    "code": "menu.addItem(NSMenuItem(title: L.t(\"Ayarlar…\", \"Settings…\"), action: #selector(openSettings), keyEquivalent: \",\"))"
+  },
+  {
+    "en": "Permissions & Setup…",
+    "tr": "İzinler ve Kurulum…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:404"
+    ],
+    "code": "menu.addItem(NSMenuItem(title: L.t(\"İzinler ve Kurulum…\", \"Permissions & Setup…\"), action: #selector(openOnboarding), keyEquivalent: \"\"))"
+  },
+  {
+    "en": "Resume Shortcuts",
+    "tr": "Kısayolları Sürdür",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:406"
+    ],
+    "code": "menu.addItem(NSMenuItem(title: paused ? L.t(\"Kısayolları Sürdür\", \"Resume Shortcuts\") : L.t(\"Kısayolları Duraklat\", \"Pause Shortcuts\"),"
+  },
+  {
+    "en": "About Riffle",
+    "tr": "Riffle Hakkında",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/AppDelegate.swift:409"
+    ],
+    "code": "menu.addItem(NSMenuItem(title: L.t(\"Riffle Hakkında\", \"About Riffle\"), action: #selector(openAbout), keyEquivalent: \"\"))"
+  },
+  {
+    "en": "Check for Updates…",
+    "tr": "Güncellemeleri Denetle…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/App/Updates.swift:76"
+    ],
+    "code": "static var check: String { L.t(\"Güncellemeleri Denetle…\", \"Check for Updates…\") }"
+  },
+  {
+    "en": "Space",
+    "tr": "Boşluk",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:115"
+    ],
+    "code": "if keyCode == space { return L.t(\"Boşluk\", \"Space\") }"
+  },
+  {
+    "en": "Tab",
+    "tr": "Tab",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:135"
+    ],
+    "code": "case kVK_Tab: return L.t(\"Tab\", \"Tab\")"
+  },
+  {
+    "en": "Return",
+    "tr": "Return",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:136"
+    ],
+    "code": "case kVK_Return: return L.t(\"Return\", \"Return\")"
+  },
+  {
+    "en": "Escape",
+    "tr": "Esc",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:137"
+    ],
+    "code": "case kVK_Escape: return L.t(\"Esc\", \"Escape\")"
+  },
+  {
+    "en": "Delete",
+    "tr": "Sil",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:138"
+    ],
+    "code": "case kVK_Delete: return L.t(\"Sil\", \"Delete\")"
+  },
+  {
+    "en": "Forward Delete",
+    "tr": "İleri Sil",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:139"
+    ],
+    "code": "case kVK_ForwardDelete: return L.t(\"İleri Sil\", \"Forward Delete\")"
+  },
+  {
+    "en": "Left Arrow",
+    "tr": "Sol Ok",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:140"
+    ],
+    "code": "case kVK_LeftArrow: return L.t(\"Sol Ok\", \"Left Arrow\")"
+  },
+  {
+    "en": "Right Arrow",
+    "tr": "Sağ Ok",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:141"
+    ],
+    "code": "case kVK_RightArrow: return L.t(\"Sağ Ok\", \"Right Arrow\")"
+  },
+  {
+    "en": "Up Arrow",
+    "tr": "Yukarı Ok",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:142"
+    ],
+    "code": "case kVK_UpArrow: return L.t(\"Yukarı Ok\", \"Up Arrow\")"
+  },
+  {
+    "en": "Down Arrow",
+    "tr": "Aşağı Ok",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:143"
+    ],
+    "code": "case kVK_DownArrow: return L.t(\"Aşağı Ok\", \"Down Arrow\")"
+  },
+  {
+    "en": "Home",
+    "tr": "Home",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:144"
+    ],
+    "code": "case kVK_Home: return L.t(\"Home\", \"Home\")"
+  },
+  {
+    "en": "End",
+    "tr": "End",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:145"
+    ],
+    "code": "case kVK_End: return L.t(\"End\", \"End\")"
+  },
+  {
+    "en": "Page Up",
+    "tr": "Page Up",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:146"
+    ],
+    "code": "case kVK_PageUp: return L.t(\"Page Up\", \"Page Up\")"
+  },
+  {
+    "en": "Page Down",
+    "tr": "Page Down",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:147"
+    ],
+    "code": "case kVK_PageDown: return L.t(\"Page Down\", \"Page Down\")"
+  },
+  {
+    "en": "Control",
+    "tr": "Control",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:57"
+    ],
+    "code": "if contains(.control) { names.append(L.t(\"Control\", \"Control\")) }"
+  },
+  {
+    "en": "Option",
+    "tr": "Option",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:58"
+    ],
+    "code": "if contains(.option) { names.append(L.t(\"Option\", \"Option\")) }"
+  },
+  {
+    "en": "Shift",
+    "tr": "Shift",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:59"
+    ],
+    "code": "if contains(.shift) { names.append(L.t(\"Shift\", \"Shift\")) }"
+  },
+  {
+    "en": "Command",
+    "tr": "Command",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/KeyCodes.swift:60"
+    ],
+    "code": "if contains(.command) { names.append(L.t(\"Command\", \"Command\")) }"
+  },
+  {
+    "en": "Search (start typing; you can let go of the key)",
+    "tr": "Ara (yazmaya başla; tuşu bırakabilirsin)",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/PanelKeys.swift:42"
+    ],
+    "code": "case .search, .searchAlternate: return L.t(\"Ara (yazmaya başla; tuşu bırakabilirsin)\", \"Search (start typing; you can let go of the key)\")"
+  },
+  {
+    "en": "Minimize / restore",
+    "tr": "Küçült / geri getir",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/PanelKeys.swift:44"
+    ],
+    "code": "case .minimize: return L.t(\"Küçült / geri getir\", \"Minimize / restore\")"
+  },
+  {
+    "en": "Toggle full screen",
+    "tr": "Tam ekran aç / kapat",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/PanelKeys.swift:45"
+    ],
+    "code": "case .fullscreen: return L.t(\"Tam ekran aç / kapat\", \"Toggle full screen\")"
+  },
+  {
+    "en": "Hide / show app",
+    "tr": "Uygulamayı gizle / göster",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/PanelKeys.swift:46"
+    ],
+    "code": "case .hide: return L.t(\"Uygulamayı gizle / göster\", \"Hide / show app\")"
+  },
+  {
+    "en": "Search",
+    "tr": "Ara",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Input/PanelKeys.swift:54"
+    ],
+    "code": "case .search, .searchAlternate: return L.t(\"Ara\", \"Search\")"
+  },
+  {
+    "en": "Riffle takes over macOS's own ⌘⇥ switcher and gives it back when it quits.",
+    "tr": "Riffle, macOS'un kendi ⌘⇥ değiştiricisinin yerini alır ve kapanınca onu geri açar.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:149"
+    ],
+    "code": "? L.t(\"Riffle, macOS'un kendi ⌘⇥ değiştiricisinin yerini alır ve kapanınca onu geri açar.\","
+  },
+  {
+    "en": "macOS keeps its own ⌘⇥ switcher.",
+    "tr": "macOS'un kendi ⌘⇥ değiştiricisi olduğu gibi kalır.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:151"
+    ],
+    "code": ": L.t(\"macOS'un kendi ⌘⇥ değiştiricisi olduğu gibi kalır.\", \"macOS keeps its own ⌘⇥ switcher.\")"
+  },
+  {
+    "en": "Lightning-fast window switching with %1$@. Riffle needs Accessibility to work, and one more permission for previews. What Riffle sees never leaves this Mac.",
+    "tr": "Pencereler arasında %1$@ ile ışık hızında geçiş. Riffle'ın çalışması için Erişilebilirlik izni gerekir, önizlemeler için bir izin daha. Riffle'ın gördüğü hiçbir şey bu Mac'ten dışarı çıkmaz.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:171"
+    ],
+    "code": "Text(L.f(\"Pencereler arasında %1$@ ile ışık hızında geçiş. Riffle'ın çalışması için Erişilebilirlik izni gerekir, önizlemeler için bir izin daha. Riffle'ın gördüğü hiçbir şey bu Mac'ten dışarı çıkmaz.\","
+  },
+  {
+    "en": "To find windows, bring them forward and notice when you let go of the shortcut.",
+    "tr": "Pencereleri bulmak, öne getirmek ve kısayol tuşunun bırakıldığını anlamak için.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:181"
+    ],
+    "code": "detail: L.t(\"Pencereleri bulmak, öne getirmek ve kısayol tuşunun bırakıldığını anlamak için.\","
+  },
+  {
+    "en": "For live window thumbnails. No audio is recorded; nothing is saved or sent.",
+    "tr": "Canlı pencere önizlemeleri için. Ses kaydedilmez, hiçbir görüntü saklanmaz ya da gönderilmez.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:189"
+    ],
+    "code": "detail: L.t(\"Canlı pencere önizlemeleri için. Ses kaydedilmez, hiçbir görüntü saklanmaz ya da gönderilmez.\","
+  },
+  {
+    "en": "Shortcut",
+    "tr": "Kısayol",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:207",
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:211"
+    ],
+    "code": "Text(L.t(\"Kısayol\", \"Shortcut\")).font(.headline)"
+  },
+  {
+    "en": "Start Riffle when you log in",
+    "tr": "Mac açılınca Riffle'ı başlat",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:229"
+    ],
+    "code": "Toggle(L.t(\"Mac açılınca Riffle'ı başlat\", \"Start Riffle when you log in\"), isOn: Binding("
+  },
+  {
+    "en": "You're set! Try %1$@.",
+    "tr": "Hazırsın! %1$@ ile dene.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:236"
+    ],
+    "code": "Label(L.f(\"Hazırsın! %1$@ ile dene.\", \"You're set! Try %1$@.\", shortcut), systemImage: \"checkmark.seal.fill\")"
+  },
+  {
+    "en": "Screen recording takes effect after a restart.",
+    "tr": "Ekran kaydı izni yeniden başlattıktan sonra etkinleşir.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:243"
+    ],
+    "code": ".help(L.t(\"Ekran kaydı izni yeniden başlattıktan sonra etkinleşir.\", \"Screen recording takes effect after a restart.\"))"
+  },
+  {
+    "en": "Continue Without Previews",
+    "tr": "Önizlemeler Olmadan Devam Et",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:247"
+    ],
+    "code": "Button(L.t(\"Önizlemeler Olmadan Devam Et\", \"Continue Without Previews\"), action: continueWithoutPreviews)"
+  },
+  {
+    "en": "Done",
+    "tr": "Bitti",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:250"
+    ],
+    "code": "Button(L.t(\"Bitti\", \"Done\"), action: close)"
+  },
+  {
+    "en": "Granted",
+    "tr": "Verildi",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:284"
+    ],
+    "code": "Label(L.t(\"Verildi\", \"Granted\"), systemImage: \"checkmark.circle.fill\")"
+  },
+  {
+    "en": "Previews need Screen & System Audio Recording. Riffle works fully without it, showing app icons in place of previews.",
+    "tr": "Önizlemeler için Ekran ve Sistem Sesi Kaydı izni gerekir. Riffle onsuz da eksiksiz çalışır; kartlarda önizlemelerin yerine uygulama simgeleri görünür.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:43"
+    ],
+    "code": "L.t(\"Önizlemeler için Ekran ve Sistem Sesi Kaydı izni gerekir. Riffle onsuz da eksiksiz çalışır; kartlarda önizlemelerin yerine uygulama simgeleri görünür.\","
+  },
+  {
+    "en": "You can turn previews on later in Settings → Permissions.",
+    "tr": "Önizlemeleri sonra Ayarlar → İzinler'den açabilirsin.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:48"
+    ],
+    "code": "L.t(\"Önizlemeleri sonra Ayarlar → İzinler'den açabilirsin.\", \"You can turn previews on later in Settings → Permissions.\")"
+  },
+  {
+    "en": "To turn them on, click Grant…, switch Riffle on in System Settings, then restart Riffle.",
+    "tr": "Açmak için İzin Ver…'e tıkla, Sistem Ayarları'nda Riffle'ı aç, sonra Riffle'ı yeniden başlat.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:52"
+    ],
+    "code": "L.t(\"Açmak için İzin Ver…'e tıkla, Sistem Ayarları'nda Riffle'ı aç, sonra Riffle'ı yeniden başlat.\","
+  },
+  {
+    "en": "Previews turn on once Riffle restarts.",
+    "tr": "Önizlemeler, Riffle yeniden başlayınca açılır.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:57"
+    ],
+    "code": "L.t(\"Önizlemeler, Riffle yeniden başlayınca açılır.\", \"Previews turn on once Riffle restarts.\")"
+  },
+  {
+    "en": "Welcome to Riffle",
+    "tr": "Riffle'a hoş geldin",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:78",
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:101",
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:169"
+    ],
+    "code": "window.title = L.t(\"Riffle'a hoş geldin\", \"Welcome to Riffle\")"
+  },
+  {
+    "en": "Deck",
+    "tr": "Deste",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:110",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:52"
+    ],
+    "code": "case .deck: return L.t(\"Deste\", \"Deck\")"
+  },
+  {
+    "en": "Stage",
+    "tr": "Sahne",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:111",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:53"
+    ],
+    "code": "case .stage: return L.t(\"Sahne\", \"Stage\")"
+  },
+  {
+    "en": "Icons",
+    "tr": "Simgeler",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:112",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:54"
+    ],
+    "code": "case .appIcons: return L.t(\"Simgeler\", \"Icons\")"
+  },
+  {
+    "en": "Titles",
+    "tr": "Başlıklar",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:113",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:55"
+    ],
+    "code": "case .titles: return L.t(\"Başlıklar\", \"Titles\")"
+  },
+  {
+    "en": "List",
+    "tr": "Liste",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:114",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:56"
+    ],
+    "code": "case .list: return L.t(\"Liste\", \"List\")"
+  },
+  {
+    "en": "Size",
+    "tr": "Boyut",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:18",
+      "Sources/Riffle/Settings/SettingsSearch.swift:177",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:203"
+    ],
+    "code": "Picker(L.t(\"Boyut\", \"Size\"), selection: $prefs.size) {"
+  },
+  {
+    "en": "Automatic",
+    "tr": "Otomatik",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:19",
+      "Sources/Riffle/Settings/SettingsSearch.swift:178"
+    ],
+    "code": "Text(L.t(\"Otomatik\", \"Automatic\")).tag(SwitcherSize.auto)"
+  },
+  {
+    "en": "Small",
+    "tr": "Küçük",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:20",
+      "Sources/Riffle/Settings/SettingsSearch.swift:178"
+    ],
+    "code": "Text(L.t(\"Küçük\", \"Small\")).tag(SwitcherSize.small)"
+  },
+  {
+    "en": "Medium",
+    "tr": "Orta",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:21",
+      "Sources/Riffle/Settings/SettingsSearch.swift:178"
+    ],
+    "code": "Text(L.t(\"Orta\", \"Medium\")).tag(SwitcherSize.medium)"
+  },
+  {
+    "en": "Large",
+    "tr": "Büyük",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:22",
+      "Sources/Riffle/Settings/SettingsSearch.swift:178"
+    ],
+    "code": "Text(L.t(\"Büyük\", \"Large\")).tag(SwitcherSize.large)"
+  },
+  {
+    "en": "Sizes the deck by how many windows there are: a few windows show large, many shrink until they all fit.",
+    "tr": "Desteyi pencere sayısına göre boyutlandırır: birkaç pencere büyük görünür, çok sayıda pencere hepsi sığacak kadar küçülür.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:27",
+      "Sources/Riffle/Settings/SettingsSearch.swift:179"
+    ],
+    "code": "Text(L.t(\"Desteyi pencere sayısına göre boyutlandırır: birkaç pencere büyük görünür, çok sayıda pencere hepsi sığacak kadar küçülür.\","
+  },
+  {
+    "en": "Title",
+    "tr": "Başlık",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:31",
+      "Sources/Riffle/Settings/SettingsSearch.swift:182",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:212"
+    ],
+    "code": "Picker(L.t(\"Başlık\", \"Title\"), selection: $prefs.titleContent) {"
+  },
+  {
+    "en": "Window title",
+    "tr": "Pencere başlığı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:32",
+      "Sources/Riffle/Settings/SettingsSearch.swift:183"
+    ],
+    "code": "Text(L.t(\"Pencere başlığı\", \"Window title\")).tag(TitleContent.windowTitle)"
+  },
+  {
+    "en": "App name",
+    "tr": "Uygulama adı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:33",
+      "Sources/Riffle/Settings/SettingsSearch.swift:183"
+    ],
+    "code": "Text(L.t(\"Uygulama adı\", \"App name\")).tag(TitleContent.appName)"
+  },
+  {
+    "en": "App name — window title",
+    "tr": "Uygulama adı — pencere başlığı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:34",
+      "Sources/Riffle/Settings/SettingsSearch.swift:183"
+    ],
+    "code": "Text(L.t(\"Uygulama adı — pencere başlığı\", \"App name — window title\")).tag(TitleContent.appAndWindowTitle)"
+  },
+  {
+    "en": "Truncate long titles",
+    "tr": "Uzun başlıkları kısalt",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:37",
+      "Sources/Riffle/Settings/SettingsSearch.swift:185",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:213"
+    ],
+    "code": "Picker(L.t(\"Uzun başlıkları kısalt\", \"Truncate long titles\"), selection: $prefs.titleTruncation) {"
+  },
+  {
+    "en": "At the end",
+    "tr": "Sondan",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:38",
+      "Sources/Riffle/Settings/SettingsSearch.swift:186"
+    ],
+    "code": "Text(L.t(\"Sondan\", \"At the end\")).tag(TitleTruncation.end)"
+  },
+  {
+    "en": "In the middle",
+    "tr": "Ortadan",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:39",
+      "Sources/Riffle/Settings/SettingsSearch.swift:186"
+    ],
+    "code": "Text(L.t(\"Ortadan\", \"In the middle\")).tag(TitleTruncation.middle)"
+  },
+  {
+    "en": "At the start",
+    "tr": "Baştan",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:40",
+      "Sources/Riffle/Settings/SettingsSearch.swift:186"
+    ],
+    "code": "Text(L.t(\"Baştan\", \"At the start\")).tag(TitleTruncation.start)"
+  },
+  {
+    "en": "Style",
+    "tr": "Stil",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:44",
+      "Sources/Riffle/Settings/SettingsSearch.swift:146",
+      "Sources/Riffle/Settings/SettingsSearch.swift:176",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:202",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:39"
+    ],
+    "code": "Text(L.t(\"Stil\", \"Style\"))"
+  },
+  {
+    "en": "Theme",
+    "tr": "Tema",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:47",
+      "Sources/Riffle/Settings/SettingsAudit.swift:29",
+      "Sources/Riffle/Settings/SettingsSearch.swift:188",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:204"
+    ],
+    "code": "Picker(L.t(\"Tema\", \"Theme\"), selection: $prefs.theme) {"
+  },
+  {
+    "en": "System",
+    "tr": "Sistem",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:48",
+      "Sources/Riffle/Settings/SettingsSearch.swift:189"
+    ],
+    "code": "Text(L.t(\"Sistem\", \"System\")).tag(ThemeMode.system)"
+  },
+  {
+    "en": "Dark",
+    "tr": "Koyu",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:49",
+      "Sources/Riffle/Settings/SettingsSearch.swift:189"
+    ],
+    "code": "Text(L.t(\"Koyu\", \"Dark\")).tag(ThemeMode.dark)"
+  },
+  {
+    "en": "Light",
+    "tr": "Açık",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:50",
+      "Sources/Riffle/Settings/SettingsSearch.swift:189"
+    ],
+    "code": "Text(L.t(\"Açık\", \"Light\")).tag(ThemeMode.light)"
+  },
+  {
+    "en": "Glass",
+    "tr": "Cam",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:53",
+      "Sources/Riffle/Settings/SettingsSearch.swift:191",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:205"
+    ],
+    "code": "Picker(L.t(\"Cam\", \"Glass\"), selection: $prefs.glass) {"
+  },
+  {
+    "en": "Regular",
+    "tr": "Normal",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:54",
+      "Sources/Riffle/Settings/SettingsSearch.swift:191"
+    ],
+    "code": "Text(L.t(\"Normal\", \"Regular\")).tag(GlassStyle.regular)"
+  },
+  {
+    "en": "Clear",
+    "tr": "Şeffaf",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:55",
+      "Sources/Riffle/Settings/SettingsSearch.swift:191"
+    ],
+    "code": "Text(L.t(\"Şeffaf\", \"Clear\")).tag(GlassStyle.clear)"
+  },
+  {
+    "en": "Show status badges (minimized, hidden, full screen)",
+    "tr": "Durum rozetlerini göster (küçültülmüş, gizli, tam ekran)",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:62",
+      "Sources/Riffle/Settings/SettingsSearch.swift:193",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:209"
+    ],
+    "code": "Toggle(L.t(\"Durum rozetlerini göster (küçültülmüş, gizli, tam ekran)\", \"Show status badges (minimized, hidden, full screen)\"), isOn: $prefs.showBadges)"
+  },
+  {
+    "en": "Show the desktop number for windows on other desktops",
+    "tr": "Başka masaüstündeki pencerelerde masaüstü numarasını göster",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:64",
+      "Sources/Riffle/Settings/SettingsSearch.swift:195",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:210"
+    ],
+    "code": "Toggle(L.t(\"Başka masaüstündeki pencerelerde masaüstü numarasını göster\", \"Show the desktop number for windows on other desktops\"), isOn: $prefs.showSpaceNumbers)"
+  },
+  {
+    "en": "Preview the selected window in place",
+    "tr": "Seçili pencereyi yerinde önizle",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:68",
+      "Sources/Riffle/Settings/SettingsSearch.swift:197",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:211"
+    ],
+    "code": "Text(L.t(\"Seçili pencereyi yerinde önizle\", \"Preview the selected window in place\"))"
+  },
+  {
+    "en": "The selected window appears at its real place and size on screen.",
+    "tr": "Seçtiğin pencere, ekrandaki gerçek yerinde ve gerçek boyutunda belirir.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:69",
+      "Sources/Riffle/Settings/SettingsSearch.swift:198"
+    ],
+    "code": "Text(L.t(\"Seçtiğin pencere, ekrandaki gerçek yerinde ve gerçek boyutunda belirir.\","
+  },
+  {
+    "en": "Details",
+    "tr": "Ayrıntılar",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:76",
+      "Sources/Riffle/Settings/SettingsSearch.swift:192"
+    ],
+    "code": "Text(L.t(\"Ayrıntılar\", \"Details\"))"
+  },
+  {
+    "en": "Switcher animations",
+    "tr": "Panel animasyonları",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:81",
+      "Sources/Riffle/Settings/SettingsSearch.swift:201",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:215"
+    ],
+    "code": "Text(L.t(\"Panel animasyonları\", \"Switcher animations\"))"
+  },
+  {
+    "en": "The selection gliding, cards fading and the switcher fading in. While “Reduce motion” is on in System Settings, only the fades remain.",
+    "tr": "Seçimin kayması, kartların solması ve panelin belirmesi. Sistem Ayarları'nda “Hareketi azalt” açıkken hareket durur, yalnızca yumuşak geçişler kalır.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:82",
+      "Sources/Riffle/Settings/SettingsSearch.swift:202"
+    ],
+    "code": "Text(L.t(\"Seçimin kayması, kartların solması ve panelin belirmesi. Sistem Ayarları'nda “Hareketi azalt” açıkken hareket durur, yalnızca yumuşak geçişler kalır.\","
+  },
+  {
+    "en": "Move the pointer to the middle of the window you switch to",
+    "tr": "İmleci, geçtiğin pencerenin ortasına taşı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:88",
+      "Sources/Riffle/Settings/SettingsSearch.swift:205",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:214"
+    ],
+    "code": "Toggle(L.t(\"İmleci, geçtiğin pencerenin ortasına taşı\", \"Move the pointer to the middle of the window you switch to\"),"
+  },
+  {
+    "en": "Motion",
+    "tr": "Hareket",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:92",
+      "Sources/Riffle/Settings/SettingsSearch.swift:200"
+    ],
+    "code": "Text(L.t(\"Hareket\", \"Motion\"))"
+  },
+  {
+    "en": "Preview the Switcher",
+    "tr": "Paneli Önizle",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/AppearanceSettingsView.swift:95",
+      "Sources/Riffle/Settings/SettingsSearch.swift:207"
+    ],
+    "code": "Button(L.t(\"Paneli Önizle\", \"Preview the Switcher\")) { SwitcherController.shared.showSticky() }"
+  },
+  {
+    "en": "Bundle ID",
+    "tr": "Paket kimliği",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:107",
+      "Sources/Riffle/Settings/SettingsSearch.swift:228"
+    ],
+    "code": "LabeledContent(L.t(\"Paket kimliği\", \"Bundle ID\")) {"
+  },
+  {
+    "en": "Exact",
+    "tr": "Tam",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:115",
+      "Sources/Riffle/Settings/SettingsSearch.swift:228"
+    ],
+    "code": "Text(L.t(\"Tam\", \"Exact\")).tag(false)"
+  },
+  {
+    "en": "Prefix",
+    "tr": "Önek",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:116",
+      "Sources/Riffle/Settings/SettingsSearch.swift:228"
+    ],
+    "code": "Text(L.t(\"Önek\", \"Prefix\")).tag(true)"
+  },
+  {
+    "en": "Hide from the switcher",
+    "tr": "Panelde gizle",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:124",
+      "Sources/Riffle/Settings/SettingsSearch.swift:229"
+    ],
+    "code": "Picker(L.t(\"Panelde gizle\", \"Hide from the switcher\"), selection: $exception.hiding) {"
+  },
+  {
+    "en": "Nothing",
+    "tr": "Hiçbir şeyi",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:125",
+      "Sources/Riffle/Settings/SettingsSearch.swift:230"
+    ],
+    "code": "Text(L.t(\"Hiçbir şeyi\", \"Nothing\")).tag(AppException.Hiding.nothing)"
+  },
+  {
+    "en": "All its windows",
+    "tr": "Tüm pencerelerini",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:126",
+      "Sources/Riffle/Settings/SettingsSearch.swift:230"
+    ],
+    "code": "Text(L.t(\"Tüm pencerelerini\", \"All its windows\")).tag(AppException.Hiding.allWindows)"
+  },
+  {
+    "en": "The app while it has no windows",
+    "tr": "Penceresi yokken uygulamayı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:127",
+      "Sources/Riffle/Settings/SettingsSearch.swift:231"
+    ],
+    "code": "Text(L.t(\"Penceresi yokken uygulamayı\", \"The app while it has no windows\")).tag(AppException.Hiding.whenWindowless)"
+  },
+  {
+    "en": "Windows whose title contains…",
+    "tr": "Başlığında şu geçen pencereleri…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:128",
+      "Sources/Riffle/Settings/SettingsSearch.swift:232"
+    ],
+    "code": "Text(L.t(\"Başlığında şu geçen pencereleri…\", \"Windows whose title contains…\")).tag(AppException.Hiding.titleContains)"
+  },
+  {
+    "en": "Text in the title",
+    "tr": "Başlıkta geçen metin",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:132",
+      "Sources/Riffle/Settings/SettingsSearch.swift:232"
+    ],
+    "code": "TextField(L.t(\"Başlıkta geçen metin\", \"Text in the title\"), text: $exception.titleText)"
+  },
+  {
+    "en": "Ignore Riffle's shortcuts while this app is in front",
+    "tr": "Öndeyken Riffle'ın kısayollarını yok say",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:134",
+      "Sources/Riffle/Settings/SettingsSearch.swift:234"
+    ],
+    "code": "Picker(L.t(\"Öndeyken Riffle'ın kısayollarını yok say\", \"Ignore Riffle's shortcuts while this app is in front\"),"
+  },
+  {
+    "en": "Never",
+    "tr": "Hiçbir zaman",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:136",
+      "Sources/Riffle/Settings/SettingsSearch.swift:235"
+    ],
+    "code": "Text(L.t(\"Hiçbir zaman\", \"Never\")).tag(AppException.ShortcutRule.never)"
+  },
+  {
+    "en": "Always",
+    "tr": "Her zaman",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:137",
+      "Sources/Riffle/Settings/SettingsSearch.swift:235"
+    ],
+    "code": "Text(L.t(\"Her zaman\", \"Always\")).tag(AppException.ShortcutRule.always)"
+  },
+  {
+    "en": "Only in full screen",
+    "tr": "Yalnızca tam ekrandayken",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:138",
+      "Sources/Riffle/Settings/SettingsSearch.swift:235"
+    ],
+    "code": "Text(L.t(\"Yalnızca tam ekrandayken\", \"Only in full screen\")).tag(AppException.ShortcutRule.whileFullscreen)"
+  },
+  {
+    "en": "Delete Exception",
+    "tr": "İstisnayı Sil",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:152",
+      "Sources/Riffle/Settings/ExceptionSettings.swift:153",
+      "Sources/Riffle/Settings/SettingsSearch.swift:226"
+    ],
+    "code": ".help(L.t(\"İstisnayı Sil\", \"Delete Exception\"))"
+  },
+  {
+    "en": "New exception",
+    "tr": "Yeni istisna",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:174",
+      "Sources/Riffle/Settings/SettingsSearch.swift:278"
+    ],
+    "code": "return id.isEmpty ? L.t(\"Yeni istisna\", \"New exception\") : id"
+  },
+  {
+    "en": "No exceptions yet. An exception can hide an app's windows from the switcher, or leave Riffle's shortcuts to an app such as a virtual machine while it's in front.",
+    "tr": "Henüz istisna yok. Bir istisna, bir uygulamanın pencerelerini panelde gizleyebilir ya da sanal makine gibi bir uygulama öndeyken Riffle'ın kısayollarını ona bırakabilir.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:25",
+      "Sources/Riffle/Settings/SettingsSearch.swift:211"
+    ],
+    "code": "Text(L.t(\"Henüz istisna yok. Bir istisna, bir uygulamanın pencerelerini panelde gizleyebilir ya da sanal makine gibi bir uygulama öndeyken Riffle'ın kısayollarını ona bırakabilir.\","
+  },
+  {
+    "en": "Add a Running App",
+    "tr": "Çalışan Uygulamalardan Ekle",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:37",
+      "Sources/Riffle/Settings/SettingsSearch.swift:210"
+    ],
+    "code": "Menu(L.t(\"Çalışan Uygulamalardan Ekle\", \"Add a Running App\")) {"
+  },
+  {
+    "en": "Other…",
+    "tr": "Diğer…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:45",
+      "Sources/Riffle/Settings/SettingsSearch.swift:214"
+    ],
+    "code": "Button(L.t(\"Diğer…\", \"Other…\")) { chooseApp() }"
+  },
+  {
+    "en": "Add Preset",
+    "tr": "Hazır Ayar Ekle",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:46",
+      "Sources/Riffle/Settings/SettingsSearch.swift:215"
+    ],
+    "code": "Menu(L.t(\"Hazır Ayar Ekle\", \"Add Preset\")) {"
+  },
+  {
+    "en": "Virtual machines and remote desktops",
+    "tr": "Sanal makineler ve uzak masaüstleri",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:47",
+      "Sources/Riffle/Settings/SettingsSearch.swift:216"
+    ],
+    "code": "Section(L.t(\"Sanal makineler ve uzak masaüstleri\", \"Virtual machines and remote desktops\")) {"
+  },
+  {
+    "en": "All Installed on This Mac",
+    "tr": "Bu Mac'te Olanların Hepsi",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:48",
+      "Sources/Riffle/Settings/SettingsSearch.swift:216"
+    ],
+    "code": "Button(L.t(\"Bu Mac'te Olanların Hepsi\", \"All Installed on This Mac\")) {"
+  },
+  {
+    "en": "A prefix also covers the apps under it: “com.microsoft” matches “com.microsoft.Word” too. While an app has Riffle's shortcuts, all of them go straight to it, ⌘⇥ included.",
+    "tr": "Önek, altındaki uygulamaları da kapsar: “com.microsoft”, “com.microsoft.Word” ile de eşleşir. Kısayollar bir uygulamaya bırakıldığında ⌘⇥ dahil hepsi doğrudan ona gider.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ExceptionSettings.swift:62",
+      "Sources/Riffle/Settings/SettingsSearch.swift:218"
+    ],
+    "code": "Text(L.t(\"Önek, altındaki uygulamaları da kapsar: “com.microsoft”, “com.microsoft.Word” ile de eşleşir. Kısayollar bir uygulamaya bırakıldığında ⌘⇥ dahil hepsi doğrudan ona gider.\","
+  },
+  {
+    "en": "Keys to hold: %1$@",
+    "tr": "Basılı tutulacak tuşlar: %1$@",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:110"
+    ],
+    "code": "L.f(\"Basılı tutulacak tuşlar: %1$@\", \"Keys to hold: %1$@\", modifiers.spokenNames.joined(separator: \" \"))"
+  },
+  {
+    "en": "%1$@ already has a fixed job in the switcher. Pick another key.",
+    "tr": "%1$@ panelde sabit bir iş görüyor. Başka bir tuş seç.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:138"
+    ],
+    "code": "return L.f(\"%1$@ panelde sabit bir iş görüyor. Başka bir tuş seç.\", \"%1$@ already has a fixed job in the switcher. Pick another key.\", key)"
+  },
+  {
+    "en": "%1$@ is the key of a Riffle shortcut. Pick another key.",
+    "tr": "%1$@ bir Riffle kısayolunun tuşu. Başka bir tuş seç.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:140"
+    ],
+    "code": "return L.f(\"%1$@ bir Riffle kısayolunun tuşu. Başka bir tuş seç.\", \"%1$@ is the key of a Riffle shortcut. Pick another key.\", key)"
+  },
+  {
+    "en": "%1$@ is one of the Vim keys. Pick another key.",
+    "tr": "%1$@ Vim tuşlarından biri. Başka bir tuş seç.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:142"
+    ],
+    "code": "return L.f(\"%1$@ Vim tuşlarından biri. Başka bir tuş seç.\", \"%1$@ is one of the Vim keys. Pick another key.\", key)"
+  },
+  {
+    "en": "%1$@ is already used for “%2$@”. Pick another key.",
+    "tr": "%1$@ zaten “%2$@” için kullanılıyor. Başka bir tuş seç.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:144"
+    ],
+    "code": "return L.f(\"%1$@ zaten “%2$@” için kullanılıyor. Başka bir tuş seç.\", \"%1$@ is already used for “%2$@”. Pick another key.\","
+  },
+  {
+    "en": "When you let go",
+    "tr": "Tuşları bırakınca",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:156",
+      "Sources/Riffle/Settings/SettingsSearch.swift:149"
+    ],
+    "code": "Picker(L.t(\"Tuşları bırakınca\", \"When you let go\"), selection: $profile.releaseBehavior) {"
+  },
+  {
+    "en": "Switch to the selected window",
+    "tr": "Seçili pencereye geç",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:157",
+      "Sources/Riffle/Settings/KeyboardSettings.swift:206",
+      "Sources/Riffle/Settings/SettingsSearch.swift:150",
+      "Sources/Riffle/Settings/SettingsSearch.swift:167"
+    ],
+    "code": "Text(L.t(\"Seçili pencereye geç\", \"Switch to the selected window\")).tag(ReleaseBehavior.switchToSelected)"
+  },
+  {
+    "en": "Keep the switcher open",
+    "tr": "Paneli açık tut",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:158",
+      "Sources/Riffle/Settings/SettingsSearch.swift:150"
+    ],
+    "code": "Text(L.t(\"Paneli açık tut\", \"Keep the switcher open\")).tag(ReleaseBehavior.keepOpen)"
+  },
+  {
+    "en": "Keep it open and search",
+    "tr": "Paneli açık tut ve ara",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:159",
+      "Sources/Riffle/Settings/SettingsSearch.swift:151"
+    ],
+    "code": "Text(L.t(\"Paneli açık tut ve ara\", \"Keep it open and search\")).tag(ReleaseBehavior.keepOpenAndSearch)"
+  },
+  {
+    "en": "Hold to go backwards",
+    "tr": "Basılı tutarken geri git",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:202",
+      "Sources/Riffle/Settings/SettingsSearch.swift:165"
+    ],
+    "code": "KeyReferenceRow(keys: \"⇧\", text: L.t(\"Basılı tutarken geri git\", \"Hold to go backwards\"))"
+  },
+  {
+    "en": "Move the selection",
+    "tr": "Seçimi taşı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:204",
+      "Sources/Riffle/Settings/SettingsSearch.swift:166"
+    ],
+    "code": "KeyReferenceRow(keys: \"← → ↑ ↓\", text: L.t(\"Seçimi taşı\", \"Move the selection\"))"
+  },
+  {
+    "en": "click",
+    "tr": "tık",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:206",
+      "Sources/Riffle/Settings/SettingsSearch.swift:167"
+    ],
+    "code": "KeyReferenceRow(keys: \"↩  /  \" + L.t(\"tık\", \"click\"), text: L.t(\"Seçili pencereye geç\", \"Switch to the selected window\"))"
+  },
+  {
+    "en": "Jump straight to that window",
+    "tr": "O sıradaki pencereye anında geç",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:208",
+      "Sources/Riffle/Settings/SettingsSearch.swift:168"
+    ],
+    "code": "KeyReferenceRow(keys: \"1 … 9\", text: L.t(\"O sıradaki pencereye anında geç\", \"Jump straight to that window\"))"
+  },
+  {
+    "en": "Cancel (clears the search first)",
+    "tr": "Vazgeç (aramadayken önce aramayı temizler)",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:216",
+      "Sources/Riffle/Settings/SettingsSearch.swift:170"
+    ],
+    "code": "KeyReferenceRow(keys: \"⎋\", text: L.t(\"Vazgeç (aramadayken önce aramayı temizler)\", \"Cancel (clears the search first)\"))"
+  },
+  {
+    "en": "Press a key…",
+    "tr": "Bir tuşa bas…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:22",
+      "Sources/Riffle/Settings/KeyboardSettings.swift:29"
+    ],
+    "code": "Text(isRecording ? L.t(\"Bir tuşa bas…\", \"Press a key…\") : KeyCodes.name(for: keyCode))"
+  },
+  {
+    "en": "Vim keys",
+    "tr": "Vim tuşları",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:220",
+      "Sources/Riffle/Settings/SettingsSearch.swift:171"
+    ],
+    "code": "Text(L.t(\"Vim tuşları\", \"Vim keys\"))"
+  },
+  {
+    "en": "While the switcher is open",
+    "tr": "Panel açıkken",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:232",
+      "Sources/Riffle/Settings/SettingsSearch.swift:164"
+    ],
+    "code": "Text(L.t(\"Panel açıkken\", \"While the switcher is open\"))"
+  },
+  {
+    "en": "Restore Default Keys",
+    "tr": "Varsayılan Tuşlara Dön",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:237",
+      "Sources/Riffle/Settings/SettingsSearch.swift:172"
+    ],
+    "code": "Button(L.t(\"Varsayılan Tuşlara Dön\", \"Restore Default Keys\")) {"
+  },
+  {
+    "en": "Press a key: ⌫ removes it, ⎋ cancels",
+    "tr": "Bir tuşa bas: ⌫ tuşu kaldırır, ⎋ vazgeçer",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:265",
+      "Sources/Riffle/Settings/KeyboardSettings.swift:286"
+    ],
+    "code": "Text(isRecording ? L.t(\"Bir tuşa bas: ⌫ tuşu kaldırır, ⎋ vazgeçer\", \"Press a key: ⌫ removes it, ⎋ cancels\") : slots[0].title)"
+  },
+  {
+    "en": "Key for “%1$@”: %2$@",
+    "tr": "“%1$@” tuşu: %2$@",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:291"
+    ],
+    "code": "L.f(\"“%1$@” tuşu: %2$@\", \"Key for “%1$@”: %2$@\", slot.name, key ?? L.t(\"Tuş yok\", \"No key\"))"
+  },
+  {
+    "en": "No key",
+    "tr": "Tuş yok",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:291"
+    ],
+    "code": "L.f(\"“%1$@” tuşu: %2$@\", \"Key for “%1$@”: %2$@\", slot.name, key ?? L.t(\"Tuş yok\", \"No key\"))"
+  },
+  {
+    "en": "H J K L move the selection too.",
+    "tr": "H J K L de seçimi taşır.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:295",
+      "Sources/Riffle/Settings/SettingsSearch.swift:171"
+    ],
+    "code": "let caption = L.t(\"H J K L de seçimi taşır.\", \"H J K L move the selection too.\")"
+  },
+  {
+    "en": "%1$@ no longer does “%2$@”; you can give that command another key.",
+    "tr": "%1$@ artık “%2$@” için kullanılmıyor; ona başka bir tuş verebilirsin.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:300"
+    ],
+    "code": "L.f(\"%1$@ artık “%2$@” için kullanılmıyor; ona başka bir tuş verebilirsin.\","
+  },
+  {
+    "en": "Can't turn on Vim keys: %1$@ is used for “%2$@”. Give it another key first.",
+    "tr": "Vim tuşları açılamadı: %1$@, “%2$@” için kullanılıyor. Önce ona başka bir tuş ver.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:311"
+    ],
+    "code": "problem = L.f(\"Vim tuşları açılamadı: %1$@, “%2$@” için kullanılıyor. Önce ona başka bir tuş ver.\","
+  },
+  {
+    "en": "Shortcut key: %1$@",
+    "tr": "Kısayol tuşu: %1$@",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:42"
+    ],
+    "code": "L.f(\"Kısayol tuşu: %1$@\", \"Shortcut key: %1$@\", KeyCodes.spokenName(for: keyCode))"
+  },
+  {
+    "en": "Press the keys…",
+    "tr": "Tuşlara bas…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:79"
+    ],
+    "code": "return pressed.isEmpty ? L.t(\"Tuşlara bas…\", \"Press the keys…\") : pressed.symbols"
+  },
+  {
+    "en": "Hold",
+    "tr": "Basılı tut",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/KeyboardSettings.swift:84",
+      "Sources/Riffle/Settings/SettingsSearch.swift:125"
+    ],
+    "code": "Text(L.t(\"Basılı tut\", \"Hold\"))"
+  },
+  {
+    "en": "Riffle Settings",
+    "tr": "Riffle Ayarları",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsAudit.swift:91",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:14",
+      "Sources/Riffle/Settings/SettingsWindow.swift:123"
+    ],
+    "code": "file: L.t(\"Riffle Ayarları\", \"Riffle Settings\") + \".json\")"
+  },
+  {
+    "en": "Appearance delay",
+    "tr": "Görünme gecikmesi",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:100",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:208",
+      "Sources/Riffle/Settings/SettingsWindow.swift:239"
+    ],
+    "code": "add(.general, L.t(\"Görünme gecikmesi\", \"Appearance delay\"), SettingsAnchor.delay, [AppearanceDelay.caption(for: Prefs.shared.profiles)])"
+  },
+  {
+    "en": "Show the switcher on",
+    "tr": "Panelin gösterileceği ekran",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:101",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:206",
+      "Sources/Riffle/Settings/SettingsWindow.swift:250"
+    ],
+    "code": "add(.general, L.t(\"Panelin gösterileceği ekran\", \"Show the switcher on\"), SettingsAnchor.screen, ["
+  },
+  {
+    "en": "Screen with the active window",
+    "tr": "Aktif pencerenin ekranı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:102",
+      "Sources/Riffle/Settings/SettingsWindow.swift:252"
+    ],
+    "code": "L.t(\"Farenin olduğu ekran\", \"Screen with the mouse\"), L.t(\"Aktif pencerenin ekranı\", \"Screen with the active window\"),"
+  },
+  {
+    "en": "Screen with the mouse",
+    "tr": "Farenin olduğu ekran",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:102",
+      "Sources/Riffle/Settings/SettingsWindow.swift:251"
+    ],
+    "code": "L.t(\"Farenin olduğu ekran\", \"Screen with the mouse\"), L.t(\"Aktif pencerenin ekranı\", \"Screen with the active window\"),"
+  },
+  {
+    "en": "Main screen",
+    "tr": "Ana ekran",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:103",
+      "Sources/Riffle/Settings/SettingsWindow.swift:253"
+    ],
+    "code": "L.t(\"Ana ekran\", \"Main screen\"),"
+  },
+  {
+    "en": "Interaction",
+    "tr": "Etkileşim",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:105",
+      "Sources/Riffle/Settings/SettingsWindow.swift:265"
+    ],
+    "code": "add(.general, L.t(\"Etkileşim\", \"Interaction\"), SettingsAnchor.hover)"
+  },
+  {
+    "en": "Select on mouse hover",
+    "tr": "Fareyle üzerine gelince seç",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:106",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:216",
+      "Sources/Riffle/Settings/SettingsWindow.swift:260"
+    ],
+    "code": "add(.general, L.t(\"Fareyle üzerine gelince seç\", \"Select on mouse hover\"), SettingsAnchor.hover)"
+  },
+  {
+    "en": "Subtle haptic feedback on selection",
+    "tr": "Seçim değişince hafif dokunsal geri bildirim",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:107",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:217",
+      "Sources/Riffle/Settings/SettingsWindow.swift:262"
+    ],
+    "code": "add(.general, L.t(\"Seçim değişince hafif dokunsal geri bildirim\", \"Subtle haptic feedback on selection\"), SettingsAnchor.haptics)"
+  },
+  {
+    "en": "Show Switcher Now",
+    "tr": "Paneli Şimdi Göster",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:108",
+      "Sources/Riffle/Settings/SettingsWindow.swift:269"
+    ],
+    "code": "add(.general, L.t(\"Paneli Şimdi Göster\", \"Show Switcher Now\"), SettingsAnchor.showNow)"
+  },
+  {
+    "en": "All Settings",
+    "tr": "Tüm Ayarlar",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:109",
+      "Sources/Riffle/Settings/SettingsWindow.swift:286"
+    ],
+    "code": "let allSettings = L.t(\"Tüm Ayarlar\", \"All Settings\")"
+  },
+  {
+    "en": "A settings file holds your shortcuts, switcher keys, exceptions, appearance and language: to keep, or to move to another Mac.",
+    "tr": "Ayar dosyası kısayolları, panel tuşlarını, istisnaları, görünümü ve dili taşır: saklamak ya da başka bir Mac'e geçirmek için.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:110",
+      "Sources/Riffle/Settings/SettingsWindow.swift:282"
+    ],
+    "code": "let fileCaption = L.t(\"Ayar dosyası kısayolları, panel tuşlarını, istisnaları, görünümü ve dili taşır: saklamak ya da başka bir Mac'e geçirmek için.\","
+  },
+  {
+    "en": "Export…",
+    "tr": "Dışa Aktar…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:113",
+      "Sources/Riffle/Settings/SettingsWindow.swift:276"
+    ],
+    "code": "add(.general, L.t(\"Dışa Aktar…\", \"Export…\"), SettingsAnchor.allSettings, [allSettings, fileCaption])"
+  },
+  {
+    "en": "Import…",
+    "tr": "İçe Aktar…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:114",
+      "Sources/Riffle/Settings/SettingsWindow.swift:277"
+    ],
+    "code": "add(.general, L.t(\"İçe Aktar…\", \"Import…\"), SettingsAnchor.allSettings, [allSettings, fileCaption])"
+  },
+  {
+    "en": "Reset all settings?",
+    "tr": "Tüm ayarlar sıfırlansın mı?",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:115",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:96"
+    ],
+    "code": "add(.general, L.t(\"Sıfırla…\", \"Reset…\"), SettingsAnchor.allSettings, [allSettings, L.t(\"Tüm ayarlar sıfırlansın mı?\", \"Reset all settings?\")])"
+  },
+  {
+    "en": "Reset…",
+    "tr": "Sıfırla…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:115",
+      "Sources/Riffle/Settings/SettingsWindow.swift:279"
+    ],
+    "code": "add(.general, L.t(\"Sıfırla…\", \"Reset…\"), SettingsAnchor.allSettings, [allSettings, L.t(\"Tüm ayarlar sıfırlansın mı?\", \"Reset all settings?\")])"
+  },
+  {
+    "en": "Hide",
+    "tr": "Gizle",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:118",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:94"
+    ],
+    "code": "let show = [L.t(\"Göster\", \"Show\"), L.t(\"Sonda göster\", \"Show at the end\"), L.t(\"Gizle\", \"Hide\")]"
+  },
+  {
+    "en": "Show",
+    "tr": "Göster",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:118",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:92"
+    ],
+    "code": "let show = [L.t(\"Göster\", \"Show\"), L.t(\"Sonda göster\", \"Show at the end\"), L.t(\"Gizle\", \"Hide\")]"
+  },
+  {
+    "en": "Show at the end",
+    "tr": "Sonda göster",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:118",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:93"
+    ],
+    "code": "let show = [L.t(\"Göster\", \"Show\"), L.t(\"Sonda göster\", \"Show at the end\"), L.t(\"Gizle\", \"Hide\")]"
+  },
+  {
+    "en": "Delete Shortcut",
+    "tr": "Kısayolu Sil",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:124",
+      "Sources/Riffle/Settings/SettingsWindow.swift:399",
+      "Sources/Riffle/Settings/SettingsWindow.swift:400"
+    ],
+    "code": "row(\"keys\", ShortcutOptionsView.title(for: profile), [L.t(\"Kısayolu Sil\", \"Delete Shortcut\")])"
+  },
+  {
+    "en": "Keys to hold",
+    "tr": "Basılı tutulacak tuşlar",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:126"
+    ],
+    "code": "L.t(\"Basılı tutulacak tuşlar\", \"Keys to hold\"),"
+  },
+  {
+    "en": "With ⌘⇥, macOS's own app switcher is turned off while Riffle runs and restored when it quits.",
+    "tr": "⌘⇥ seçildiğinde macOS'un kendi uygulama değiştiricisi kapatılır; Riffle kapanınca geri açılır.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:127",
+      "Sources/Riffle/Settings/SettingsWindow.swift:371"
+    ],
+    "code": "L.t(\"⌘⇥ seçildiğinde macOS'un kendi uygulama değiştiricisi kapatılır; Riffle kapanınca geri açılır.\","
+  },
+  {
+    "en": "Apps",
+    "tr": "Uygulamalar",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:130",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:8"
+    ],
+    "code": "row(\"apps\", L.t(\"Uygulamalar\", \"Apps\"), ["
+  },
+  {
+    "en": "All apps",
+    "tr": "Tüm uygulamalar",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:131",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:9"
+    ],
+    "code": "L.t(\"Tüm uygulamalar\", \"All apps\"), L.t(\"Yalnızca aktif uygulama\", \"Only the active app\"),"
+  },
+  {
+    "en": "Only the active app",
+    "tr": "Yalnızca aktif uygulama",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:131",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:10"
+    ],
+    "code": "L.t(\"Tüm uygulamalar\", \"All apps\"), L.t(\"Yalnızca aktif uygulama\", \"Only the active app\"),"
+  },
+  {
+    "en": "All but the active app",
+    "tr": "Aktif uygulama dışındakiler",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:132",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:11"
+    ],
+    "code": "L.t(\"Aktif uygulama dışındakiler\", \"All but the active app\"), L.t(\"İmlecin altındaki uygulama\", \"The app under the pointer\"),"
+  },
+  {
+    "en": "The app under the pointer",
+    "tr": "İmlecin altındaki uygulama",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:132",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:12"
+    ],
+    "code": "L.t(\"Aktif uygulama dışındakiler\", \"All but the active app\"), L.t(\"İmlecin altındaki uygulama\", \"The app under the pointer\"),"
+  },
+  {
+    "en": "Where",
+    "tr": "Konum",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:134",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:15"
+    ],
+    "code": "row(\"place\", L.t(\"Konum\", \"Where\"), ["
+  },
+  {
+    "en": "All desktops",
+    "tr": "Tüm masaüstleri",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:135",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:16"
+    ],
+    "code": "L.t(\"Tüm masaüstleri\", \"All desktops\"), L.t(\"Yalnızca bu masaüstü\", \"Only this desktop\"), L.t(\"Yalnızca bu ekran\", \"Only this screen\"),"
+  },
+  {
+    "en": "Only this desktop",
+    "tr": "Yalnızca bu masaüstü",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:135",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:17"
+    ],
+    "code": "L.t(\"Tüm masaüstleri\", \"All desktops\"), L.t(\"Yalnızca bu masaüstü\", \"Only this desktop\"), L.t(\"Yalnızca bu ekran\", \"Only this screen\"),"
+  },
+  {
+    "en": "Only this screen",
+    "tr": "Yalnızca bu ekran",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:135",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:18"
+    ],
+    "code": "L.t(\"Tüm masaüstleri\", \"All desktops\"), L.t(\"Yalnızca bu masaüstü\", \"Only this desktop\"), L.t(\"Yalnızca bu ekran\", \"Only this screen\"),"
+  },
+  {
+    "en": "Order",
+    "tr": "Sıralama",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:137",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:21"
+    ],
+    "code": "row(\"order\", L.t(\"Sıralama\", \"Order\"), ["
+  },
+  {
+    "en": "App launch order",
+    "tr": "Uygulamaların açılış sırası",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:138",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:23"
+    ],
+    "code": "L.t(\"Son kullanılan önce\", \"Recently used first\"), L.t(\"Uygulamaların açılış sırası\", \"App launch order\"),"
+  },
+  {
+    "en": "Recently used first",
+    "tr": "Son kullanılan önce",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:138",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:22"
+    ],
+    "code": "L.t(\"Son kullanılan önce\", \"Recently used first\"), L.t(\"Uygulamaların açılış sırası\", \"App launch order\"),"
+  },
+  {
+    "en": "Alphabetical",
+    "tr": "Alfabetik",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:139",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:24"
+    ],
+    "code": "L.t(\"Alfabetik\", \"Alphabetical\"), L.t(\"Masaüstüne göre\", \"By desktop\"),"
+  },
+  {
+    "en": "By desktop",
+    "tr": "Masaüstüne göre",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:139",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:25"
+    ],
+    "code": "L.t(\"Alfabetik\", \"Alphabetical\"), L.t(\"Masaüstüne göre\", \"By desktop\"),"
+  },
+  {
+    "en": "One window per app (the most recent)",
+    "tr": "Uygulama başına tek pencere (en son kullanılan)",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:141",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:28"
+    ],
+    "code": "row(\"onePerApp\", L.t(\"Uygulama başına tek pencere (en son kullanılan)\", \"One window per app (the most recent)\"))"
+  },
+  {
+    "en": "Minimized windows",
+    "tr": "Küçültülmüş pencereler",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:142",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:30"
+    ],
+    "code": "row(\"minimized\", L.t(\"Küçültülmüş pencereler\", \"Minimized windows\"), show)"
+  },
+  {
+    "en": "Windows of hidden apps",
+    "tr": "Gizli uygulamaların pencereleri",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:143",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:32"
+    ],
+    "code": "row(\"hiddenApps\", L.t(\"Gizli uygulamaların pencereleri\", \"Windows of hidden apps\"), show)"
+  },
+  {
+    "en": "Apps without windows",
+    "tr": "Penceresi olmayan uygulamalar",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:144",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:34"
+    ],
+    "code": "row(\"windowlessApps\", L.t(\"Penceresi olmayan uygulamalar\", \"Apps without windows\"), show)"
+  },
+  {
+    "en": "Show full-screen windows",
+    "tr": "Tam ekran pencereleri göster",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:145",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:37"
+    ],
+    "code": "row(\"fullscreen\", L.t(\"Tam ekran pencereleri göster\", \"Show full-screen windows\"))"
+  },
+  {
+    "en": "As in Appearance",
+    "tr": "Görünüm'deki gibi",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:146",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:40"
+    ],
+    "code": "row(\"style\", L.t(\"Stil\", \"Style\"), [L.t(\"Görünüm'deki gibi\", \"As in Appearance\")] + SwitcherStyle.allCases.map(ShortcutOptionsView.name))"
+  },
+  {
+    "en": "Open straight into search (stays open, like Spotlight)",
+    "tr": "Doğrudan aramayla aç (Spotlight gibi, açık kalır)",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:147",
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:46"
+    ],
+    "code": "row(\"search\", L.t(\"Doğrudan aramayla aç (Spotlight gibi, açık kalır)\", \"Open straight into search (stays open, like Spotlight)\"))"
+  },
+  {
+    "en": "Add Shortcut",
+    "tr": "Kısayol Ekle",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:155",
+      "Sources/Riffle/Settings/SettingsWindow.swift:321"
+    ],
+    "code": "add(.shortcuts, L.t(\"Kısayol Ekle\", \"Add Shortcut\"), SettingsAnchor.addShortcut, ["
+  },
+  {
+    "en": "Up to %1$@ shortcuts, each with its own keys and its own choice of windows. A new shortcut starts off: pick its keys, then turn it on.",
+    "tr": "En fazla %1$@ kısayol: her birinin kendi tuşları ve gösterdiği pencereler olur. Yeni kısayol kapalı başlar; tuşlarını seçip aç.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:156",
+      "Sources/Riffle/Settings/SettingsWindow.swift:330"
+    ],
+    "code": "L.f(\"En fazla %1$@ kısayol: her birinin kendi tuşları ve gösterdiği pencereler olur. Yeni kısayol kapalı başlar; tuşlarını seçip aç.\","
+  },
+  {
+    "en": "Accessibility",
+    "tr": "Erişilebilirlik",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:240",
+      "Sources/Riffle/Settings/SettingsWindow.swift:435",
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:180"
+    ],
+    "code": "add(.permissions, L.t(\"Erişilebilirlik\", \"Accessibility\"), SettingsAnchor.accessibility, ["
+  },
+  {
+    "en": "Required to find and focus windows and to notice when ⌥ is released.",
+    "tr": "Pencereleri bulmak, öne getirmek ve ⌥'nin bırakılmasını algılamak için gerekli.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:241",
+      "Sources/Riffle/Settings/SettingsWindow.swift:436"
+    ],
+    "code": "L.t(\"Pencereleri bulmak, öne getirmek ve ⌥'nin bırakılmasını algılamak için gerekli.\","
+  },
+  {
+    "en": "Grant…",
+    "tr": "İzin Ver…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:243",
+      "Sources/Riffle/Settings/SettingsSearch.swift:248",
+      "Sources/Riffle/Settings/SettingsWindow.swift:496",
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:290"
+    ],
+    "code": "L.t(\"İzin Ver…\", \"Grant…\"),"
+  },
+  {
+    "en": "Screen & System Audio Recording",
+    "tr": "Ekran ve Sistem Sesi Kaydı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:245",
+      "Sources/Riffle/Settings/SettingsWindow.swift:443",
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:188"
+    ],
+    "code": "add(.permissions, L.t(\"Ekran ve Sistem Sesi Kaydı\", \"Screen & System Audio Recording\"), SettingsAnchor.screenRecording, ["
+  },
+  {
+    "en": "For live thumbnails. Images stay in memory only; nothing is saved or sent.",
+    "tr": "Canlı önizlemeler için. Görüntüler yalnızca bellekte tutulur; hiçbir şey kaydedilmez ya da gönderilmez.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:246",
+      "Sources/Riffle/Settings/SettingsWindow.swift:444"
+    ],
+    "code": "L.t(\"Canlı önizlemeler için. Görüntüler yalnızca bellekte tutulur; hiçbir şey kaydedilmez ya da gönderilmez.\","
+  },
+  {
+    "en": "Restart Riffle",
+    "tr": "Riffle'ı Yeniden Başlat",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:250",
+      "Sources/Riffle/Settings/SettingsWindow.swift:465",
+      "Sources/Riffle/Settings/SettingsWindow.swift:468",
+      "Sources/Riffle/App/AppDelegate.swift:392",
+      "Sources/Riffle/Onboarding/OnboardingWindow.swift:242"
+    ],
+    "code": "add(.permissions, L.t(\"Riffle'ı Yeniden Başlat\", \"Restart Riffle\"), SettingsAnchor.screenRecording, [PermissionText.restartForPreviews])"
+  },
+  {
+    "en": "Version %1$@ (%2$@)",
+    "tr": "Sürüm %1$@ (%2$@)",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:253",
+      "Sources/Riffle/Settings/SettingsWindow.swift:517"
+    ],
+    "code": "add(.about, L.f(\"Sürüm %1$@ (%2$@)\", \"Version %1$@ (%2$@)\", AppInfo.version, AppInfo.build), SettingsAnchor.version, ["
+  },
+  {
+    "en": "A fast window switcher for macOS. Every window, every desktop, one shortcut.",
+    "tr": "macOS için hızlı bir pencere değiştirici. Her pencere, her masaüstü, tek kısayol.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:254",
+      "Sources/Riffle/Settings/SettingsWindow.swift:520"
+    ],
+    "code": "\"Riffle\", L.t(\"macOS için hızlı bir pencere değiştirici. Her pencere, her masaüstü, tek kısayol.\","
+  },
+  {
+    "en": "apps",
+    "tr": "uygulama",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:258",
+      "Sources/Riffle/Settings/SettingsWindow.swift:526"
+    ],
+    "code": "for label in [L.t(\"pencere\", \"windows\"), L.t(\"uygulama\", \"apps\"), L.t(\"masaüstü\", \"desktops\"), L.t(\"son tarama\", \"last scan\")] {"
+  },
+  {
+    "en": "desktops",
+    "tr": "masaüstü",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:258",
+      "Sources/Riffle/Settings/SettingsWindow.swift:527"
+    ],
+    "code": "for label in [L.t(\"pencere\", \"windows\"), L.t(\"uygulama\", \"apps\"), L.t(\"masaüstü\", \"desktops\"), L.t(\"son tarama\", \"last scan\")] {"
+  },
+  {
+    "en": "last scan",
+    "tr": "son tarama",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:258",
+      "Sources/Riffle/Settings/SettingsWindow.swift:528"
+    ],
+    "code": "for label in [L.t(\"pencere\", \"windows\"), L.t(\"uygulama\", \"apps\"), L.t(\"masaüstü\", \"desktops\"), L.t(\"son tarama\", \"last scan\")] {"
+  },
+  {
+    "en": "windows",
+    "tr": "pencere",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:258",
+      "Sources/Riffle/Settings/SettingsWindow.swift:525"
+    ],
+    "code": "for label in [L.t(\"pencere\", \"windows\"), L.t(\"uygulama\", \"apps\"), L.t(\"masaüstü\", \"desktops\"), L.t(\"son tarama\", \"last scan\")] {"
+  },
+  {
+    "en": "update",
+    "tr": "güncelleme",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:261"
+    ],
+    "code": "add(.about, UpdateText.check, SettingsAnchor.updates, [L.t(\"güncelleme\", \"update\")])"
+  },
+  {
+    "en": "Check for updates automatically",
+    "tr": "Güncellemeleri otomatik olarak denetle",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:262",
+      "Sources/Riffle/Settings/SettingsWindow.swift:540"
+    ],
+    "code": "add(.about, L.t(\"Güncellemeleri otomatik olarak denetle\", \"Check for updates automatically\"), SettingsAnchor.automaticUpdates, ["
+  },
+  {
+    "en": "Once a day, Riffle checks appriffle.com for a newer version and asks you before installing it. Nothing about your windows is ever sent.",
+    "tr": "Riffle günde bir kez appriffle.com'da daha yeni bir sürüm olup olmadığına bakar ve yüklemeden önce sana sorar. Pencerelerinle ilgili hiçbir şey gönderilmez.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:263",
+      "Sources/Riffle/Settings/SettingsWindow.swift:543"
+    ],
+    "code": "L.t(\"Riffle günde bir kez appriffle.com'da daha yeni bir sürüm olup olmadığına bakar ve yüklemeden önce sana sorar. Pencerelerinle ilgili hiçbir şey gönderilmez.\","
+  },
+  {
+    "en": "Show Log in Finder",
+    "tr": "Günlüğü Finder'da Göster",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:266",
+      "Sources/Riffle/Settings/SettingsWindow.swift:536"
+    ],
+    "code": "add(.about, L.t(\"Günlüğü Finder'da Göster\", \"Show Log in Finder\"), SettingsAnchor.log)"
+  },
+  {
+    "en": "Questions or problems? Write to %1$@.",
+    "tr": "Soru ya da sorun için %1$@ adresine yaz.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:267",
+      "Sources/Riffle/Settings/SettingsWindow.swift:567"
+    ],
+    "code": "add(.about, L.f(\"Soru ya da sorun için %1$@ adresine yaz.\", \"Questions or problems? Write to %1$@.\", Support.address), SettingsAnchor.support, ["
+  },
+  {
+    "en": "email",
+    "tr": "e-posta",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:268"
+    ],
+    "code": "L.t(\"destek\", \"support\"), L.t(\"yardım\", \"help\"), L.t(\"e-posta\", \"email\"),"
+  },
+  {
+    "en": "help",
+    "tr": "yardım",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:268"
+    ],
+    "code": "L.t(\"destek\", \"support\"), L.t(\"yardım\", \"help\"), L.t(\"e-posta\", \"email\"),"
+  },
+  {
+    "en": "support",
+    "tr": "destek",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:268"
+    ],
+    "code": "L.t(\"destek\", \"support\"), L.t(\"yardım\", \"help\"), L.t(\"e-posta\", \"email\"),"
+  },
+  {
+    "en": "Launch at login",
+    "tr": "Girişte başlat",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:96",
+      "Sources/Riffle/Settings/SettingsWindow.swift:223"
+    ],
+    "code": "add(.general, L.t(\"Girişte başlat\", \"Launch at login\"), SettingsAnchor.launchAtLogin)"
+  },
+  {
+    "en": "Show in menu bar",
+    "tr": "Menü çubuğunda göster",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:97",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:218",
+      "Sources/Riffle/Settings/SettingsWindow.swift:227"
+    ],
+    "code": "add(.general, L.t(\"Menü çubuğunda göster\", \"Show in menu bar\"), SettingsAnchor.menuBar)"
+  },
+  {
+    "en": "Language",
+    "tr": "Dil",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:98",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:207",
+      "Sources/Riffle/Settings/SettingsWindow.swift:229"
+    ],
+    "code": "add(.general, L.t(\"Dil\", \"Language\"), SettingsAnchor.language, AppLanguage.pickerOrder.map(\\.nativeName))"
+  },
+  {
+    "en": "Behavior",
+    "tr": "Davranış",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsSearch.swift:99",
+      "Sources/Riffle/Settings/SettingsWindow.swift:257"
+    ],
+    "code": "add(.general, L.t(\"Davranış\", \"Behavior\"), SettingsAnchor.delay)"
+  },
+  {
+    "en": "Cancel",
+    "tr": "Vazgeç",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:103",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:113"
+    ],
+    "code": "alert.addButton(withTitle: L.t(\"Vazgeç\", \"Cancel\")).keyEquivalent = \"\\r\""
+  },
+  {
+    "en": "Import “%1$@”?",
+    "tr": "“%1$@” içe aktarılsın mı?",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:109"
+    ],
+    "code": "alert.messageText = L.f(\"“%1$@” içe aktarılsın mı?\", \"Import “%1$@”?\", file)"
+  },
+  {
+    "en": "Your current settings are backed up first.",
+    "tr": "Şimdiki ayarların önce yedeklenir.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:110"
+    ],
+    "code": "let lines = changes.map { \"•  \" + describe($0) } + [\"\", L.sentences([origin(of: archive), L.t(\"Şimdiki ayarların önce yedeklenir.\", \"Your current settings are backed up first.\")])]"
+  },
+  {
+    "en": "Import",
+    "tr": "İçe Aktar",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:112"
+    ],
+    "code": "alert.addButton(withTitle: L.t(\"İçe Aktar\", \"Import\"))"
+  },
+  {
+    "en": "This file can't be imported",
+    "tr": "Bu dosya içe aktarılamıyor",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:118"
+    ],
+    "code": "failure(title ?? L.t(\"Bu dosya içe aktarılamıyor\", \"This file can't be imported\"),"
+  },
+  {
+    "en": "Your settings weren't changed.",
+    "tr": "Ayarların değişmedi.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:119",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:123"
+    ],
+    "code": "detail: L.sentences([explanation(of: problem), L.t(\"Ayarların değişmedi.\", \"Your settings weren't changed.\")]))"
+  },
+  {
+    "en": "The backup couldn't be saved",
+    "tr": "Yedek kaydedilemedi",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:123"
+    ],
+    "code": "failure(L.t(\"Yedek kaydedilemedi\", \"The backup couldn't be saved\"), detail: L.t(\"Ayarların değişmedi.\", \"Your settings weren't changed.\"))"
+  },
+  {
+    "en": "The settings in this file are the same as yours",
+    "tr": "Bu dosyadaki ayarlar şimdikilerle aynı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:128"
+    ],
+    "code": "alert.messageText = L.t(\"Bu dosyadaki ayarlar şimdikilerle aynı\", \"The settings in this file are the same as yours\")"
+  },
+  {
+    "en": "OK",
+    "tr": "Tamam",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:129",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:138",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:266",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:296"
+    ],
+    "code": "alert.addButton(withTitle: L.t(\"Tamam\", \"OK\"))"
+  },
+  {
+    "en": "Shortcuts: %1$@, with new settings",
+    "tr": "Kısayollar: %1$@, ayarları değişiyor",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:145"
+    ],
+    "code": "return from == to ? L.f(\"Kısayollar: %1$@, ayarları değişiyor\", \"Shortcuts: %1$@, with new settings\", to)"
+  },
+  {
+    "en": "Shortcuts: %1$@ → %2$@",
+    "tr": "Kısayollar: %1$@ → %2$@",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:146"
+    ],
+    "code": ": L.f(\"Kısayollar: %1$@ → %2$@\", \"Shortcuts: %1$@ → %2$@\", from, to)"
+  },
+  {
+    "en": "Exceptions: %1$@, with new settings",
+    "tr": "İstisnalar: %1$@, ayarları değişiyor",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:148"
+    ],
+    "code": "return from == to ? L.f(\"İstisnalar: %1$@, ayarları değişiyor\", \"Exceptions: %1$@, with new settings\", to)"
+  },
+  {
+    "en": "Exceptions: %1$@ → %2$@",
+    "tr": "İstisnalar: %1$@ → %2$@",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:149"
+    ],
+    "code": ": L.f(\"İstisnalar: %1$@ → %2$@\", \"Exceptions: %1$@ → %2$@\", from, to)"
+  },
+  {
+    "en": "Switcher keys change",
+    "tr": "Panel tuşları değişiyor",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:151"
+    ],
+    "code": "return L.t(\"Panel tuşları değişiyor\", \"Switcher keys change\")"
+  },
+  {
+    "en": "Appearance settings change",
+    "tr": "Görünüm ayarları değişiyor",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:153"
+    ],
+    "code": "return L.t(\"Görünüm ayarları değişiyor\", \"Appearance settings change\")"
+  },
+  {
+    "en": "General settings change",
+    "tr": "Genel ayarlar değişiyor",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:155"
+    ],
+    "code": "return L.t(\"Genel ayarlar değişiyor\", \"General settings change\")"
+  },
+  {
+    "en": "Language: %1$@ → %2$@",
+    "tr": "Dil: %1$@ → %2$@",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:157"
+    ],
+    "code": "return L.f(\"Dil: %1$@ → %2$@\", \"Language: %1$@ → %2$@\", from.nativeName, to.nativeName)"
+  },
+  {
+    "en": "Exported from Riffle %1$@.",
+    "tr": "Riffle %1$@ ile dışa aktarıldı.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:164"
+    ],
+    "code": "return L.f(\"Riffle %1$@ ile dışa aktarıldı.\", \"Exported from Riffle %1$@.\", archive.appVersion)"
+  },
+  {
+    "en": "Exported from Riffle %1$@ on %2$@.",
+    "tr": "Riffle %1$@ ile %2$@ tarihinde dışa aktarıldı.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:170"
+    ],
+    "code": "return L.f(\"Riffle %1$@ ile %2$@ tarihinde dışa aktarıldı.\", \"Exported from Riffle %1$@ on %2$@.\", archive.appVersion,"
+  },
+  {
+    "en": "The file couldn't be read.",
+    "tr": "Dosya okunamadı.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:177"
+    ],
+    "code": "return L.t(\"Dosya okunamadı.\", \"The file couldn't be read.\")"
+  },
+  {
+    "en": "The file is damaged, or isn't a Riffle settings file.",
+    "tr": "Dosya bozuk ya da bir Riffle ayar dosyası değil.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:179"
+    ],
+    "code": "return L.t(\"Dosya bozuk ya da bir Riffle ayar dosyası değil.\", \"The file is damaged, or isn't a Riffle settings file.\")"
+  },
+  {
+    "en": "This isn't a Riffle settings file.",
+    "tr": "Bu bir Riffle ayar dosyası değil.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:181"
+    ],
+    "code": "return L.t(\"Bu bir Riffle ayar dosyası değil.\", \"This isn't a Riffle settings file.\")"
+  },
+  {
+    "en": "The file was saved by a newer version of Riffle: %1$@. Update Riffle to import it.",
+    "tr": "Dosya, Riffle'ın daha yeni bir sürümüyle kaydedilmiş: %1$@. İçe aktarmak için Riffle'ı güncelle.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:183"
+    ],
+    "code": "return L.f(\"Dosya, Riffle'ın daha yeni bir sürümüyle kaydedilmiş: %1$@. İçe aktarmak için Riffle'ı güncelle.\","
+  },
+  {
+    "en": "The file is incomplete; it's missing: %1$@.",
+    "tr": "Dosya eksik; içinde şunlar yok: %1$@.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:186"
+    ],
+    "code": "return L.f(\"Dosya eksik; içinde şunlar yok: %1$@.\", \"The file is incomplete; it's missing: %1$@.\","
+  },
+  {
+    "en": "The file is damaged: “%1$@” can't be read.",
+    "tr": "Dosya bozuk: “%1$@” okunamıyor.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:189"
+    ],
+    "code": "return L.f(\"Dosya bozuk: “%1$@” okunamıyor.\", \"The file is damaged: “%1$@” can't be read.\", name(of: key.rawValue))"
+  },
+  {
+    "en": "The file is damaged.",
+    "tr": "Dosya bozuk.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:191"
+    ],
+    "code": "return L.t(\"Dosya bozuk.\", \"The file is damaged.\")"
+  },
+  {
+    "en": "A shortcut in the file has no ⌃, ⌥ or ⌘ to hold: its key would switch windows in every app instead of typing.",
+    "tr": "Dosyadaki bir kısayolda basılı tutulacak ⌃, ⌥ ya da ⌘ yok: tuşu her uygulamada yazı yazmak yerine pencere değiştirirdi.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:193"
+    ],
+    "code": "return L.t(\"Dosyadaki bir kısayolda basılı tutulacak ⌃, ⌥ ya da ⌘ yok: tuşu her uygulamada yazı yazmak yerine pencere değiştirirdi.\","
+  },
+  {
+    "en": "The settings couldn't be exported",
+    "tr": "Ayarlar dışa aktarılamadı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:20"
+    ],
+    "code": "show(failure(L.t(\"Ayarlar dışa aktarılamadı\", \"The settings couldn't be exported\"), detail: error.localizedDescription), in: window)"
+  },
+  {
+    "en": "Shortcuts",
+    "tr": "Kısayollar",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:201",
+      "Sources/Riffle/Settings/SettingsWindow.swift:12"
+    ],
+    "code": "case \"profiles\": return L.t(\"Kısayollar\", \"Shortcuts\")"
+  },
+  {
+    "en": "Exceptions",
+    "tr": "İstisnalar",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:219",
+      "Sources/Riffle/Settings/SettingsWindow.swift:14"
+    ],
+    "code": "case \"appExceptions\", \"excludedBundleIDs\": return L.t(\"İstisnalar\", \"Exceptions\")"
+  },
+  {
+    "en": "Switcher keys",
+    "tr": "Panel tuşları",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:220"
+    ],
+    "code": "case \"panelKeys\": return L.t(\"Panel tuşları\", \"Switcher keys\")"
+  },
+  {
+    "en": "Pause Shortcuts",
+    "tr": "Kısayolları Duraklat",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:221",
+      "Sources/Riffle/App/AppDelegate.swift:406"
+    ],
+    "code": "case \"shortcutsPaused\": return L.t(\"Kısayolları Duraklat\", \"Pause Shortcuts\")"
+  },
+  {
+    "en": "Some settings couldn't be read",
+    "tr": "Bazı ayarlar okunamadı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:257"
+    ],
+    "code": "title: L.t(\"Bazı ayarlar okunamadı\", \"Some settings couldn't be read\"),"
+  },
+  {
+    "en": "Back to their defaults: %1$@. The values that couldn't be read were kept in the Recovered folder.",
+    "tr": "Varsayılana dönen ayarlar: %1$@. Okunamayan değerler, Recovered klasöründe saklandı.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:258"
+    ],
+    "code": "detail: L.f(\"Varsayılana dönen ayarlar: %1$@. Okunamayan değerler, Recovered klasöründe saklandı.\","
+  },
+  {
+    "en": "Show in Finder",
+    "tr": "Finder'da Göster",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:263",
+      "Sources/Riffle/Settings/SettingsTransfer.swift:292"
+    ],
+    "code": "Button(L.t(\"Finder'da Göster\", \"Show in Finder\")) {"
+  },
+  {
+    "en": "All settings were reset",
+    "tr": "Tüm ayarlar sıfırlandı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:286"
+    ],
+    "code": "title: previous.reason == .reset ? L.t(\"Tüm ayarlar sıfırlandı\", \"All settings were reset\")"
+  },
+  {
+    "en": "Settings were imported",
+    "tr": "Ayarlar içe aktarıldı",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:287"
+    ],
+    "code": ": L.t(\"Ayarlar içe aktarıldı\", \"Settings were imported\"),"
+  },
+  {
+    "en": "Your previous settings were saved in a backup, so you can restore them.",
+    "tr": "Önceki ayarların bir yedeğe kaydedildi; istersen geri yükleyebilirsin.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:288"
+    ],
+    "code": "detail: L.t(\"Önceki ayarların bir yedeğe kaydedildi; istersen geri yükleyebilirsin.\","
+  },
+  {
+    "en": "Restore Previous Settings",
+    "tr": "Önceki Ayarları Geri Yükle",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:293"
+    ],
+    "code": "Button(L.t(\"Önceki Ayarları Geri Yükle\", \"Restore Previous Settings\")) {"
+  },
+  {
+    "en": "The previous settings couldn't be restored",
+    "tr": "Önceki ayarlar geri yüklenemedi",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:57"
+    ],
+    "code": "show(refusal(problem, title: L.t(\"Önceki ayarlar geri yüklenemedi\", \"The previous settings couldn't be restored\")), in: window)"
+  },
+  {
+    "en": "Your shortcuts, switcher keys, exceptions, appearance and general settings, and the language, go back to their defaults. Your current settings are backed up first, so you can restore them. Permissions and launch at login stay as they are.",
+    "tr": "Kısayollar, panel tuşları, istisnalar, görünüm ve genel ayarlar ile dil varsayılanlarına döner. Önce şimdiki ayarların yedeklenir; istersen geri yükleyebilirsin. İzinler ve girişte başlatma olduğu gibi kalır.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:97"
+    ],
+    "code": "alert.informativeText = L.t(\"Kısayollar, panel tuşları, istisnalar, görünüm ve genel ayarlar ile dil varsayılanlarına döner. Önce şimdiki ayarların yedeklenir; istersen geri yükleyebilirsin. İzinler ve girişte başlatma olduğu gibi kalır.\","
+  },
+  {
+    "en": "Reset",
+    "tr": "Sıfırla",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsTransfer.swift:99"
+    ],
+    "code": "let reset = alert.addButton(withTitle: L.t(\"Sıfırla\", \"Reset\"))"
+  },
+  {
+    "en": "General",
+    "tr": "Genel",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsWindow.swift:11"
+    ],
+    "code": "case .general: return L.t(\"Genel\", \"General\")"
+  },
+  {
+    "en": "Appearance",
+    "tr": "Görünüm",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsWindow.swift:13"
+    ],
+    "code": "case .appearance: return L.t(\"Görünüm\", \"Appearance\")"
+  },
+  {
+    "en": "Permissions",
+    "tr": "İzinler",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsWindow.swift:15"
+    ],
+    "code": "case .permissions: return L.t(\"İzinler\", \"Permissions\")"
+  },
+  {
+    "en": "No Results",
+    "tr": "Sonuç Yok",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsWindow.swift:159"
+    ],
+    "code": "Text(L.t(\"Sonuç Yok\", \"No Results\")).foregroundStyle(.secondary)"
+  },
+  {
+    "en": "About",
+    "tr": "Hakkında",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsWindow.swift:16"
+    ],
+    "code": "case .about: return L.t(\"Hakkında\", \"About\")"
+  },
+  {
+    "en": "Search Settings",
+    "tr": "Ayarlarda Ara",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsWindow.swift:162"
+    ],
+    "code": ".searchable(text: $navigation.query, placement: .sidebar, prompt: Text(L.t(\"Ayarlarda Ara\", \"Search Settings\")))"
+  },
+  {
+    "en": "A quick %1$@ tap switches to the previous window without ever showing the switcher. This sets when the switcher appears.",
+    "tr": "Hızlı bir %1$@ dokunuşunda panel hiç görünmeden önceki pencereye geçilir. Bu süre, panelin ne zaman belireceğini belirler.",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsWindow.swift:298"
+    ],
+    "code": "L.f(\"Hızlı bir %1$@ dokunuşunda panel hiç görünmeden önceki pencereye geçilir. Bu süre, panelin ne zaman belireceğini belirler.\","
+  },
+  {
+    "en": "%1$@ of %2$@",
+    "tr": "%1$@ / %2$@",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsWindow.swift:325"
+    ],
+    "code": "Text(L.f(\"%1$@ / %2$@\", \"%1$@ of %2$@\", prefs.profiles.count, ShortcutProfile.maximum))"
+  },
+  {
+    "en": "Another Riffle shortcut already uses these keys, so this one doesn't work. Pick other keys.",
+    "tr": "Bu tuşları başka bir Riffle kısayolu kullanıyor, bu kısayol çalışmıyor. Başka tuşlar seç.",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsWindow.swift:361"
+    ],
+    "code": "Label(L.t(\"Bu tuşları başka bir Riffle kısayolu kullanıyor, bu kısayol çalışmıyor. Başka tuşlar seç.\","
+  },
+  {
+    "en": "Another app already uses this shortcut (%1$@).",
+    "tr": "Bu kısayolu başka bir uygulama kullanıyor (%1$@).",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Settings/SettingsWindow.swift:366"
+    ],
+    "code": "Label(L.f(\"Bu kısayolu başka bir uygulama kullanıyor (%1$@).\", \"Another app already uses this shortcut (%1$@).\", failure),"
+  },
+  {
+    "en": "Windows of the active app",
+    "tr": "Aktif uygulamanın pencereleri",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:64"
+    ],
+    "code": "case .activeApp: title = L.t(\"Aktif uygulamanın pencereleri\", \"Windows of the active app\")"
+  },
+  {
+    "en": "Windows of the other apps",
+    "tr": "Diğer uygulamaların pencereleri",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:65"
+    ],
+    "code": "case .otherApps: title = L.t(\"Diğer uygulamaların pencereleri\", \"Windows of the other apps\")"
+  },
+  {
+    "en": "Windows of the app under the pointer",
+    "tr": "İmlecin altındaki uygulamanın pencereleri",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:66"
+    ],
+    "code": "case .appUnderPointer: title = L.t(\"İmlecin altındaki uygulamanın pencereleri\", \"Windows of the app under the pointer\")"
+  },
+  {
+    "en": "All windows",
+    "tr": "Tüm pencereler",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:69"
+    ],
+    "code": "case .allDesktops: title = L.t(\"Tüm pencereler\", \"All windows\")"
+  },
+  {
+    "en": "Windows on this desktop",
+    "tr": "Bu masaüstündeki pencereler",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:70"
+    ],
+    "code": "case .thisDesktop: title = L.t(\"Bu masaüstündeki pencereler\", \"Windows on this desktop\")"
+  },
+  {
+    "en": "Windows on this screen",
+    "tr": "Bu ekrandaki pencereler",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:71"
+    ],
+    "code": "case .thisScreen: title = L.t(\"Bu ekrandaki pencereler\", \"Windows on this screen\")"
+  },
+  {
+    "en": " · this desktop",
+    "tr": " · bu masaüstü",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:77"
+    ],
+    "code": "case .thisDesktop: title += L.t(\" · bu masaüstü\", \" · this desktop\")"
+  },
+  {
+    "en": " · this screen",
+    "tr": " · bu ekran",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:78"
+    ],
+    "code": "case .thisScreen: title += L.t(\" · bu ekran\", \" · this screen\")"
+  },
+  {
+    "en": " · search",
+    "tr": " · arama",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Settings/ShortcutOptionsView.swift:81"
+    ],
+    "code": "return profile.startInSearch ? title + L.t(\" · arama\", \" · search\") : title"
+  },
+  {
+    "en": "No open windows — press ↩ to open one",
+    "tr": "Açık penceresi yok — ↩ ile yeni pencere aç",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/HeroView.swift:197"
+    ],
+    "code": "? L.t(\"Açık penceresi yok — ↩ ile yeni pencere aç\", \"No open windows — press ↩ to open one\")"
+  },
+  {
+    "en": "Preparing preview…",
+    "tr": "Önizleme hazırlanıyor…",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/HeroView.swift:198"
+    ],
+    "code": ": L.t(\"Önizleme hazırlanıyor…\", \"Preparing preview…\")"
+  },
+  {
+    "en": "Desktop %1$@",
+    "tr": "Masaüstü %1$@",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Switcher/HeroView.swift:233"
+    ],
+    "code": "result.append(Chip(symbol: \"square.on.square\", text: L.f(\"Masaüstü %1$@\", \"Desktop %1$@\", space), rightToLeft: rightToLeft))"
+  },
+  {
+    "en": "Full screen",
+    "tr": "Tam ekran",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/HeroView.swift:236",
+      "Sources/Riffle/Switcher/TileView.swift:537",
+      "Sources/Riffle/Switcher/TileView.swift:578",
+      "Sources/Riffle/Switcher/TileView.swift:801",
+      "Sources/Riffle/Switcher/TitleFormat.swift:82"
+    ],
+    "code": "result.append(Chip(symbol: \"arrow.up.left.and.arrow.down.right\", text: L.t(\"Tam ekran\", \"Full screen\"), rightToLeft: rightToLeft))"
+  },
+  {
+    "en": "Minimized",
+    "tr": "Küçültülmüş",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/HeroView.swift:238",
+      "Sources/Riffle/Switcher/TileView.swift:535",
+      "Sources/Riffle/Switcher/TileView.swift:576",
+      "Sources/Riffle/Switcher/TitleFormat.swift:80"
+    ],
+    "code": "if item.isMinimized { result.append(Chip(symbol: \"dock.arrow.down.rectangle\", text: L.t(\"Küçültülmüş\", \"Minimized\"), rightToLeft: rightToLeft)) }"
+  },
+  {
+    "en": "Hidden",
+    "tr": "Gizli",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/HeroView.swift:239",
+      "Sources/Riffle/Switcher/TileView.swift:536",
+      "Sources/Riffle/Switcher/TitleFormat.swift:81"
+    ],
+    "code": "if item.isHidden { result.append(Chip(symbol: \"eye.slash\", text: L.t(\"Gizli\", \"Hidden\"), rightToLeft: rightToLeft)) }"
+  },
+  {
+    "en": "No windows",
+    "tr": "Pencere yok",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/HeroView.swift:240"
+    ],
+    "code": "if item.isWindowless { result.append(Chip(symbol: \"moon.zzz\", text: L.t(\"Pencere yok\", \"No windows\"), rightToLeft: rightToLeft)) }"
+  },
+  {
+    "en": "Search windows",
+    "tr": "Pencerelerde ara",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/SwitcherUI.swift:613"
+    ],
+    "code": "searchBar.field.setAccessibilityLabel(L.t(\"Pencerelerde ara\", \"Search windows\"))"
+  },
+  {
+    "en": "%1$@ of %2$@ windows",
+    "tr": "%1$@ / %2$@ pencere",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Switcher/SwitcherUI.swift:619"
+    ],
+    "code": "? L.f(\"%1$@ / %2$@ pencere\", \"%1$@ of %2$@ windows\", items.count, max(total ?? items.count, items.count)) : \"\""
+  },
+  {
+    "en": "No matching windows",
+    "tr": "Eşleşen pencere yok",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/SwitcherUI.swift:621"
+    ],
+    "code": "emptyLabel.stringValue = searching ? L.t(\"Eşleşen pencere yok\", \"No matching windows\") : L.t(\"Açık pencere yok\", \"No open windows\")"
+  },
+  {
+    "en": "No open windows",
+    "tr": "Açık pencere yok",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/SwitcherUI.swift:621",
+      "Sources/Riffle/Switcher/TileView.swift:575",
+      "Sources/Riffle/Switcher/TileView.swift:748",
+      "Sources/Riffle/Switcher/TitleFormat.swift:51",
+      "Sources/Riffle/Switcher/TitleFormat.swift:76"
+    ],
+    "code": "emptyLabel.stringValue = searching ? L.t(\"Eşleşen pencere yok\", \"No matching windows\") : L.t(\"Açık pencere yok\", \"No open windows\")"
+  },
+  {
+    "en": "On desktop %1$@",
+    "tr": "%1$@. masaüstünde",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Switcher/TileView.swift:539",
+      "Sources/Riffle/Switcher/TileView.swift:580",
+      "Sources/Riffle/Switcher/TitleFormat.swift:83"
+    ],
+    "code": "parts.append((\"square.on.square\", \"\\(space)\", L.f(\"%1$@. masaüstünde\", \"On desktop %1$@\", space)))"
+  },
+  {
+    "en": "Hidden app",
+    "tr": "Gizli uygulama",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/TileView.swift:577"
+    ],
+    "code": "if item.isHidden { specs.append((\"eye.slash.fill\", nil, L.t(\"Gizli uygulama\", \"Hidden app\"))) }"
+  },
+  {
+    "en": "Dock badge: %1$@",
+    "tr": "Dock rozeti: %1$@",
+    "format": true,
+    "uses": [
+      "Sources/Riffle/Switcher/TileView.swift:689",
+      "Sources/Riffle/Switcher/TitleFormat.swift:84"
+    ],
+    "code": "badge.setAccessibilityLabel(L.f(\"Dock rozeti: %1$@\", \"Dock badge: %1$@\", label))"
+  },
+  {
+    "en": "Quit app",
+    "tr": "Uygulamadan çık",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/TileView.swift:796",
+      "Sources/Riffle/Input/PanelKeys.swift:47"
+    ],
+    "code": "let quit = unquittable ? [] : [CardButton(.quit, label: L.t(\"Uygulamadan çık\", \"Quit app\"))]"
+  },
+  {
+    "en": "Close window",
+    "tr": "Pencereyi kapat",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/TileView.swift:797",
+      "Sources/Riffle/Input/PanelKeys.swift:43"
+    ],
+    "code": "var buttons = item.isWindowless ? quit : quit + [CardButton(.close, label: L.t(\"Pencereyi kapat\", \"Close window\")),"
+  },
+  {
+    "en": "Minimize",
+    "tr": "Küçült",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/TileView.swift:798"
+    ],
+    "code": "CardButton(.minimize, label: item.isMinimized ? L.t(\"Geri getir\", \"Restore\") : L.t(\"Küçült\", \"Minimize\")),"
+  },
+  {
+    "en": "Restore",
+    "tr": "Geri getir",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/TileView.swift:798"
+    ],
+    "code": "CardButton(.minimize, label: item.isMinimized ? L.t(\"Geri getir\", \"Restore\") : L.t(\"Küçült\", \"Minimize\")),"
+  },
+  {
+    "en": "Exit full screen",
+    "tr": "Tam ekrandan çık",
+    "format": false,
+    "uses": [
+      "Sources/Riffle/Switcher/TileView.swift:800"
+    ],
+    "code": "? CardButton(.fullscreen, label: L.t(\"Tam ekrandan çık\", \"Exit full screen\"), undo: true)"
+  }
+]

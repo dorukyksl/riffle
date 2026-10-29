@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Riffle disk image background</title>
+<!-- The picture behind Riffle's disk image window, drawn by Scripts/dmg-background.sh at 1x and 2x.
+     The window shows 660 x 400 points of it; the last 40 rows only continue the colours, in case Finder's title bar
+     is shorter than expected. Icons sit at (170, 200) and (490, 200), 128 points, with their names under them at
+     about y = 280. Finder writes those names black in light mode and white in dark mode, so the band they sit on is a
+     middle tone that reads either way (contrast about 4.5 with both). -->
+<style>
+  @font-face { font-family: "Bricolage Grotesque"; src: url("../../website/fonts/bricolage-latin.woff2") format("woff2"); font-weight: 200 800; }
+  html, body { margin: 0; width: 660px; height: 440px; overflow: hidden; }
+  body {
+    position: relative;
+    background:
+      radial-gradient(150px 108px at 170px 196px, rgb(255 255 255 / 0.12), transparent 72%),
+      radial-gradient(150px 108px at 490px 196px, rgb(255 255 255 / 0.12), transparent 72%),
+      radial-gradient(420px 160px at 560px 440px, rgb(255 168 112 / 0.55), transparent 70%),
+      linear-gradient(180deg, #24104a 0px, #4b1d77 110px, #8a3a8a 205px, #b0558a 262px, #b0558a 298px, #c7657c 338px, #e2806f 440px);
+    font-family: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  }
+  h1 { position: absolute; left: 0; right: 0; top: 44px; margin: 0; text-align: center; color: #fff;
+       font-weight: 800; font-size: 25px; letter-spacing: -0.02em; }
+  svg { position: absolute; left: 0; top: 0; }
+</style>
+</head>
+<body>
+  <h1>Drag Riffle into Applications</h1>
+  <svg width="660" height="440" viewBox="0 0 660 440" aria-hidden="true">
+    <defs>
+      <marker id="head" viewBox="0 0 12 12" refX="8" refY="6" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+        <path d="M2 1.5 L9 6 L2 10.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+    <path d="M262 206 C 300 168, 360 168, 396 204" fill="none" stroke="#fff" stroke-opacity="0.92" stroke-width="5" stroke-linecap="round" marker-end="url(#head)"/>
+  </svg>
+</body>
+</html>

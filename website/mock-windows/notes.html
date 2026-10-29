@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en" data-variants="weekend books">
+<head>
+<meta charset="utf-8">
+<meta name="window-title" data-v="weekend" content="Weekend plan">
+<meta name="window-title" data-v="books" content="Books to read">
+<title>Notes</title>
+<link rel="stylesheet" href="shared.css">
+<script src="mock.js" defer></script>
+<style>
+  body { --w: 700px; --h: 538px; --sbw: 152px; background: #FFFFFF; }
+
+  /* Sidebar: folders */
+  .sidebar .g { color: #E2A500; }
+  .sb-toggle { position: absolute; top: 12px; right: 10px; color: #8A8A90; }
+  .sb-toggle .g { color: #8A8A90; width: 15px; height: 15px; }
+  html[data-v="weekend"] .sb-item.personal,
+  html[data-v="books"] .sb-item.reading { background: rgba(255, 199, 0, 0.30); font-weight: 500; }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; padding: 2px 4px; }
+  .tags span { font-size: 11px; padding: 3px 7px; border-radius: 10px; background: rgba(0, 0, 0, 0.06); color: #48484D; }
+  .newfolder { position: absolute; left: 16px; bottom: 12px; display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #6E6E73; }
+  .newfolder .g { color: #6E6E73; width: 14px; height: 14px; }
+
+  /* Note list */
+  .list { position: absolute; left: 168px; top: 0; width: 196px; bottom: 0; }
+  .list-head { height: 52px; display: flex; align-items: center; padding: 0 6px 0 12px; }
+  .list-head .t b { display: block; font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+  .list-head .t span { display: block; font-size: 11px; color: #8E8E93; margin-top: 1px; }
+  .list-head .cap { margin-left: auto; gap: 12px; }
+  .group { font-size: 12px; font-weight: 700; color: #1D1D1F; padding: 8px 12px 4px; }
+  .note { position: relative; margin: 0 6px; padding: 8px 10px 9px; border-radius: 9px; }
+  .note + .note::before { content: ""; position: absolute; left: 10px; right: 10px; top: 0; height: 0.5px; background: #E5E5EA; }
+  .note b { display: block; font-size: 13.5px; font-weight: 700; letter-spacing: -0.15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .note p { margin-top: 2px; font-size: 12px; color: #8A8A8F; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .note p i { font-style: normal; color: #3A3A3C; margin-right: 5px; }
+  .note.has-thumb { padding-right: 54px; }
+  .thumb { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 6px; box-shadow: 0 0 0 0.5px rgba(0,0,0,.08); }
+  .note.sel { background: #FCE59A; }
+  .note.sel::before, .note.sel + .note::before { display: none; }
+  .note.sel p { color: #6F6650; }
+
+  /* Note body */
+  .editor { position: absolute; left: 364px; right: 0; top: 0; bottom: 0; border-left: 0.5px solid #E5E5EA; }
+  .editor-bar { height: 52px; display: flex; align-items: center; gap: 8px; padding: 0 12px; }
+  .editor-bar .cap { gap: 14px; }
+  .editor-bar .sp { flex: 1; }
+  .aa { font-size: 13px; font-weight: 600; letter-spacing: -0.3px; }
+  .content { padding: 4px 26px 0 26px; }
+  .date { text-align: center; font-size: 11.5px; color: #8E8E93; }
+  h1 { margin-top: 10px; font-size: 26px; font-weight: 700; letter-spacing: -0.6px; }
+  .para { margin-top: 7px; font-size: 14px; line-height: 1.45; color: #2C2C2E; }
+  h2 { margin-top: 12px; font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+  .checks { margin-top: 5px; list-style: none; }
+  .checks li { display: flex; align-items: center; gap: 10px; height: 27px; font-size: 14px; color: #1D1D1F; white-space: nowrap; }
+  .checks li::before {
+    content: ""; width: 17px; height: 17px; border-radius: 50%; flex: none;
+    box-shadow: inset 0 0 0 1.3px #C7C7CC;
+  }
+  .checks li span { color: #8E8E93; margin-left: -4px; }
+  .checks li.done, .checks li.done span { color: #A1A1A6; }
+  .checks li.done::before {
+    box-shadow: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 17 17'%3E%3Cpath d='M5 8.8l2.4 2.4L12.2 6' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 17px no-repeat,
+                linear-gradient(#FFCE3A, #F2B400);
+  }
+  .photo { display: block; margin-top: 12px; width: 288px; height: 108px; border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="lights"><i></i><i></i><i></i></div>
+  <span class="sb-toggle"><svg class="g"><use href="#g-sidebar"/></svg></span>
+  <div class="sb-head">iCloud</div>
+  <div class="sb-item"><svg class="g"><use href="#g-folder"/></svg>Notes<span class="count">28</span></div>
+  <div class="sb-item personal"><svg class="g"><use href="#g-folder"/></svg>Personal<span class="count">8</span></div>
+  <div class="sb-item"><svg class="g"><use href="#g-folder"/></svg>Travel<span class="count">5</span></div>
+  <div class="sb-item reading"><svg class="g"><use href="#g-folder"/></svg>Reading<span class="count">4</span></div>
+  <div class="sb-item"><svg class="g"><use href="#g-folder"/></svg>Work<span class="count">12</span></div>
+  <div class="sb-item"><svg class="g"><use href="#g-folder"/></svg>Recipes<span class="count">6</span></div>
+  <div class="sb-item"><svg class="g"><use href="#g-trash"/></svg>Recently Deleted</div>
+  <div class="sb-head">On My Mac</div>
+  <div class="sb-item"><svg class="g"><use href="#g-folder"/></svg>Notes<span class="count">3</span></div>
+  <div class="sb-item"><svg class="g"><use href="#g-folder"/></svg>Ideas<span class="count">7</span></div>
+  <div class="sb-head">Tags</div>
+  <div class="tags">
+    <span>#weekend</span>
+    <span>#books</span>
+    <span>#garden</span>
+    <span>#photos</span>
+  </div>
+  <div class="newfolder"><svg class="g"><use href="#g-plus"/></svg>New Folder</div>
+</aside>
+
+<!-- ============ Weekend plan, in Personal ============ -->
+<section class="list" data-v="weekend">
+  <div class="list-head">
+    <div class="t"><b>Personal</b><span>8 notes</span></div>
+    <div class="cap"><svg class="g"><use href="#g-list"/></svg><svg class="g"><use href="#g-trash"/></svg></div>
+  </div>
+  <div class="group">Today</div>
+  <div class="note sel has-thumb">
+    <svg class="thumb" viewBox="0 0 38 38">
+      <rect width="38" height="38" fill="#C4925F"/><path d="M0 12.5H38M0 26H38" stroke="#A06D40" stroke-width=".7" opacity=".6"/>
+      <circle cx="16" cy="20" r="13" fill="#FBFAF7"/><circle cx="16" cy="20" r="9.5" fill="#D9984C"/><circle cx="16" cy="20" r="7.4" fill="#E9B266"/>
+      <rect x="13.6" y="16.6" width="4.6" height="3.6" rx=".8" fill="#FFF0B8"/>
+      <g fill="#3D4F9A"><circle cx="20" cy="23" r="1.5"/><circle cx="12" cy="24" r="1.4"/></g><circle cx="19" cy="15.4" r="1.6" fill="#D7354D"/>
+      <circle cx="33" cy="7" r="5.4" fill="#FBFAF7"/><circle cx="33" cy="7" r="3.6" fill="#8A5A3A"/><path d="M31.6 6.2c.8-1 2.2-1 2.8 0-.6.8-1.4 1.6-1.4 1.6s-.8-.8-1.4-1.6z" fill="#F5E6D3"/>
+      <circle cx="34" cy="31" r="4.8" fill="#FBFAF7"/><circle cx="34" cy="31" r="3" fill="#F2A33A"/>
+    </svg>
+    <b>Weekend plan</b>
+    <p><i>10:24</i>Market first thing on Saturday, then</p>
+  </div>
+  <div class="note">
+    <b>Birthday ideas for Jonas</b>
+    <p><i>09:12</i>Film camera, a good scarf, concert tickets</p>
+  </div>
+  <div class="group">Previous 7 Days</div>
+  <div class="note has-thumb">
+    <svg class="thumb" viewBox="0 0 38 38">
+      <rect width="38" height="38" fill="#E4ECDF"/><rect y="28" width="38" height="10" fill="#CDBBA4"/>
+      <g fill="#5E9A4E">
+        <ellipse cx="19" cy="12" rx="2.2" ry="9" /><ellipse cx="13" cy="15" rx="2" ry="8.4" transform="rotate(-32 13 15)"/><ellipse cx="25" cy="15" rx="2" ry="8.4" transform="rotate(32 25 15)"/>
+        <ellipse cx="9.6" cy="20" rx="1.8" ry="7" transform="rotate(-62 9.6 20)"/><ellipse cx="28.4" cy="20" rx="1.8" ry="7" transform="rotate(62 28.4 20)"/>
+      </g>
+      <g fill="#7DB868"><ellipse cx="16" cy="13" rx="1.2" ry="6" transform="rotate(-14 16 13)"/><ellipse cx="22" cy="13" rx="1.2" ry="6" transform="rotate(14 22 13)"/></g>
+      <path d="M11 22h16l-2 12h-12z" fill="#C8693F"/><rect x="10" y="21" width="18" height="3.4" rx="1" fill="#D97E52"/>
+    </svg>
+    <b>Plant care</b>
+    <p><i>Saturday</i>Water the fern on Sundays, the cactus</p>
+  </div>
+  <div class="note">
+    <b>Packing list</b>
+    <p><i>Thursday</i>Passport, adapter, charger, umbrella</p>
+  </div>
+  <div class="note">
+    <b>Camping gear</b>
+    <p><i>Tuesday</i>Tent, sleeping bag, headlamp</p>
+  </div>
+</section>
+
+<!-- ============ Books to read, in Reading ============ -->
+<section class="list" data-v="books">
+  <div class="list-head">
+    <div class="t"><b>Reading</b><span>4 notes</span></div>
+    <div class="cap"><svg class="g"><use href="#g-list"/></svg><svg class="g"><use href="#g-trash"/></svg></div>
+  </div>
+  <div class="group">Today</div>
+  <div class="note sel has-thumb">
+    <svg class="thumb" viewBox="0 0 38 38">
+      <rect width="38" height="38" fill="#DFE8D8"/><rect y="30" width="38" height="8" fill="#B98757"/>
+      <rect x="6" y="23" width="26" height="7" rx="1" fill="#2E4A7D"/><rect x="6" y="25.6" width="26" height="1.2" fill="#E0B95A"/>
+      <rect x="8" y="17" width="23" height="6" rx="1" fill="#C8613F"/><rect x="27" y="17" width="2" height="6" fill="#F3E3C6"/>
+      <rect x="5" y="11.5" width="25" height="5.5" rx="1" fill="#E0A93B"/><rect x="7" y="13.4" width="10" height="1.2" fill="#FFF3D6"/>
+      <path d="M26 11.5c0-3 3-5 6-4.6-1 1.4-1.8 3.2-1.6 4.6z" fill="#6FA35C"/>
+    </svg>
+    <b>Books to read</b>
+    <p><i>09:12</i>For the long autumn evenings, in no</p>
+  </div>
+  <div class="group">Previous 7 Days</div>
+  <div class="note">
+    <b>Book club: November</b>
+    <p><i>Friday</i>We meet at Sofia's on the 14th, bring</p>
+  </div>
+  <div class="note">
+    <b>Lines I liked</b>
+    <p><i>Wednesday</i>From the poetry evening at the library</p>
+  </div>
+  <div class="note">
+    <b>Library returns</b>
+    <p><i>Monday</i>Due October 20: two travel guides and</p>
+  </div>
+</section>
+
+<section class="editor">
+  <div class="editor-bar">
+    <div class="cap"><svg class="g"><use href="#g-compose"/></svg></div>
+    <div class="cap"><span class="aa">Aa</span><svg class="g"><use href="#g-checklist"/></svg><svg class="g"><use href="#g-table"/></svg><svg class="g"><use href="#g-photo"/></svg></div>
+    <span class="sp"></span>
+    <div class="cap"><svg class="g"><use href="#g-lock"/></svg><svg class="g"><use href="#g-share"/></svg></div>
+    <div class="cap"><svg class="g"><use href="#g-search"/></svg></div>
+  </div>
+
+  <div class="content" data-v="weekend">
+    <div class="date">October 12, 2026 at 10:24 AM</div>
+    <h1>Weekend plan</h1>
+    <p class="para">Market first thing on Saturday, then a long walk by the river. Sunday is brunch with Jonas and Priya.</p>
+    <h2>To do</h2>
+    <ul class="checks">
+      <li class="done">Check the train times</li>
+      <li class="done">Renew the museum pass</li>
+      <li>Pick up flowers for Priya</li>
+      <li>Book a table for Sunday brunch</li>
+      <li>Charge the camera battery</li>
+      <li>Return the library books</li>
+    </ul>
+
+    <!-- A photo in the note: Sunday brunch, from above -->
+    <svg class="photo" viewBox="0 0 288 108" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#CB9868"/><stop offset="1" stop-color="#B27C4E"/>
+        </linearGradient>
+        <radialGradient id="cake" cx="50" cy="50" r="24" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#EDB76A"/><stop offset=".75" stop-color="#D99447"/><stop offset="1" stop-color="#B9722F"/>
+        </radialGradient>
+        <radialGradient id="crois" cx="0" cy="0" r="1">
+          <stop offset="0" stop-color="#F0BE6C"/><stop offset="1" stop-color="#C47F33"/>
+        </radialGradient>
+        <radialGradient id="coffee" cx="0" cy="0" r="1">
+          <stop offset="0" stop-color="#A8774F"/><stop offset="1" stop-color="#6E4428"/>
+        </radialGradient>
+        <radialGradient id="juice" cx="0" cy="0" r="1">
+          <stop offset="0" stop-color="#FFC24D"/><stop offset="1" stop-color="#F08A1C"/>
+        </radialGradient>
+        <filter id="sh" x="-20%" y="-20%" width="140%" height="150%">
+          <feDropShadow dx="0" dy="1.6" stdDeviation="1.6" flood-color="#4A2A12" flood-opacity=".35"/>
+        </filter>
+        <g id="cup">
+          <g filter="url(#sh)"><circle r="16" fill="#FBFAF7"/></g>
+          <circle r="13.4" fill="none" stroke="#E7E1D8" stroke-width=".8"/>
+          <rect x="10" y="-2.4" width="9" height="4.8" rx="2.4" fill="#F2EEE7"/>
+          <circle r="10.6" fill="#F7F3EC"/>
+          <circle r="9" fill="url(#coffee)"/>
+          <path d="M-4.2-1.6C-2.6-4.6 1.8-4.6 2.4-1.2-.4.9-2.6 3.6-2.6 3.6S-5.2.6-4.2-1.6z" fill="#F4E4CE" transform="rotate(-20)"/>
+          <path d="M-1.4 3.4C1.6 4.6 4.2 3.2 4.8.6" stroke="#F4E4CE" stroke-width="1.1" fill="none" stroke-linecap="round" opacity=".8"/>
+        </g>
+      </defs>
+      <rect width="288" height="108" fill="url(#wood)"/>
+      <g stroke="#9C673B" stroke-width=".8" opacity=".5"><path d="M0 27H288M0 54.5H288M0 82H288"/></g>
+      <g stroke="#DAAD7E" stroke-width=".6" opacity=".5" fill="none">
+        <path d="M10 12C40 10 70 14 110 12M150 40C190 37 230 42 280 39M20 68C60 66 90 70 140 67M170 95C210 93 240 97 286 94"/>
+      </g>
+
+      <!-- pancakes with berries and a pat of butter -->
+      <g filter="url(#sh)"><circle cx="50" cy="52" r="34" fill="#FBFAF7"/></g>
+      <circle cx="50" cy="52" r="30" fill="none" stroke="#ECE6DC" stroke-width=".8"/>
+      <circle cx="51" cy="54" r="23.5" fill="#B9722F" opacity=".5"/>
+      <circle cx="50" cy="52" r="23" fill="url(#cake)"/>
+      <path d="M33 46C37 37 46 32 56 33" stroke="#F4CB86" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/>
+      <path d="M36 58C42 64 54 66 62 60S70 48 64 44" stroke="#9A4F14" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".55"/>
+      <rect x="45" y="44" width="10" height="7.5" rx="1.4" fill="#FFF0B3" transform="rotate(-12 50 48)"/>
+      <rect x="46.2" y="44.6" width="7.4" height="2" rx="1" fill="#FFFBE2" transform="rotate(-12 50 48)"/>
+      <g fill="#3B4B98"><circle cx="60" cy="56" r="2.4"/><circle cx="64" cy="51" r="2.2"/><circle cx="41" cy="60" r="2.3"/><circle cx="56" cy="62" r="2"/></g>
+      <g fill="#6B7BC6" opacity=".8"><circle cx="59.4" cy="55.2" r=".7"/><circle cx="63.4" cy="50.3" r=".6"/><circle cx="40.4" cy="59.2" r=".7"/></g>
+      <g fill="#D7354D"><circle cx="40" cy="47" r="2.8"/><circle cx="62" cy="43" r="2.6"/></g>
+      <g fill="#F07A8C" opacity=".8"><circle cx="39.3" cy="46.2" r=".7"/><circle cx="40.8" cy="47.6" r=".6"/><circle cx="61.3" cy="42.3" r=".6"/></g>
+      <path d="M68 72c2-1.4 4.4-.4 4.6 1.6" stroke="#5D9B48" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+      <!-- croissants -->
+      <g transform="translate(128 20) rotate(-18)" filter="url(#sh)">
+        <path d="M-20 3C-18-6-8-11 0-11S18-6 20 3C16 1 12 2 10 6 6 0 3-1 0-1S-6 0-10 6C-12 2-16 1-20 3Z" fill="url(#crois)"/>
+        <g stroke="#B26F2B" stroke-width=".9" fill="none" opacity=".75"><path d="M-10 6C-8-2-4-6 0-6M10 6C8-2 4-6 0-6M-4-10C-3-6-1-3 0-1M4-10C3-6 1-3 0-1"/></g>
+      </g>
+
+      <!-- coffee for two -->
+      <use href="#cup" x="124" y="78"/>
+      <use href="#cup" x="250" y="80"/>
+
+      <!-- yogurt with berries and granola -->
+      <g filter="url(#sh)"><circle cx="186" cy="50" r="26" fill="#FBFAF7"/></g>
+      <circle cx="186" cy="50" r="23" fill="none" stroke="#5B86B8" stroke-width="1.4"/>
+      <circle cx="186" cy="50" r="20" fill="#F9F6F0"/>
+      <g fill="#D9A867"><circle cx="176" cy="42" r="2.4"/><circle cx="181" cy="38" r="2"/><circle cx="173" cy="49" r="2.2"/><circle cx="179" cy="45" r="1.7"/><circle cx="185" cy="40" r="1.6"/></g>
+      <g fill="#E3463F"><path d="M193 52c3-2 7 0 6 3.4s-5 4.4-7.4 2.6-1-4.6 1.4-6z"/><path d="M184 57c2.6-1.6 6 .2 5 3s-4.4 3.6-6.2 2.2-.8-3.8 1.2-5.2z"/></g>
+      <g fill="#FCE3B0" opacity=".9"><circle cx="195" cy="55" r=".5"/><circle cx="197" cy="54" r=".5"/><circle cx="186" cy="60" r=".5"/></g>
+      <g fill="#3B4B98"><circle cx="196" cy="44" r="2.2"/><circle cx="191" cy="40" r="2"/><circle cx="200" cy="49" r="1.9"/><circle cx="177" cy="57" r="2"/></g>
+      <path d="M201 39c2-2 5-1.4 5 .8" stroke="#5D9B48" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+      <!-- orange juice -->
+      <g filter="url(#sh)"><circle cx="246" cy="28" r="15" fill="#F6F1EA" opacity=".9"/></g>
+      <circle cx="246" cy="28" r="13" fill="url(#juice)"/>
+      <circle cx="246" cy="28" r="13" fill="none" stroke="#FFFFFF" stroke-width="1.6" opacity=".7"/>
+      <path d="M238 22a10 10 0 0 1 8-4" stroke="#FFFFFF" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".75"/>
+
+      <!-- jam and a few loose berries -->
+      <g filter="url(#sh)"><circle cx="92" cy="98" r="11" fill="#FBFAF7"/></g>
+      <circle cx="92" cy="98" r="7.4" fill="#B22A3C"/><circle cx="89.6" cy="95.6" r="1.8" fill="#D9566A" opacity=".8"/>
+      <path d="M102 88 114 78" stroke="#C9A27A" stroke-width="2" stroke-linecap="round"/>
+      <g fill="#3B4B98"><circle cx="160" cy="98" r="2.2"/><circle cx="214" cy="12" r="2"/><circle cx="282" cy="56" r="2.1"/></g>
+      <circle cx="10" cy="96" r="2.6" fill="#D7354D"/>
+    </svg>
+  </div>
+
+  <div class="content" data-v="books">
+    <div class="date">October 12, 2026 at 9:12 AM</div>
+    <h1>Books to read</h1>
+    <p class="para">For the long autumn evenings, in no particular order. Ask Sofia what the book club picks next.</p>
+    <h2>Up next</h2>
+    <ul class="checks">
+      <li class="done">Middlemarch <span>· Eliot</span></li>
+      <li class="done">The Tale of Genji <span>· Murasaki</span></li>
+      <li>Don Quixote <span>· Cervantes</span></li>
+      <li>Anna Karenina <span>· Tolstoy</span></li>
+      <li>The Count of Monte Cristo <span>· Dumas</span></li>
+      <li>Pride and Prejudice <span>· Austen</span></li>
+    </ul>
+
+    <!-- A photo in the note: the shelf by the window -->
+    <svg class="photo" viewBox="0 0 288 108" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#E7EEDF"/><stop offset="1" stop-color="#D3DFCB"/>
+        </linearGradient>
+        <linearGradient id="sun" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#FFF6DD" stop-opacity="0"/><stop offset=".5" stop-color="#FFF6DD" stop-opacity=".55"/><stop offset="1" stop-color="#FFF6DD" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="plank" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#C8955F"/><stop offset="1" stop-color="#A9764A"/>
+        </linearGradient>
+        <filter id="bsh" x="-20%" y="-20%" width="140%" height="150%">
+          <feDropShadow dx="1" dy="1.4" stdDeviation="1.2" flood-color="#3D4A33" flood-opacity=".28"/>
+        </filter>
+      </defs>
+      <rect width="288" height="108" fill="url(#wall)"/>
+      <path d="M150 0H210L120 108H60Z" fill="url(#sun)" opacity=".8"/>
+      <rect y="98" width="288" height="10" fill="#9B6B42" opacity=".35"/>
+
+      <!-- books standing on the shelf -->
+      <g filter="url(#bsh)">
+        <rect x="14" y="30" width="13" height="64" rx="1" fill="#2E4A7D"/>
+        <rect x="27.5" y="38" width="10" height="56" rx="1" fill="#E0A93B"/>
+        <rect x="38" y="26" width="15" height="68" rx="1" fill="#8E2F43"/>
+        <rect x="53.5" y="34" width="9" height="60" rx="1" fill="#EFE3C8"/>
+        <rect x="63" y="42" width="12" height="52" rx="1" fill="#2F7F86"/>
+        <rect x="75.5" y="30" width="11" height="64" rx="1" fill="#3B3B45"/>
+        <rect x="87" y="36" width="14" height="58" rx="1" fill="#C8613F"/>
+        <rect x="101.5" y="44" width="9" height="50" rx="1" fill="#7FA58A"/>
+        <rect x="114" y="38" width="12" height="56" rx="1" fill="#D9C08A" transform="rotate(14 120 94)"/>
+      </g>
+      <g fill="#FFFFFF" opacity=".45">
+        <rect x="16" y="36" width="9" height="1.4"/><rect x="16" y="86" width="9" height="1.4"/>
+        <rect x="40" y="32" width="11" height="1.6"/><rect x="40" y="86" width="11" height="1.6"/>
+        <rect x="65" y="48" width="8" height="1.2"/><rect x="77.5" y="38" width="7" height="1.2"/>
+        <rect x="89" y="42" width="10" height="1.4"/><rect x="89" y="88" width="10" height="1.4"/>
+      </g>
+      <g fill="#F7E7B6" opacity=".9">
+        <rect x="18.5" y="48" width="4" height="22" rx="1"/><rect x="43" y="40" width="5" height="30" rx="1"/>
+        <rect x="78.5" y="44" width="5" height="26" rx="1"/><rect x="92" y="52" width="4" height="22" rx="1"/>
+      </g>
+      <g fill="#7A2235" opacity=".55"><rect x="29.8" y="44" width="5.4" height="2"/><rect x="29.8" y="84" width="5.4" height="2"/></g>
+      <g fill="#C79F55"><rect x="55.6" y="40" width="4.8" height="1.4"/><rect x="55.6" y="84" width="4.8" height="1.4"/></g>
+
+      <!-- a stack lying flat, a small plant on top -->
+      <g filter="url(#bsh)">
+        <rect x="150" y="84" width="58" height="10" rx="1" fill="#2E4A7D"/>
+        <rect x="154" y="75" width="52" height="9" rx="1" fill="#E3D3B4"/>
+        <rect x="148" y="66" width="56" height="9" rx="1" fill="#C8613F"/>
+      </g>
+      <g fill="#FFFFFF" opacity=".5"><rect x="150" y="88" width="58" height="1.2"/><rect x="148" y="70" width="56" height="1.2"/></g>
+      <rect x="200" y="75" width="3.6" height="9" fill="#F7F2E6"/>
+      <g filter="url(#bsh)"><path d="M166 66h18l-2 -14h-14z" fill="#F4F1EA"/></g>
+      <g fill="#5E9A4E">
+        <ellipse cx="175" cy="44" rx="3.4" ry="9" transform="rotate(-8 175 44)"/>
+        <ellipse cx="168" cy="47" rx="3" ry="8" transform="rotate(-38 168 47)"/>
+        <ellipse cx="182" cy="47" rx="3" ry="8" transform="rotate(38 182 47)"/>
+      </g>
+      <g fill="#7DB868"><ellipse cx="172" cy="46" rx="1.4" ry="5" transform="rotate(-20 172 46)"/><ellipse cx="178.6" cy="45" rx="1.4" ry="5" transform="rotate(18 178.6 45)"/></g>
+
+      <!-- a mug of tea and reading glasses -->
+      <g filter="url(#bsh)">
+        <rect x="226" y="66" width="24" height="28" rx="3" fill="#F6F3EE"/>
+        <path d="M250 72h3a5 5 0 0 1 0 10h-3" stroke="#F6F3EE" stroke-width="3.4" fill="none"/>
+      </g>
+      <rect x="226" y="74" width="24" height="5" fill="#E2A93B"/>
+      <path d="M232 60c-2-3 2-4 0-7M240 61c-2-3 2-4 0-7" stroke="#FFFFFF" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".85"/>
+      <g fill="none" stroke="#3B3B45" stroke-width="1.6">
+        <circle cx="262" cy="90" r="5.4"/><circle cx="276" cy="90" r="5.4"/><path d="M267.4 89c1.6-1.4 3.6-1.4 3.2 0"/>
+      </g>
+      <g fill="#FFFFFF" opacity=".35"><circle cx="262" cy="90" r="4.6"/><circle cx="276" cy="90" r="4.6"/></g>
+
+      <!-- the shelf -->
+      <rect y="94" width="288" height="6" fill="url(#plank)"/>
+      <rect y="94" width="288" height="1.2" fill="#DDB07E"/>
+      <rect y="100" width="288" height="2.5" fill="#6E4B2E" opacity=".35"/>
+    </svg>
+  </div>
+</section>
+
+</body>
+</html>

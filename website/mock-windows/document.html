@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en" data-variants="invoice">
+<head>
+<meta charset="utf-8">
+<meta name="window-title" data-v="invoice" content="Invoice October.pdf">
+<title>Preview</title>
+<link rel="stylesheet" href="shared.css">
+<script src="mock.js" defer></script>
+<style>
+  body { --w: 700px; --h: 884px; --ink: #1E3A5F; --mint: #3CC6A7; background: #E4E4E8; }
+
+  .toolbar {
+    position: absolute; left: 0; right: 0; top: 0; height: 52px; z-index: 2;
+    background: linear-gradient(#FAFAFB, #F2F2F4); border-bottom: 0.5px solid #D6D6DC;
+    display: flex; align-items: center; gap: 8px; padding: 0 12px 0 84px;
+  }
+  .toolbar .cap { gap: 13px; }
+  .doc-title { margin-left: 4px; line-height: 1.2; }
+  .doc-title b { display: block; font-size: 13px; font-weight: 700; letter-spacing: -0.1px; }
+  .doc-title span { display: block; font-size: 11px; color: #8E8E93; }
+  .toolbar .sp { flex: 1; }
+
+  .canvas { position: absolute; left: 0; right: 0; top: 52px; bottom: 0; background: linear-gradient(#E6E6EA, #DEDEE3); }
+  /* The page is laid out at 430 × 608 and shown larger, so the window is as wide as the others. */
+  .page {
+    position: absolute; left: 58px; top: 20px; width: 430px; height: 608px; background: #FFFFFF; zoom: calc(700 / 546);
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.08), 0 10px 24px rgba(0, 0, 0, 0.10);
+    padding: 32px 34px 0; color: #1D1D1F; font-size: 9.5px; line-height: 1.4;
+  }
+
+  .letterhead { display: flex; align-items: flex-start; gap: 10px; }
+  .letterhead svg { width: 34px; height: 34px; flex: none; }
+  .company b { display: block; font-size: 17px; font-weight: 800; letter-spacing: -0.4px; line-height: 1.15; }
+  .company span { display: block; font-size: 9px; color: #6E6E73; }
+  .addr { margin-left: auto; text-align: right; font-size: 8.5px; color: #6E6E73; line-height: 1.45; }
+  .rule { margin-top: 14px; height: 2px; background: linear-gradient(90deg, var(--ink), var(--mint)); border-radius: 1px; }
+
+  .title-row { margin-top: 16px; display: flex; align-items: flex-start; }
+  .title-row h1 { font-size: 26px; font-weight: 800; letter-spacing: 1.5px; color: var(--ink); line-height: 1; }
+  .meta { margin-left: auto; display: grid; grid-template-columns: auto auto; gap: 2px 14px; font-size: 9.5px; }
+  .meta dt { color: #8E8E93; }
+  .meta dd { text-align: right; font-weight: 600; }
+
+  .parties { margin-top: 18px; display: flex; gap: 24px; }
+  .parties .label { font-size: 8px; font-weight: 700; letter-spacing: 0.8px; color: #8E8E93; margin-bottom: 3px; }
+  .parties .who { font-size: 11px; font-weight: 700; margin-bottom: 1px; }
+  .parties .col { flex: 1; }
+  .parties .col + .col { flex: 0.8; }
+
+  table { margin-top: 18px; width: 100%; border-collapse: collapse; font-size: 9.5px; }
+  th { text-align: left; font-size: 8.5px; font-weight: 700; color: #4F4F55; background: #EEF3F7; padding: 6px 8px; }
+  th:first-child { border-radius: 4px 0 0 4px; }
+  th:last-child { border-radius: 0 4px 4px 0; }
+  td { padding: 7px 8px; border-bottom: 0.5px solid #E5E5EA; }
+  th.r, td.r { text-align: right; white-space: nowrap; }
+  td.desc { font-weight: 500; }
+
+  .bottom { margin-top: 14px; display: flex; align-items: flex-start; gap: 20px; }
+  .note { flex: 1; font-size: 8.5px; color: #6E6E73; line-height: 1.5; padding-top: 2px; }
+  .note b { display: block; font-size: 8px; letter-spacing: 0.8px; color: #8E8E93; margin-bottom: 2px; }
+  .totals { width: 186px; font-size: 9.5px; }
+  .totals div { display: flex; justify-content: space-between; padding: 3px 8px; }
+  .totals div span:last-child { font-weight: 600; }
+  .totals .grand { margin-top: 5px; padding: 7px 8px; border-radius: 5px; background: var(--ink); color: #fff; font-size: 11px; font-weight: 700; }
+
+  .thanks { position: absolute; left: 34px; right: 34px; bottom: 54px; font-size: 13px; font-weight: 700; color: var(--ink); }
+  .footer {
+    position: absolute; left: 34px; right: 34px; bottom: 24px; padding-top: 8px; border-top: 0.5px solid #E5E5EA;
+    display: flex; justify-content: space-between; font-size: 8px; color: #8E8E93;
+  }
+</style>
+</head>
+<body>
+
+<header class="toolbar">
+  <div class="lights"><i></i><i></i><i></i></div>
+  <div class="cap"><svg class="g"><use href="#g-sidebar"/></svg></div>
+  <div class="doc-title">
+    <b>Invoice October.pdf</b>
+    <span>Page 1 of 1</span>
+  </div>
+  <span class="sp"></span>
+  <div class="cap"><svg class="g"><use href="#g-zoom-out"/></svg><svg class="g"><use href="#g-zoom-in"/></svg></div>
+  <div class="cap"><svg class="g"><use href="#g-share"/></svg></div>
+  <div class="cap"><svg class="g"><use href="#g-markup"/></svg></div>
+  <div class="cap"><svg class="g"><use href="#g-search"/></svg></div>
+</header>
+
+<main class="canvas">
+  <article class="page">
+    <div class="letterhead">
+      <svg viewBox="0 0 34 34">
+        <defs>
+          <linearGradient id="nl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#27507F"/><stop offset="1" stop-color="#14263F"/></linearGradient>
+          <linearGradient id="nl-glow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3CC6A7"/><stop offset="1" stop-color="#7FD6F2"/></linearGradient>
+        </defs>
+        <rect width="34" height="34" rx="9" fill="url(#nl)"/>
+        <path d="M5 23C10 15 17 12 29 12" stroke="url(#nl-glow)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M7 28C12 21 18 18.5 28 18.5" stroke="url(#nl-glow)" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+        <path d="M23.5 4.6 24.4 7.2 27 8.1 24.4 9 23.5 11.6 22.6 9 20 8.1 22.6 7.2Z" fill="#FFFFFF"/>
+      </svg>
+      <div class="company">
+        <b>Northlight Studio</b>
+        <span>Design &amp; Illustration</span>
+      </div>
+      <div class="addr">
+        14 Harbour Lane, Studio 3<br>
+        Dublin 2, Ireland<br>
+        VAT IE 6388047V<br>
+        Company no. 712345
+      </div>
+    </div>
+    <div class="rule"></div>
+
+    <div class="title-row">
+      <h1>INVOICE</h1>
+      <dl class="meta">
+        <dt>Invoice no.</dt><dd>NLS-2026-047</dd>
+        <dt>Date</dt><dd>October 12, 2026</dd>
+        <dt>Due</dt><dd>October 26, 2026</dd>
+      </dl>
+    </div>
+
+    <div class="parties">
+      <div class="col">
+        <div class="label">BILL TO</div>
+        <div class="who">Juniper &amp; Rye Bakery</div>
+        <div>Attn: Maya Lindqvist</div>
+        <div>27 Quay Street, Galway, Ireland</div>
+      </div>
+      <div class="col">
+        <div class="label">PROJECT</div>
+        <div class="who">Brand refresh</div>
+        <div>Period: October 2026</div>
+        <div>PO: JR-2026-11</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th class="r">Qty</th>
+          <th class="r">Unit price</th>
+          <th class="r">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="desc">Logo and wordmark refresh</td><td class="r">1</td><td class="r">€1,800.00</td><td class="r">€1,800.00</td></tr>
+        <tr><td class="desc">Packaging illustrations</td><td class="r">6</td><td class="r">€220.00</td><td class="r">€1,320.00</td></tr>
+        <tr><td class="desc">Menu and signage layout</td><td class="r">12 h</td><td class="r">€85.00</td><td class="r">€1,020.00</td></tr>
+        <tr><td class="desc">Website design updates</td><td class="r">8 h</td><td class="r">€85.00</td><td class="r">€680.00</td></tr>
+        <tr><td class="desc">Print-ready files and handover</td><td class="r">1</td><td class="r">€240.00</td><td class="r">€240.00</td></tr>
+      </tbody>
+    </table>
+
+    <div class="bottom">
+      <div class="note">
+        <b>PAYMENT</b>
+        Please pay by bank transfer within 14 days and use the invoice number as the reference.
+      </div>
+      <div class="totals">
+        <div><span>Subtotal</span><span>€5,060.00</span></div>
+        <div><span>VAT (23%)</span><span>€1,163.80</span></div>
+        <div class="grand"><span>Total due</span><span>€6,223.80</span></div>
+      </div>
+    </div>
+
+    <div class="thanks">Thank you for your business!</div>
+    <div class="footer">
+      <span>Northlight Studio Ltd. · Registered in Ireland</span>
+      <span>Page 1 of 1</span>
+    </div>
+  </article>
+</main>
+
+</body>
+</html>

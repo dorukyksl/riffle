@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en" data-variants="sketchpad">
+<head>
+<meta charset="utf-8">
+<meta name="window-title" data-v="sketchpad" content="Sketchpad.swift">
+<title>Xcode</title>
+<link rel="stylesheet" href="shared.css">
+<script src="mock.js" defer></script>
+<style>
+  body { --w: 700px; --h: 490px; --nav: 184px; background: #1F1F24; color: #DFDFE0; }
+
+  .toolbar {
+    position: absolute; left: 0; right: 0; top: 0; height: 50px; z-index: 3;
+    background: linear-gradient(#2F2F33, #2A2A2E);
+    border-bottom: 0.5px solid #0E0E10;
+    box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
+  }
+  .toolbar .lights { top: 19px; }
+  .tb { position: absolute; top: 10px; color: #C9C9CE; }
+  .tb.navtoggle { left: 84px; top: 17px; }
+  .tb.run { left: 118px; display: flex; gap: 0; }
+  .tb.run .cap, .tb.right .cap { height: 30px; }
+  .tb.run .cap { width: 30px; padding: 0; }
+  .tb.run .cap + .cap { margin-left: 6px; }
+  .tb .g { width: 15px; height: 15px; }
+  .proj { position: absolute; left: 202px; top: 11px; line-height: 1.15; }
+  .proj b { display: block; font-size: 13px; font-weight: 700; color: #F2F2F4; }
+  .proj span { display: flex; align-items: center; gap: 3px; font-size: 10.5px; color: #9A9AA0; }
+  .proj span .g { width: 10px; height: 10px; }
+  .scheme { position: absolute; left: 280px; top: 10px; gap: 4px; padding: 0 9px 0 7px; font-size: 11.5px; font-weight: 500; color: #E2E2E6; white-space: nowrap; }
+  .scheme .ic { width: 15px; height: 15px; flex: none; }
+  .scheme .sep { color: #77777E; font-size: 11px; }
+  .scheme .g { width: 14px; height: 14px; color: #C9C9CE; }
+  .activity {
+    position: absolute; left: 452px; top: 10px; width: 200px; gap: 6px; justify-content: flex-start; padding: 0 10px 0 8px;
+    font-size: 11px; font-weight: 500; color: #E2E2E6; white-space: nowrap;
+  }
+  .activity .ok { width: 14px; height: 14px; border-radius: 50%; background: #30C158; display: grid; place-items: center; flex: none; }
+  .activity .ok .g { width: 10px; height: 10px; color: #fff; stroke-width: 2.2; }
+  .activity .when { margin-left: auto; color: #8E8E95; font-weight: 400; }
+  .tb.right { right: 12px; display: flex; gap: 8px; }
+
+  /* Navigator */
+  .nav { position: absolute; left: 0; top: 50px; bottom: 0; width: var(--nav); background: #29292D; border-right: 0.5px solid #111113; }
+  .navtabs { height: 26px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; border-bottom: 0.5px solid #1A1A1D; color: #8D8D93; }
+  .navtabs .g { width: 13px; height: 13px; }
+  .navtabs .on { color: #3D8DF5; }
+  .tree { padding: 5px 4px 0; font-size: 11px; }
+  .tree div { display: flex; align-items: center; gap: 4px; height: 20px; padding-left: calc(var(--d) * 12px + 2px); border-radius: 5px; white-space: nowrap; color: #DADADE; }
+  .tree .tw { width: 8px; flex: none; color: #8D8D93; font-size: 7px; text-align: center; }
+  .tree .sel { background: #2E64C9; color: #fff; }
+  .fold { width: 14px; height: 11px; flex: none; }
+  .sw { width: 13px; height: 13px; flex: none; border-radius: 3px; }
+  .filter {
+    position: absolute; left: 8px; right: 8px; bottom: 8px; height: 22px; border-radius: 6px; display: flex; align-items: center; gap: 6px; padding: 0 8px;
+    background: rgba(255, 255, 255, 0.06); color: #7C7C83; font-size: 11px;
+  }
+  .filter .g { width: 12px; height: 12px; }
+
+  /* Editor */
+  .editor { position: absolute; left: var(--nav); right: 0; top: 50px; bottom: 0; }
+  .tabs { height: 27px; display: flex; background: #252529; border-bottom: 0.5px solid #141416; }
+  .tab { display: flex; align-items: center; gap: 6px; padding: 0 14px; font-size: 11.5px; color: #8E8E95; border-right: 0.5px solid #141416; }
+  .tab.on { background: #1F1F24; color: #EDEDF0; }
+  .tab .x { color: #7C7C83; font-size: 11px; margin-left: 4px; }
+  .jump { height: 23px; display: flex; align-items: center; gap: 5px; padding: 0 10px; font-size: 11px; color: #A9A9AF; border-bottom: 0.5px solid #2C2C31; }
+  .jump .chev { color: #6C6C72; font-size: 10px; }
+  .sym { width: 12px; height: 12px; border-radius: 3px; display: grid; place-items: center; font-size: 8px; font-weight: 700; color: #fff; flex: none; }
+  .code { position: relative; padding-top: 5px; font-family: var(--mono); font-size: 11px; line-height: 14px; }
+  .ln { display: block; height: 14px; white-space: pre; }
+  .ln i { display: inline-block; width: 38px; height: 14px; text-align: right; padding-right: 12px; color: #6C6C73; font-style: normal; position: relative; vertical-align: top; }
+  .ln.cur { background: #2A2C33; }
+  .ln.cur i { color: #E4E4E6; }
+  .ln.chg i::after { content: ""; position: absolute; right: 3px; top: 0; bottom: 0; width: 2.5px; background: #3B8BF5; border-radius: 1px; }
+  .k { color: #FF7AB2; font-weight: 600; }   /* keywords */
+  .td { color: #5DD8FF; }                    /* type declarations */
+  .t { color: #9EF1DD; }                     /* the project's types */
+  .ts { color: #D0A8FF; }                    /* system types */
+  .dl { color: #41A1C0; }                    /* other declarations */
+  .f { color: #67B7A4; }                     /* the project's properties and functions */
+  .fs { color: #B281EB; }                    /* system properties and functions */
+  .at { color: #CC9768; }                    /* attributes */
+  .pp { color: #FD8F3F; }                    /* macros */
+  .c { color: #7F8C98; }                     /* comments */
+  .n { color: #D9C97C; }                     /* numbers */
+  .caret { display: inline-block; width: 1.5px; height: 13px; background: #FFFFFF; vertical-align: -2px; margin-left: 1px; }
+</style>
+</head>
+<body>
+
+<header class="toolbar">
+  <div class="lights"><i></i><i></i><i></i></div>
+  <span class="tb navtoggle"><svg class="g"><use href="#g-sidebar"/></svg></span>
+  <div class="tb run dark"><span class="cap"><svg class="g"><use href="#g-play"/></svg></span><span class="cap"><svg class="g"><use href="#g-stop"/></svg></span></div>
+  <div class="proj"><b>Sketchpad</b><span><svg class="g"><use href="#g-branch"/></svg>main</span></div>
+  <div class="dark"><span class="cap scheme"><svg class="ic"><use href="#appicon"/></svg>Sketchpad<span class="sep">›</span><svg class="g"><use href="#g-desktop"/></svg>My Mac</span></div>
+  <div class="dark"><span class="cap activity"><span class="ok"><svg class="g"><use href="#g-checkmark"/></svg></span>Build Succeeded<span class="when">Today at 11:42</span></span></div>
+  <div class="tb right dark"><span class="cap"><svg class="g"><use href="#g-inspector"/></svg></span></div>
+</header>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="swift" viewBox="0 0 13 13">
+      <rect width="13" height="13" rx="3" fill="#F2733A"/>
+      <path d="M9.9 9.4c.8-1.4.2-3.6-1.6-5.2.9 1.4 1 2.9.5 3.8-1.5-1-3.5-2.6-5-4.3 1 1.5 2.1 2.6 3.2 3.6C5.6 6.6 4 5.3 3 4.4c1.3 1.9 3.3 3.8 4.7 4.7-1.4.7-3.4.6-5-.4 1.3 1.6 3.8 2.5 5.6 1.8.8-.3 1.3-.3 1.9.4.1-.5 0-1.1-.3-1.5z" fill="#fff"/>
+    </symbol>
+    <symbol id="fold" viewBox="0 0 14 11">
+      <path d="M1 2.1C1 1.5 1.5 1 2.1 1h3.2l1.3 1.3h5.3c.6 0 1.1.5 1.1 1.1v5.5c0 .6-.5 1.1-1.1 1.1H2.1C1.5 10 1 9.5 1 8.9z" fill="#5E9CEB"/>
+      <path d="M1 3.6h12v5.3c0 .6-.5 1.1-1.1 1.1H2.1C1.5 10 1 9.5 1 8.9z" fill="#78B0F2"/>
+    </symbol>
+    <symbol id="pkg" viewBox="0 0 13 13">
+      <path d="M1.5 4 6.5 1.6 11.5 4V9.4L6.5 11.8 1.5 9.4Z" fill="#C99A5B"/>
+      <path d="M1.5 4 6.5 6.4 11.5 4M6.5 6.4V11.8" stroke="#8C6533" stroke-width=".8" fill="none"/>
+      <path d="M4 2.8 9 5.2V7" stroke="#F1D9A8" stroke-width="1" fill="none"/>
+    </symbol>
+    <symbol id="doc" viewBox="0 0 13 13">
+      <path d="M3 1h4.6L10.5 3.9V11.4a.6.6 0 0 1-.6.6H3a.6.6 0 0 1-.6-.6V1.6A.6.6 0 0 1 3 1z" fill="#E9E9EC"/>
+      <path d="M4.2 6h4.4M4.2 7.8h4.4M4.2 9.6h3" stroke="#9A9AA0" stroke-width=".8"/>
+    </symbol>
+    <symbol id="appicon" viewBox="0 0 15 15">
+      <rect width="15" height="15" rx="3.6" fill="#FFFFFF"/>
+      <path d="M3 10.6C4.6 6.4 6.8 5 8.2 7S10.8 9.6 12.2 4.4" stroke="#FF8A3D" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M3.4 4.6C5 3.6 6.4 4 7 5" stroke="#3A86F0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="11.4" cy="11.2" r="1.3" fill="#34C27A"/>
+    </symbol>
+  </defs>
+</svg>
+
+<aside class="nav">
+  <div class="navtabs">
+    <svg class="g on"><use href="#g-folder"/></svg>
+    <svg class="g"><use href="#g-branch"/></svg>
+    <svg class="g"><use href="#g-symbols"/></svg>
+    <svg class="g"><use href="#g-search"/></svg>
+    <svg class="g"><use href="#g-warn"/></svg>
+    <svg class="g"><use href="#g-test"/></svg>
+    <svg class="g"><use href="#g-breakpoint"/></svg>
+    <svg class="g"><use href="#g-report"/></svg>
+  </div>
+  <div class="tree">
+    <div style="--d:0"><span class="tw">▼</span><svg class="sw"><use href="#pkg"/></svg>Sketchpad</div>
+    <div style="--d:1"><span class="tw">▼</span><svg class="fold"><use href="#fold"/></svg>Sources</div>
+    <div style="--d:2"><span class="tw">▼</span><svg class="fold"><use href="#fold"/></svg>Sketchpad</div>
+    <div style="--d:3"><span class="tw"></span><svg class="sw"><use href="#swift"/></svg>SketchpadApp.swift</div>
+    <div style="--d:3" class="sel"><span class="tw"></span><svg class="sw"><use href="#swift"/></svg>Sketchpad.swift</div>
+    <div style="--d:3"><span class="tw"></span><svg class="sw"><use href="#swift"/></svg>Stroke.swift</div>
+    <div style="--d:3"><span class="tw"></span><svg class="sw"><use href="#swift"/></svg>Palette.swift</div>
+    <div style="--d:3"><span class="tw"></span><svg class="sw"><use href="#swift"/></svg>CanvasStore.swift</div>
+    <div style="--d:2"><span class="tw">▶</span><svg class="fold"><use href="#fold"/></svg>Resources</div>
+    <div style="--d:1"><span class="tw">▶</span><svg class="fold"><use href="#fold"/></svg>Tests</div>
+    <div style="--d:1"><span class="tw"></span><svg class="sw"><use href="#swift"/></svg>Package.swift</div>
+    <div style="--d:1"><span class="tw"></span><svg class="sw"><use href="#doc"/></svg>README.md</div>
+  </div>
+  <div class="filter"><svg class="g"><use href="#g-filter"/></svg>Filter</div>
+</aside>
+
+<section class="editor">
+  <div class="tabs">
+    <div class="tab on"><svg class="sw"><use href="#swift"/></svg>Sketchpad.swift<span class="x">×</span></div>
+    <div class="tab"><svg class="sw"><use href="#swift"/></svg>Stroke.swift</div>
+    <div class="tab"><svg class="sw"><use href="#swift"/></svg>Palette.swift</div>
+  </div>
+  <div class="jump">
+    <svg class="sw" style="width:12px;height:12px"><use href="#pkg"/></svg>Sketchpad<span class="chev">›</span>
+    <svg class="fold" style="width:13px;height:10px"><use href="#fold"/></svg>Sources<span class="chev">›</span>
+    <svg class="sw" style="width:12px;height:12px"><use href="#swift"/></svg>Sketchpad.swift<span class="chev">›</span>
+    <span class="sym" style="background:#9B6AE0">S</span>Sketchpad
+  </div>
+  <div class="code">
+<div class="ln"><i>1</i><span class="k">import</span> SwiftUI</div>
+<div class="ln"><i>2</i></div>
+<div class="ln"><i>3</i><span class="c">/// A tiny drawing pad: drag to draw, tap a swatch to change color.</span></div>
+<div class="ln"><i>4</i><span class="k">struct</span> <span class="td">Sketchpad</span>: <span class="ts">View</span> {</div>
+<div class="ln"><i>5</i>    <span class="at">@State</span> <span class="k">private var</span> <span class="dl">strokes</span>: [<span class="t">Stroke</span>] = []</div>
+<div class="ln"><i>6</i>    <span class="at">@State</span> <span class="k">private var</span> <span class="dl">color</span>: <span class="ts">Color</span> = .<span class="fs">orange</span></div>
+<div class="ln"><i>7</i></div>
+<div class="ln"><i>8</i>    <span class="k">var</span> <span class="dl">body</span>: <span class="k">some</span> <span class="ts">View</span> {</div>
+<div class="ln"><i>9</i>        <span class="ts">Canvas</span> { context, _ <span class="k">in</span></div>
+<div class="ln"><i>10</i>            <span class="k">for</span> stroke <span class="k">in</span> <span class="f">strokes</span> {</div>
+<div class="ln"><i>11</i>                context.<span class="fs">stroke</span>(stroke.<span class="f">path</span>, with: .<span class="fs">color</span>(stroke.<span class="f">color</span>),</div>
+<div class="ln cur"><i>12</i>                               lineWidth: <span class="n">4</span>)<span class="caret"></span></div>
+<div class="ln"><i>13</i>            }</div>
+<div class="ln"><i>14</i>        }</div>
+<div class="ln chg"><i>15</i>        .<span class="fs">gesture</span>(<span class="ts">DragGesture</span>(minimumDistance: <span class="n">0</span>).<span class="fs">onChanged</span>(<span class="f">draw</span>))</div>
+<div class="ln chg"><i>16</i>        .<span class="fs">overlay</span>(alignment: .<span class="fs">bottom</span>) { <span class="t">Palette</span>(selection: $<span class="f">color</span>) }</div>
+<div class="ln"><i>17</i>    }</div>
+<div class="ln"><i>18</i></div>
+<div class="ln"><i>19</i>    <span class="k">private func</span> <span class="dl">draw</span>(<span class="k">_</span> drag: <span class="ts">DragGesture</span>.<span class="ts">Value</span>) {</div>
+<div class="ln"><i>20</i>        <span class="k">if</span> drag.<span class="fs">translation</span> == .<span class="fs">zero</span> {</div>
+<div class="ln"><i>21</i>            <span class="f">strokes</span>.<span class="fs">append</span>(<span class="t">Stroke</span>(color: <span class="f">color</span>))</div>
+<div class="ln"><i>22</i>        }</div>
+<div class="ln"><i>23</i>        <span class="f">strokes</span>[<span class="f">strokes</span>.<span class="fs">count</span> - <span class="n">1</span>].<span class="f">points</span>.<span class="fs">append</span>(drag.<span class="fs">location</span>)</div>
+<div class="ln"><i>24</i>    }</div>
+<div class="ln"><i>25</i>}</div>
+<div class="ln"><i>26</i></div>
+<div class="ln"><i>27</i><span class="pp">#Preview</span> { <span class="t">Sketchpad</span>() }</div>
+  </div>
+</section>
+
+</body>
+</html>

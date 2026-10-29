@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Install Riffle, and questions</title>
+<meta name="description" content="How to install Riffle, the free window switcher for macOS, and answers to common questions.">
+<meta name="theme-color" content="#24103f">
+<meta name="color-scheme" content="light">
+<link rel="canonical" href="https://appriffle.com/help">
+<link rel="icon" href="img/icon-64.png" type="image/png">
+<link rel="apple-touch-icon" href="img/icon-256.png">
+<link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Phosphor Icons (MIT), bold weight: icons/LICENSE-phosphor.txt -->
+    <symbol id="i-download" viewBox="0 0 256 256" fill="currentColor"><path d="M228,144v64a12,12,0,0,1-12,12H40a12,12,0,0,1-12-12V144a12,12,0,0,1,24,0v52H204V144a12,12,0,0,1,24,0Zm-108.49,8.49a12,12,0,0,0,17,0l40-40a12,12,0,0,0-17-17L140,115V32a12,12,0,0,0-24,0v83L96.49,95.51a12,12,0,0,0-17,17Z"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a class="brand" href="index.html" aria-label="Riffle, home">
+      <img src="img/icon-256.png" alt="" width="42" height="42">
+      <span>Riffle</span>
+    </a>
+    <nav class="nav__links" aria-label="Pages">
+      <a href="index.html#try">Try it</a>
+      <a href="index.html#layouts">Layouts</a>
+      <a href="help.html" aria-current="page">Help</a>
+    </nav>
+    <a class="btn btn--primary btn--small" href="download/Riffle.dmg" download>Download</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section id="top" class="help-hero" aria-labelledby="help-title">
+    <div class="help-hero__inner">
+      <img class="help-hero__icon" src="img/icon-256.png" alt="" width="256" height="256">
+      <h1 class="help-hero__title" id="help-title">Install Riffle</h1>
+      <p class="help-hero__lede">It takes about a minute: drag Riffle to Applications, open it, and give it access.</p>
+      <div class="help-hero__actions">
+        <a class="btn btn--primary" href="download/Riffle.dmg" download><svg aria-hidden="true"><use href="#i-download"/></svg>Download Riffle</a>
+        <span class="help-hero__fine">Free and <a href="https://github.com/dorukyksl/riffle">open source</a>. macOS 26 or later, tested on macOS 27. Apple silicon and Intel.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps" aria-label="Installing Riffle, step by step">
+    <ol class="steps__list">
+      <li>
+        <h2>Open the disk image</h2>
+        <p>Open <strong>Riffle.dmg</strong> from your Downloads, then drag Riffle onto the Applications folder next to it.</p>
+      </li>
+      <li>
+        <h2>Open Riffle</h2>
+        <p>Open Riffle from Applications. The first time, macOS asks whether you want to open an app downloaded from the internet: click <strong>Open</strong>.</p>
+      </li>
+      <li>
+        <h2>Give it access</h2>
+        <p>Riffle asks for Accessibility, which it needs to find your windows and switch to them. Screen Recording is optional: it draws the live previews, and without it you see app icons.</p>
+      </li>
+    </ol>
+    <p class="steps__done">That's it. Riffle sits in the menu bar: hold <kbd>⌥</kbd> and press <kbd>Tab</kbd>.</p>
+  </section>
+
+  <section id="questions" class="faq" aria-labelledby="faq-title">
+    <h2 class="title" id="faq-title">Questions</h2>
+    <div class="faq__list">
+      <details><summary>Is Riffle free?</summary><p>Yes, for good. Riffle is free and open source: <a href="https://github.com/dorukyksl/riffle">its code is on GitHub</a> under the GNU General Public License, version 3, so anyone can read what it does with the permissions it asks for, build it themselves or make it better. There is no account to make and nothing to buy.</p></details>
+      <details><summary>Which Macs does it run on?</summary><p>Any Mac with macOS 26 or later, Apple silicon or Intel. Riffle is tested on macOS 27.0.1 (October 2026), which runs on Apple silicon only; Intel Macs use it on macOS 26.</p></details>
+      <details><summary>Why does it ask for Accessibility and Screen Recording?</summary><p>Accessibility lets Riffle find your windows and bring the one you pick to the front. Screen Recording is optional and only draws the live previews; without it you see app icons. Nothing it sees is recorded or sent anywhere.</p></details>
+      <details><summary>Does Riffle go online?</summary><p>Only to look for updates. Once a day it asks appriffle.com whether there's a newer version; the request carries Riffle's version number and, like any web request, your preferred language. You can turn that off in Settings → About. Nothing about your windows ever leaves your Mac.</p></details>
+      <details><summary>What happens to ⌘ Tab?</summary><p>Nothing, unless you choose it. Riffle starts on ⌥ Tab. Pick ⌘ Tab in the welcome window or in Settings and Riffle takes its place, then gives it back to macOS when Riffle quits.</p></details>
+      <details><summary>Which languages does it speak?</summary><p>21: English, Arabic, Chinese (Simplified, Hong Kong and Taiwan), Dutch, French, German, Hebrew, Indonesian, Italian, Japanese, Korean, Polish, Portuguese (Brazil), Russian, Spanish, Swedish, Thai, Turkish and Vietnamese. It follows your Mac's language, and you can pick another in Settings.</p></details>
+      <details><summary>How do I update it?</summary><p>Riffle updates itself: when there's a new version, it asks whether to install it. To look right away, choose Check for Updates… from its menu bar icon. Riffle 1.0.0 can't do this yet, so if you have it, download Riffle once more and drag it onto Applications to replace the old one. Your settings stay as they are.</p></details>
+      <details><summary>How do I remove it?</summary><p>Quit Riffle from its menu bar icon, then move it from Applications to the Trash. If you've hidden the icon, open Riffle from Applications to bring up its settings and press ⌘&nbsp;Q.</p></details>
+    </div>
+    <p class="faq__more">Something else, or something not working? Write to <a href="mailto:help@appriffle.com">help@appriffle.com</a>. It helps to say which version of Riffle and macOS you have; the link in Riffle's Settings → About fills both in.</p>
+  </section>
+
+</main>
+
+<div class="end end--slim">
+<footer class="footer">
+  <div class="footer__inner">
+    <span>© 2026 Riffle</span>
+    <nav aria-label="Footer"><a href="index.html#try">Try it</a><a href="index.html#layouts">Layouts</a><a href="help.html" aria-current="page">Help</a><a href="mailto:help@appriffle.com">Contact</a></nav>
+  </div>
+</footer>
+</div>
+
+<script src="site.js"></script>
+</body>
+</html>

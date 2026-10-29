@@ -1,0 +1,14 @@
+{
+  "safari-lisbon": { "1400": { "width": 1400, "height": 876 }, "640": { "width": 640, "height": 401 } },
+  "safari-sourdough": { "1400": { "width": 1400, "height": 876 }, "640": { "width": 640, "height": 401 } },
+  "chrome-kyoto": { "1400": { "width": 1400, "height": 1056 }, "640": { "width": 640, "height": 483 } },
+  "mail-inbox": { "1400": { "width": 1400, "height": 934 }, "640": { "width": 640, "height": 427 } },
+  "notes-weekend": { "1400": { "width": 1400, "height": 1076 }, "640": { "width": 640, "height": 492 } },
+  "notes-books": { "1400": { "width": 1400, "height": 1076 }, "640": { "width": 640, "height": 492 } },
+  "finder-downloads": { "1400": { "width": 1400, "height": 1000 }, "640": { "width": 640, "height": 458 } },
+  "finder-projects": { "1400": { "width": 1400, "height": 1000 }, "640": { "width": 640, "height": 458 } },
+  "music-now": { "1400": { "width": 1400, "height": 904 }, "640": { "width": 640, "height": 414 } },
+  "terminal-build": { "1400": { "width": 1400, "height": 966 }, "640": { "width": 640, "height": 442 } },
+  "xcode-sketchpad": { "1400": { "width": 1400, "height": 980 }, "640": { "width": 640, "height": 448 } },
+  "preview-invoice": { "1400": { "width": 1400, "height": 1768 }, "640": { "width": 640, "height": 809 } }
+}
