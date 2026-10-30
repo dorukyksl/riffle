@@ -6,19 +6,19 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>Riffle</title>
         <item>
-            <title>1.0.2</title>
-            <pubDate>Mon, 26 Oct 2026 00:36:05 +0100</pubDate>
+            <title>1.0.3</title>
+            <pubDate>Fri, 30 Oct 2026 20:17:26 +0100</pubDate>
             <link>https://appriffle.com/</link>
-            <sparkle:version>202610260032</sparkle:version>
-            <sparkle:shortVersionString>1.0.2</sparkle:shortVersionString>
+            <sparkle:version>202610302014</sparkle:version>
+            <sparkle:shortVersionString>1.0.3</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[- On macOS 27, a window's title and subtitle in the switcher could look dimmer than the rest after Riffle reused its tile. They're always as bright now.
+            <description sparkle:format="markdown"><![CDATA[- After an app quit, the next app to open could show up in the switcher with the old app's name and icon until Riffle restarted. Each app now shows up as itself.
 ]]></description>
-            <enclosure url="https://appriffle.com/updates/Riffle-1.0.2-202610260032.dmg" length="5849722" type="application/octet-stream" sparkle:edSignature="AzBA5Sni1G5PWshrlDlwLRcEkmz9NO0+G97WbF1NmCYGabk56siBS2JOtHve0n4nC7K4lZ+G+VjmRc0mYv+DCQ=="/>
+            <enclosure url="https://appriffle.com/updates/Riffle-1.0.3-202610302014.dmg" length="5849474" type="application/octet-stream" sparkle:edSignature="7M+JFHQQuv8K1PKR6Yw7sv+/7SOHO6EIQw08syrUzGsC9PN8xAXiTDmMkEeM8FpBYmCndjYl10RrL569fWBABQ=="/>
         </item>
     </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: QjosFcflHCBJeDlBl5+YnL7xa2IU5M52mRp5s4Dwvis9PbUdb+IYv8Gkm1FyHjbLVgs3hOSvAcaLheWrm2i6Bg==
-length: 1300
+edSignature: oNbylToL7ZwPp2GL+F/rvxRjR229LdV52rR+YWDMdoQ7t1ddPlYgnMhTX2tNCoPa0y/jXQOq8oVSYivaJhlNCg==
+length: 1309
 -->

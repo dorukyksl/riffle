@@ -31,7 +31,7 @@ done
 
 APP_NAME="Riffle"
 BUNDLE_ID="com.dorukyuksel.riffle"
-VERSION="1.0.2"
+VERSION="1.0.3"
 BUILD_NUMBER="$(date +%Y%m%d%H%M)"
 FEED_URL="https://appriffle.com/updates/appcast.xml"
 UPDATE_KEY="S8yWdHdFl/0KpL6Z9VF5iD2ukQPo/l3L/8xwt0cIHOg="
