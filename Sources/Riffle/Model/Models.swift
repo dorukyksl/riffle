@@ -43,6 +43,13 @@ final class TrackedApp {
 
     var isHidden: Bool { running.isHidden }
     var isFinder: Bool { bundleID == "com.apple.finder" }
+
+    /// Whether `other` is this very process. A pid is handed out again once its owner has quit, to another app or to
+    /// another launch of the same one; a quit Riffle didn't hear about would otherwise lend the newcomer its name and icon.
+    func isSameProcess(as other: NSRunningApplication) -> Bool {
+        !running.isTerminated && other.processIdentifier == pid && other.bundleIdentifier == bundleID
+            && other.launchDate == running.launchDate
+    }
 }
 
 /// One switchable window.

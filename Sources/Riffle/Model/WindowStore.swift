@@ -121,7 +121,11 @@ final class WindowStore {
 
     @discardableResult
     private func track(_ running: NSRunningApplication) -> TrackedApp {
-        if let existing = apps[running.processIdentifier] { return existing }
+        if let existing = apps[running.processIdentifier] {
+            if existing.isSameProcess(as: running) { return existing }
+            // Its pid now belongs to another process: the app it was has quit.
+            untrack(pid: existing.pid)
+        }
         let app = TrackedApp(running)
         apps[app.pid] = app
         attachObserver(app)
@@ -141,6 +145,23 @@ final class WindowStore {
         // Always: an app whose windows had already closed (most apps close them before exiting) is still on screen as an
         // app without windows, and an open switcher must drop it now.
         notifyChange()
+    }
+
+    /// Apps that quit without Riffle hearing of it (a missed notification, a Mac asleep): their pid may already be
+    /// another app's, which would otherwise show up under the old app's name and icon until Riffle restarts.
+    private func dropQuitApps() {
+        for app in Array(apps.values) {
+            guard let now = NSRunningApplication(processIdentifier: app.pid) else {
+                untrack(pid: app.pid)
+                continue
+            }
+            guard !app.isSameProcess(as: now) else { continue }
+            untrack(pid: app.pid)
+            if shouldTrack(now) {
+                track(now)
+                scanApp(now.processIdentifier, because: .launched)
+            }
+        }
     }
 
     /// Apps asked to quit from the switcher, and when. While they wind down they aren't shown as apps without windows:
@@ -452,6 +473,7 @@ final class WindowStore {
     private func startSafetyNet() {
         let timer = Timer(timeInterval: 30, repeats: true) { [weak self] _ in
             guard let self, !WindowStore.isScreenLocked, WindowStore.userIdleTime < ScanPlanner.idleCutoff else { return }
+            self.dropQuitApps()
             self.reconcileWithWindowServer()
             self.run(ScanPlanner.plan(self.plannerState(), trigger: .timer))
         }
@@ -612,8 +634,13 @@ final class WindowStore {
 
     private func appActivated(_ running: NSRunningApplication) {
         guard running.processIdentifier != ownPID else { return }
-        let app = apps[running.processIdentifier] ?? (shouldTrack(running) ? track(running) : nil)
-        guard let app else { return }
+        let tracked = apps[running.processIdentifier].flatMap { $0.isSameProcess(as: running) ? $0 : nil }
+        let app = tracked ?? (shouldTrack(running) ? track(running) : nil)
+        guard let app else {
+            // A pid reused by an app that isn't listed: the one it belonged to is gone.
+            untrack(pid: running.processIdentifier)
+            return
+        }
         app.activationStamp = nextStamp()
         // An app that wasn't ready when it launched gets another chance to tell us about its windows.
         if app.observer == nil, !app.isAttachingObserver { attachObserver(app) }
