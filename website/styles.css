@@ -698,6 +698,8 @@ kbd {
 .footer nav { display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .footer a { text-decoration: none; }
 .footer a:hover, .footer a[aria-current="page"] { color: #fff; }
+.footer__also { flex-basis: 100%; color: rgb(255 255 255 / 0.72); }
+.footer__also a { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ------------------------------------------------------------------ help: installing, and questions */
 .help-hero { color: #fff; background: var(--dusk); padding: calc(var(--nav) + clamp(40px, 8vh, 88px)) var(--gutter) clamp(48px, 8vh, 88px); }
