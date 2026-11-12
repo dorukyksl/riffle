@@ -690,6 +690,11 @@ kbd {
 .facts { list-style: none; margin: clamp(28px, 5vh, 48px) 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 34px; color: rgb(255 255 255 / 0.88); font-size: 0.98rem; }
 .facts li { display: inline-flex; align-items: center; gap: 10px; }
 .facts svg { width: 20px; height: 20px; flex: none; opacity: 0.85; }
+/* A directory's badge: dark lettering on nothing, so it sits on a pale card over the dusk. */
+.featured { display: inline-flex; margin-top: clamp(14px, 3vh, 28px); padding: 6px 14px; border-radius: 16px; background: rgb(255 255 255 / 0.9);
+  box-shadow: 0 10px 24px -12px rgb(10 3 24 / 0.5); transition: background-color 140ms var(--ease); }
+.featured:hover { background: #fff; }
+.featured img { display: block; width: 160px; height: auto; }
 .footer { color: rgb(255 255 255 / 0.86); font-size: 0.92rem; background: rgb(20 6 36 / 0.42); }
 .footer__inner {
   max-width: calc(var(--maxw) + 2 * var(--gutter)); margin: 0 auto; padding: 24px var(--gutter) 36px;
